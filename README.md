@@ -43,7 +43,8 @@ Then switch the directory for the project you wish to terraform, and run the pyt
 
 e.g.
 ```~ $ cd digital-studio-infra/webops/dev/
-~/digital-studio-infra/webops/dev (master) $ python3 init.py```
+~/digital-studio-infra/webops/dev (master) $ python3 init.py
+```
 
 This should report:
 
@@ -54,7 +55,6 @@ Terraform has been successfully initialized!
 You are now ready to run terraform command. 
 
 e.g.
-
 ```
 terraform plan
 ```
