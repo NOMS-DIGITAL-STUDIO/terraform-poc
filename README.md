@@ -47,14 +47,17 @@ e.g.
 
 This should report:
 
-```Terraform has been successfully initialized!```
+```
+Terraform has been successfully initialized!
+```
 
 You are now ready to run terraform command. 
 
 e.g.
 
-```terraform plan```
-
+```
+terraform plan
+```
 
 ### Terraform initialization (using service principal authentication)
 
