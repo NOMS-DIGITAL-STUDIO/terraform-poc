@@ -52,7 +52,7 @@ This should report:
 Terraform has been successfully initialized!
 ```
 
-You are now ready to run terraform command. 
+You are now ready to run terraform commands: 
 
 e.g.
 ```
