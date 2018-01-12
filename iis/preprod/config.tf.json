@@ -1,25 +1,20 @@
 {
-  "variable": {
-    "notice": {
-      "default": "This file is JSON so that init.py can read it easily"
+    "provider": {
+        "azurerm": {
+            "tenant_id": "747381f4-e81f-4a43-bf68-ced6a1e14edf",
+            "version": "0.3.3",
+            "subscription_id": "a5ddf257-3b21-4ba9-a28c-ab30f751b383"
+        }
+    },
+    "terraform": {
+        "backend": {
+            "azurerm": {
+                "key": "iis-preprod.terraform.tfstate",
+                "storage_account_name": "iispreprodstorage",
+                "container_name": "terraform",
+                "resource_group_name": "iis-preprod"
+            }
+        },
+        "required_version": "~> 0.11.0"
     }
-  },
-  "terraform": {
-    "required_version": "~> 0.11.0",
-    "backend": {
-      "azurerm": {
-        "resource_group_name": "webops-prod",
-        "storage_account_name": "nomsstudiowebopsprod",
-        "container_name": "terraform",
-        "key": "iis-preprod.terraform.tfstate"
-      }
-    }
-  },
-  "provider": {
-    "azurerm": {
-      "tenant_id": "747381f4-e81f-4a43-bf68-ced6a1e14edf",
-      "subscription_id": "a5ddf257-3b21-4ba9-a28c-ab30f751b383",
-      "version": "0.3.3"
-    }
-  }
 }
