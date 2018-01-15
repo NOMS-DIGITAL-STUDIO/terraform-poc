@@ -114,11 +114,11 @@ if response["exists"] == False:
     check=True
   )
   
-state = json.dumps(subprocess.run(
-    ["terraform", "state","pull"],
-    stdout=subprocess.PIPE,
-    check=True
-).stdout.decode())
+#state = json.dumps(subprocess.run(
+#    ["terraform", "state","pull"],
+#    stdout=subprocess.PIPE,
+#    check=True
+#).stdout.decode())
 
 with open('.terraform.tfstate.backup', 'w') as outfile:
     json.dump(state, outfile, indent=4) 
