@@ -15,8 +15,8 @@ gitRoot = subprocess.run(
 cwd = os.path.basename(os.getcwd())
 
 appDir = os.path.split(os.path.dirname(os.getcwd()))[1]
-
 keyName = ''.join([appDir, '-', cwd, '.terraform.tfstate'])
+
 
 # Check if this is a prod or dev environment
 prodEnvs = ['prod', 'preprod']
@@ -26,15 +26,25 @@ environment = 'devtest'
 if cwd in prodEnvs:
     environment = 'prod'
 
-if not os.path.isfile("./azure-versions.json"):
+if not os.path.isfile("./.json"):
     src = ''.join([gitRoot, "/tools/config/azure-versions.json"])
     dst = "."
     shutil.copy2(src, dst)
 
 versions = json.load(open("./azure-versions.json"))
-
+    
 providerConfig = json.load(
     open(gitRoot + "/tools/config/azure-provider-config.json"))
+
+if 'storage_account_name' in versions:
+  providerConfig[environment]["storage_account_name"] = versions['storage_account_name']
+
+if 'resource_group_name' in versions:
+  providerConfig[environment]["resource_group_name"] = versions['resource_group_name']
+
+print(providerConfig[environment])
+
+exit()
 
 configTfJson = {
     'terraform': {
