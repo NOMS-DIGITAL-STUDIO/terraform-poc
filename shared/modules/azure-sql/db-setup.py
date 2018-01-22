@@ -29,7 +29,7 @@ logging.basicConfig(level=log_level)
 
 # Connect to sql db
 logging.info("Connecting to %s:%s" % (args.server, args.database))
-conn = pymssql.connect(server=args.server, user=args.username, password=args.password, database=args.database)
+conn = pymssql.connect(server=args.server, user="%s@%s" % (args.username,args.database), password=args.password, database=args.database)
 cursor = conn.cursor()
 
 # function iterates over users/passwords and creates
