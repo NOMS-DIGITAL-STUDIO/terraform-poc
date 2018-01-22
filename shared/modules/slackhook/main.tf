@@ -54,9 +54,7 @@ az keyvault secret set --vault-name '${null_resource.intermediates.triggers.vaul
     --name 'slackhook-user-${var.app_name}' \
     --value '${random_id.hook-password.hex}' \
 
-node ${path.module}/kudu-webhook-cli-auth.js \
-    --subscriptionId '${null_resource.intermediates.triggers.azure_subscription_id}' \
-    --tenantId '${var.azure_tenant_id}' \
+${path.module}/kudu-webhook.py \
     --appName '${var.app_name}' \
     --urls '${base64encode(jsonencode(formatlist(
         "https://${var.app_name}:${random_id.hook-password.hex}@${null_resource.intermediates.triggers.hook_host}/kudu?channel=%s",
