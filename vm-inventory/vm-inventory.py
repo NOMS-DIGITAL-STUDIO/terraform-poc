@@ -18,6 +18,10 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument(
     "-s", "--subscription-id", help="Azure Subscription ID")
+
+parser.add_argument(
+    "-f", "--file-path", help="Path to store output file to")
+
 args = parser.parse_args()
 
 subprocess.run(
@@ -92,10 +96,12 @@ print(rows)
 
 number_of_vms = len(sorted_lines)
 
-logging.info("Saving data to csv")
-
-text_file = open("vm-inventory.csv", "w")
-text_file.write(rows)
-text_file.close()
-
 logging.info("Complete. %s VMs found." % number_of_vms)
+
+if args.file_path:
+
+    logging.info("Saving data to csv")
+
+    text_file = open(args.file_path, "w")
+    text_file.write(rows)
+    text_file.close()
