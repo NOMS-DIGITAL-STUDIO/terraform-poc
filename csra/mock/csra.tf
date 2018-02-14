@@ -69,6 +69,12 @@ resource "azurerm_key_vault" "vault" {
     }
     access_policy {
         tenant_id = "${var.azure_tenant_id}"
+        object_id = "${var.azure_jenkins_sp_oid}"
+        key_permissions = []
+        secret_permissions = ["set"]
+    }
+    access_policy {
+        tenant_id = "${var.azure_tenant_id}"
         object_id = "${var.azure_app_service_oid}"
         key_permissions = []
         secret_permissions = ["get"]
