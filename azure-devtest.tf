@@ -14,6 +14,10 @@ variable "azure_webops_group_oid" {
     type = "string"
     default = "98dc3307-f515-4717-b3c1-7174413e20b0"
 }
+variable "azure_jenkins_sp_oid" {
+    type = "string"
+    default = "3ddcc102-7f43-4885-ae16-c872c65584c6"
+}
 variable "azure_notm_group_oid" {
 	type = "string"
 	default = "1687acb2-20d2-4b0c-96c0-9be788cdcab9"
