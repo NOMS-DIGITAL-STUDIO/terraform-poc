@@ -3,6 +3,11 @@ variable "app-name" {
     default = "notm-prod"
 }
 
+variable "node-version" {
+    type = "string"
+    default = "8.4.0"
+}
+
 variable "tags" {
     type = "map"
     default {
@@ -157,7 +162,8 @@ resource "azurerm_template_deployment" "webapp-config" {
         NOMS_TOKEN = "${data.external.vault.result.noms_token}"
         NOMS_PRIVATE_KEY = "${data.external.vault.result.noms_private_key}"
         GOOGLE_ANALYTICS_ID = "${data.external.vault.result.google_analytics_id}"
-        SESSION_SECRET = "${random_id.session-secret.b64}"
+        SESSION_SECRET = "${random_id.session-secret.b64}",
+        WEBSITE_NODE_DEFAULT_VERSION = "${var.node-version}"
     }
 
     depends_on = ["azurerm_template_deployment.webapp"]
