@@ -15,6 +15,11 @@ variable "azure_webops_group_oid" {
     default = "98dc3307-f515-4717-b3c1-7174413e20b0"
 }
 
+variable "azure_jenkins_sp_oid" {
+    type = "string"
+    default = "880790d6-77d8-4f9b-9df7-f60097801381"
+}
+
 variable "azure_secret_permissions_all" {
   type = "list"
 

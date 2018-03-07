@@ -1,15 +1,10 @@
 {
-  "variable": {
-    "notice": {
-      "default": "This file is JSON so that init.py can read it easily"
-    }
-  },
   "terraform": {
     "required_version": "~> 0.11.0",
     "backend": {
       "azurerm": {
-        "resource_group_name": "webops-prod",
-        "storage_account_name": "nomsstudiowebopsprod",
+        "resource_group_name": "iis-prod",
+        "storage_account_name": "iisprodstorage",
         "container_name": "terraform",
         "key": "iis-prod.terraform.tfstate"
       }

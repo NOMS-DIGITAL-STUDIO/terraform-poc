@@ -66,7 +66,14 @@ resource "azurerm_key_vault" "vault" {
         key_permissions = []
         secret_permissions = ["get"]
     }
-    
+
+    access_policy {
+        tenant_id = "${var.azure_tenant_id}"
+        object_id = "${var.azure_jenkins_sp_oid}"
+        key_permissions = []
+        secret_permissions = ["set"]
+    }
+
     enabled_for_deployment = false
     enabled_for_disk_encryption = false
     enabled_for_template_deployment = true

@@ -1,0 +1,16 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: mojdigitalstudio/git-secrets-ahoy
+    working_directory: /git
+    steps:
+      - checkout
+      - run:
+          name: Run truffleHog
+          command: |
+            # give the current checkout a name
+            git branch -d "${CIRCLE_BRANCH}"
+            git checkout -b "${CIRCLE_BRANCH}"
+            /trufflehog/truffleHogger.sh --use_current_branch  --max_depth 20

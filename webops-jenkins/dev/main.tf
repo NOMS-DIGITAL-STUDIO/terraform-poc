@@ -62,6 +62,13 @@ resource "azurerm_key_vault" "vault" {
     secret_permissions = ["get"]
   }
 
+  access_policy {
+      tenant_id = "${var.azure_tenant_id}"
+      object_id = "${var.azure_jenkins_sp_oid}"
+      key_permissions = []
+      secret_permissions = ["set"]
+  }
+
   enabled_for_deployment          = false
   enabled_for_disk_encryption     = false
   enabled_for_template_deployment = true
@@ -98,7 +105,7 @@ module "docker_webapp" {
     CERTBOT_REG_EMAIL = "noms-studio-webops@digital.justice.gov.uk"
     PIPELINES_GIT_REPO = "git@github.com:ministryofjustice/digital-studio-platform-pipelines.git"
     GITHUB_DEPLOY_KEY = "${data.external.vault.result.github_deploy_key}"
-    CERT_JSON = "./shared/jenkins_digital_studio_devtest_certs.json"
+    SERVER_ENVIRONMENT = "devtest"
   }
   tags = "${var.tags}"
 }

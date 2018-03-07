@@ -61,12 +61,19 @@ resource "azurerm_key_vault" "vault" {
         key_permissions = []
         secret_permissions = "${var.azure_secret_permissions_all}"
     }
-        
+
     access_policy {
         tenant_id = "${var.azure_tenant_id}"
         object_id = "${var.azure_app_service_oid}"
         key_permissions = []
         secret_permissions = ["get"]
+    }
+
+    access_policy {
+        tenant_id = "${var.azure_tenant_id}"
+        object_id = "${var.azure_jenkins_sp_oid}"
+        key_permissions = []
+        secret_permissions = ["set"]
     }
 
     enabled_for_deployment = false
@@ -133,7 +140,7 @@ resource "azurerm_template_deployment" "webapp" {
 }
 
 data "external" "sas-url" {
-    program = ["node", "../../tools/container-sas-url-cli-auth.js"]
+    program = ["python3", "../../tools/container-sas-url-cli-auth.py"]
     query {
         subscription_id = "${var.azure_subscription_id}"
         tenant_id = "${var.azure_tenant_id}"
@@ -205,7 +212,7 @@ resource "azurerm_template_deployment" "webapp-whitelist" {
 }
 
 data "external" "vault" {
-    program = ["node", "../../tools/keyvault-data-cli-auth.js"]
+    program = ["python3", "../../tools/keyvault-data-cli-auth.py"]
     query {
         vault = "${azurerm_key_vault.vault.name}"
 
