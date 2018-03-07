@@ -25,9 +25,9 @@ resource "aws_elastic_beanstalk_application" "app" {
     description = "${var.app-name}"
 }
 
-//data "aws_acm_certificate" "cert" {
-//    domain = "omic-dev.hmpps.dsd.io"
-//}
+data "aws_acm_certificate" "cert" {
+    domain = "omic-dev.hmpps.dsd.io"
+}
 
 resource "aws_elastic_beanstalk_environment" "app-env" {
     name = "${var.app-name}"
@@ -55,26 +55,26 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
         name = "ServiceRole"
         value = "aws-elasticbeanstalk-service-role"
     }
-//    setting {
-//        namespace = "aws:elb:listener:443"
-//        name = "ListenerProtocol"
-//        value = "HTTPS"
-//    }
-////    setting {
-//        namespace = "aws:elb:listener:443"
-//        name = "SSLCertificateId"
-//        value = "${data.aws_acm_certificate.cert.arn}"
-//    }
-//    setting {
-//        namespace = "aws:elb:listener:443"
-//        name = "InstancePort"
-//        value = "80"
-//    }
-//    setting {
-//        namespace = "aws:elb:listener:443"
-//        name = "ListenerProtocol"
-//        value = "HTTPS"
-//    }
+    setting {
+        namespace = "aws:elb:listener:443"
+        name = "ListenerProtocol"
+        value = "HTTPS"
+    }
+    setting {
+        namespace = "aws:elb:listener:443"
+        name = "SSLCertificateId"
+        value = "${data.aws_acm_certificate.cert.arn}"
+    }
+    setting {
+        namespace = "aws:elb:listener:443"
+        name = "InstancePort"
+        value = "80"
+    }
+    setting {
+        namespace = "aws:elb:listener:443"
+        name = "ListenerProtocol"
+        value = "HTTPS"
+    }
     setting {
         namespace = "aws:ec2:vpc"
         name = "VPCId"
