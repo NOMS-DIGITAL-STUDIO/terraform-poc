@@ -138,7 +138,7 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     }
     setting {
         namespace = "aws:elasticbeanstalk:application:environment"
-        name = "ELITE2-API.ENDPOINT.URL"
+        name = "ELITE2_API_URI_ROOT"
         value = "https://noms-api-dev.dsd.io/elite2api/api"
     }
     setting {
