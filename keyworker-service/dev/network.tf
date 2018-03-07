@@ -1,5 +1,5 @@
 resource "aws_vpc" "vpc" {
-    cidr_block = "192.168.0.0/26"  // make this /24 later!
+    cidr_block = "192.168.0.0/24"
     instance_tenancy = "default"
     enable_dns_support = true
     enable_dns_hostnames = false
