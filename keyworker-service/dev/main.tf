@@ -29,13 +29,65 @@ data "aws_acm_certificate" "cert" {
     domain = "keyworker-api-dev.hmpps.dsd.io"
 }
 
+resource "aws_security_group" "elb" {
+  name = "keyworker-api-elb-group"
+  vpc_id = "${aws_vpc.vpc.id}"
+  description = "Keyworker API ELB security group"
+
+  ingress {
+    from_port = 80
+    to_port   = 80
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 443
+    to_port   = 443
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags {
+    Name = "keyworker-api-lb-sg"
+  }
+}
+
+resource "aws_security_group" "ec2" {
+  name = "keyworker-api-ec2-group"
+  vpc_id = "${aws_vpc.vpc.id}"
+  description = "Keyworker API EC2 security group"
+
+  ingress {
+    from_port = 80
+    to_port   = 80
+    protocol  = "tcp"
+    security_groups = [ "${aws_security_group.elb.id}" ]
+  }
+
+  tags {
+    Name = "keyworker-api-ec2-sg"
+  }
+}
+
 resource "aws_elastic_beanstalk_environment" "app-env" {
     name = "${var.app-name}"
     application = "${aws_elastic_beanstalk_application.app.name}"
     solution_stack_name = "${var.elastic-beanstalk-single-docker}"
     tier = "WebServer"
 
-  setting {
+    setting {
+      namespace = "aws:elbv2:loadbalancer"
+      name      = "SecurityGroups"
+      value     = "${aws_security_group.elb.id}"
+    }
+
+    setting {
+      namespace = "aws:autoscaling:launchconfiguration"
+      name      = "SecurityGroups"
+      value     = "${aws_security_group.ec2.id}"
+    }
+
+    setting {
         namespace = "aws:autoscaling:launchconfiguration"
         name = "InstanceType"
         value = "t2.micro"
