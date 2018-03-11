@@ -134,7 +134,7 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     setting {
         namespace = "aws:elasticbeanstalk:application:environment"
         name = "KEYWORKER_API_URL"
-        value = "https://keyworker-api-dev.hmpps.dsd.io"
+        value = "https://keyworker-api-dev.hmpps.dsd.io/"
     }
     setting {
       namespace = "aws:elasticbeanstalk:application:environment"
@@ -161,7 +161,21 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
         name = "APPINSIGHTS_INSTRUMENTATIONKEY"
         value = "${data.aws_ssm_parameter.appinsights-instrumentationkey.value}"
     }
-
+    setting {
+        namespace = "aws:elasticbeanstalk:application:environment"
+        name = "HMPPS_COOKIE_NAME"
+        value = "hmpps-session-dev"
+    }
+    setting {
+        namespace = "aws:elasticbeanstalk:application:environment"
+        name = "HMPPS_COOKIE_DOMAIN"
+        value = "hmpps.dsd.io"
+    }
+    setting {
+        namespace = "aws:elasticbeanstalk:application:environment"
+        name = "HMPPS_COOKIE_SECRET"
+        value = "${data.aws_ssm_parameter.hmpps-cookie-secret.value}"
+    }
     tags = "${var.tags}"
 }
 

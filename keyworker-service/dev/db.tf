@@ -18,7 +18,7 @@ resource "aws_security_group" "db" {
     to_port   = 5432
     protocol  = "tcp"
     cidr_blocks = "${var.dbaccess}"
-    security_groups = [ "sg-252a184d" ]
+    security_groups = [ "${aws_security_group.ec2.id}" ]
   }
 
   tags {

@@ -14,3 +14,7 @@ data "aws_ssm_parameter" "api-gateway-private-key" {
 data "aws_ssm_parameter" "appinsights-instrumentationkey" {
     name  = "/omic-ui/dev/appinsights_instrumentationkey"
 }
+
+data "aws_ssm_parameter" "hmpps-cookie-secret" {
+    name  = "/hmpps/apps/dev/cookie_secret"
+}
