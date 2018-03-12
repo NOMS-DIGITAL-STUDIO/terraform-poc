@@ -38,7 +38,7 @@ resource "aws_db_instance" "db" {
   password             = "${data.aws_ssm_parameter.keyworker-db-password.value}"
   db_subnet_group_name = "${aws_db_subnet_group.db.name}"
   vpc_security_group_ids = ["${aws_security_group.db.id}"]
-  publicly_accessible  = "false"
+  publicly_accessible  = "true"
   license_model        = "postgresql-license"
   skip_final_snapshot  = "true"
   storage_encrypted    = "false"
