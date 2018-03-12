@@ -10,12 +10,12 @@ terraform {
 
 variable "app-name" {
     type = "string"
-    default = "keyworker-srv-dev"
+    default = "keyworker-api-dev"
 }
 variable "tags" {
     type = "map"
     default {
-        Service = "keyworker-srv"
+        Service = "keyworker-api"
         Environment = "Dev"
     }
 }
