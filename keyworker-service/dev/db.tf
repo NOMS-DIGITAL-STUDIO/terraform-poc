@@ -17,12 +17,12 @@ resource "aws_security_group" "db" {
     from_port = 5432
     to_port   = 5432
     protocol  = "tcp"
-    cidr_blocks = ["${var.ips["office"]}", "${var.ips["mojvpn"]}"]
+    cidr_blocks = ["${var.ips["office"]}/32", "${var.ips["mojvpn"]}/32"]
     security_groups = [ "${aws_security_group.ec2.id}" ]
   }
 
   tags {
-    Name = "${merge(var.tags, map("Name", "${var.app-name}-db-sg"))}"
+    Name = "${var.app-name}-db-sg"
   }
 }
 
