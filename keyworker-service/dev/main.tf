@@ -21,8 +21,8 @@ variable "tags" {
 }
 
 resource "aws_elastic_beanstalk_application" "app" {
-    name = "${var.app-name}"
-    description = "${var.app-name}"
+    name = "keyworker-api"
+    description = "keyworker-api"
 }
 
 data "aws_acm_certificate" "cert" {
