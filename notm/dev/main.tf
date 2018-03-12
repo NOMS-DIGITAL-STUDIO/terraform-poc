@@ -93,8 +93,10 @@ data "external" "vault" {
         vault = "${azurerm_key_vault.vault.name}"
         noms_token = "noms-token"
         noms_private_key = "noms-private-key"
+        api_gateway_private_key="api-gateway-private-key"
         google_analytics_id = "google-analytics-id"
         api_client_secret = "api-client-secret"
+        hmpps_cookie_secret = "hmpps-cookie-secret"
     }
 }
 
@@ -170,10 +172,14 @@ resource "azurerm_template_deployment" "webapp-config" {
         USE_API_GATEWAY_AUTH = "yes"
         NOMS_TOKEN = "${data.external.vault.result.noms_token}"
         NOMS_PRIVATE_KEY = "${data.external.vault.result.noms_private_key}"
+        API_GATEWAY_PRIVATE_KEY = "${data.external.vault.result.api_gateway_private_key}"
         API_CLIENT_ID = "elite2apiclient"
         API_CLIENT_SECRET = "${data.external.vault.result.api_client_secret}"
         GOOGLE_ANALYTICS_ID = "${data.external.vault.result.google_analytics_id}"
         SESSION_SECRET = "${random_id.session-secret.b64}"
+        HMPPS_COOKIE_NAME = "hmpps-session-dev"
+        HMPPS_COOKIE_DOMAIN = "hmpps.dsd.io"
+        HMPPS_COOKIE_SECRET = "${data.external.vault.result.hmpps_cookie_secret}"
         WEBSITE_NODE_DEFAULT_VERSION = "8.4.0"
     }
 
