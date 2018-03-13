@@ -40,16 +40,13 @@
         "GOOGLE_ANALYTICS_ID": {
             "type": "secureString"
         },
-        "SESSION_SECRET": {
-            "type": "secureString"
-        },
         "HMPPS_COOKIE_NAME": {
             "type": "string"
         },
         "HMPPS_COOKIE_DOMAIN": {
             "type": "string"
         },
-        "HMPPS_COOKIE_SECRET": {
+        "SESSION_COOKIE_SECRET": {
             "type": "secureString"
         }
     },
@@ -70,10 +67,9 @@
                 "NOMS_PRIVATE_KEY": "[parameters('NOMS_PRIVATE_KEY')]",
                 "API_GATEWAY_PRIVATE_KEY": "[parameters('API_GATEWAY_PRIVATE_KEY')]",
                 "GOOGLE_ANALYTICS_ID": "[parameters('GOOGLE_ANALYTICS_ID')]",
-                "SESSION_SECRET": "[parameters('SESSION_SECRET')]",
                 "HMPPS_COOKIE_NAME": "[parameters('HMPPS_COOKIE_NAME')]",
                 "HMPPS_COOKIE_DOMAIN": "[parameters('HMPPS_COOKIE_DOMAIN')]",
-                "HMPPS_COOKIE_SECRET": "[parameters('HMPPS_COOKIE_SECRET')]"
+                "SESSION_COOKIE_SECRET": "[parameters('SESSION_COOKIE_SECRET')]"
             }
         }
     ]

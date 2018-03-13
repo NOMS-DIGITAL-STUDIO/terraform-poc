@@ -47,6 +47,12 @@ resource "aws_security_group" "elb" {
     protocol  = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  egress {
+    from_port = 0
+    to_port   = 65535
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   tags {
     Name = "keyworker-api-lb-sg"
   }
@@ -63,7 +69,12 @@ resource "aws_security_group" "ec2" {
     protocol  = "tcp"
     security_groups = [ "${aws_security_group.elb.id}" ]
   }
-
+  egress {
+    from_port = 0
+    to_port   = 65535
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   tags {
     Name = "keyworker-api-ec2-sg"
   }
@@ -97,11 +108,11 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
         name = "IamInstanceProfile"
         value = "aws-elasticbeanstalk-ec2-role"
     }
-    setting {
-        namespace = "aws:elasticbeanstalk:application"
-        name = "Application Healthcheck URL"
-        value = "/health"
-    }
+//    setting {
+//        namespace = "aws:elasticbeanstalk:application"
+//        name = "Application Healthcheck URL"
+//        value = "/health"
+//    }
     setting {
         namespace = "aws:elasticbeanstalk:environment"
         name = "ServiceRole"
@@ -226,14 +237,14 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     setting {
       namespace = "aws:elasticbeanstalk:application:environment"
       name = "SPRING_DATASOURCE_PASSWORD"
-      value = "${data.aws_ssm_parameter.keyworker-db-password.value}"
+      value = "${aws_db_instance.db.password}"
     }
 
     tags = "${var.tags}"
 }
 
 resource "azurerm_dns_cname_record" "cname" {
-    name = "keyworker-api-dev"
+    name = "${var.app-name}"
     zone_name = "hmpps.dsd.io"
     resource_group_name = "webops"
     ttl = "60"
