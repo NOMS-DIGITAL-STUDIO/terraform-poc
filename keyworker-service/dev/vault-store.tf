@@ -10,7 +10,3 @@ data "aws_ssm_parameter" "jwt-signing-key" {
 data "aws_ssm_parameter" "api-gateway-private-key" {
     name  = "/keyworker-api/dev/api_gateway_private_key"
 }
-
-data "aws_ssm_parameter" "keyworker-db-password" {
-  name  = "/keyworker-api/dev/keyworker_db_password"
-}

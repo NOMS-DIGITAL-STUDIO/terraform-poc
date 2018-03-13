@@ -25,6 +25,10 @@ resource "aws_elastic_beanstalk_application" "app" {
     description = "${var.app-name}"
 }
 
+resource "random_id" "session-secret" {
+    byte_length = 40
+}
+
 data "aws_acm_certificate" "cert" {
     domain = "omic-dev.hmpps.dsd.io"
 }
@@ -173,14 +177,14 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     }
     setting {
         namespace = "aws:elasticbeanstalk:application:environment"
-        name = "HMPPS_COOKIE_SECRET"
-        value = "${data.aws_ssm_parameter.hmpps-cookie-secret.value}"
+        name = "SESSION_COOKIE_SECRET"
+        value = "${random_id.session-secret.b64}"
     }
     tags = "${var.tags}"
 }
 
 resource "azurerm_dns_cname_record" "cname" {
-    name = "omic-dev"
+    name = "${var.app-name}"
     zone_name = "hmpps.dsd.io"
     resource_group_name = "webops"
     ttl = "60"
