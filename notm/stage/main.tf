@@ -140,6 +140,7 @@ resource "azurerm_app_service" "app" {
     HMPPS_COOKIE_DOMAIN            = "hmpps.dsd.io"
     SESSION_COOKIE_SECRET          = "${random_id.session-secret.b64}"
     WEBSITE_NODE_DEFAULT_VERSION   = "8.10.0"
+    WEB_SESSION_TIMEOUT_IN_MINUTES = "60"
   }
 
   tags = "${var.tags}"
