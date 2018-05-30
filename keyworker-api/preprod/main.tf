@@ -280,6 +280,11 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     name      = "SERVER_CONNECTION_TIMEOUT"
     value     = "${local.server_timeout}"
   }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "DEALLOCATION_JOB_CRON"
+    value     = "${local.deallocation_job_cron}"
+  }
   tags = "${var.tags}"
 }
 
