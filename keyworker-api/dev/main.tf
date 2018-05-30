@@ -298,6 +298,11 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     name      = "APPLICATION_INSIGHTS_IKEY"
     value     = "${azurerm_application_insights.insights.instrumentation_key}"
   }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "DEALLOCATION_JOB_CRON"
+    value     = "${local.deallocation_job_cron}"
+  }
   tags = "${var.tags}"
 }
 

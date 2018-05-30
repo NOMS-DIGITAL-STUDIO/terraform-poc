@@ -18,4 +18,5 @@ locals {
   server_timeout         = "60000"
   azurerm_resource_group = "keyworker-api-dev"
   azure_region           = "ukwest"
+  deallocation_job_cron = "0 0 * ? * *"
 }
