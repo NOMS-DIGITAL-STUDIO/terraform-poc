@@ -68,6 +68,19 @@ data "aws_elastic_beanstalk_solution_stack" "docker" {
   name_regex  = "^64bit Amazon Linux .* v2.* running Docker 17.*$"
 }
 
+resource "azurerm_resource_group" "group" {
+  name     = "${local.azurerm_resource_group}"
+  location = "${local.azure_region}"
+  tags     = "${var.tags}"
+}
+
+resource "azurerm_application_insights" "insights" {
+  name                = "${var.app-name}"
+  location            = "North Europe"
+  resource_group_name = "${azurerm_resource_group.group.name}"
+  application_type    = "Web"
+}
+
 resource "aws_elastic_beanstalk_environment" "app-env" {
   name                = "${var.app-name}"
   application         = "${aws_elastic_beanstalk_application.app.name}"
@@ -279,6 +292,11 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "SERVER_CONNECTION_TIMEOUT"
     value     = "${local.server_timeout}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "APPLICATION_INSIGHTS_IKEY"
+    value     = "${azurerm_application_insights.insights.instrumentation_key}"
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"

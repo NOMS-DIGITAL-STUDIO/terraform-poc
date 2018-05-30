@@ -15,7 +15,7 @@ variable "tags" {
 # App settings
 locals {
   api_endpoint_url    = "https://noms-api-dev.dsd.io/elite2api/"
-  api_client_id       = "omic"
+  api_client_id       = "elite2apiclient"
   keyworker_api_url   = "https://keyworker-api-dev.hmpps.dsd.io/"
   nn_endpoint_url     = "https://notm-dev.hmpps.dsd.io/"
   hmpps_cookie_name   = "hmpps-session-dev"

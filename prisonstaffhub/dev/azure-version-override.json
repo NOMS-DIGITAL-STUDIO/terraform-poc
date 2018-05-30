@@ -1,0 +1,5 @@
+{
+  "comment": "This file's purpose is to allow you to override values in config.tf.json, which is regenerated when init.py or diginit are invoked.",
+  "terraform_version": "~> 0.11.0",
+  "azurerm_version": "1.4.0"
+}

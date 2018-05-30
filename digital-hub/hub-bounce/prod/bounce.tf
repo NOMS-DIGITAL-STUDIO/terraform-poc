@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "hub-bounce-prod" {
-    name = "hub-bounce-prod"
-    location = "uksouth"
+  name     = "hub-bounce-prod"
+  location = "uksouth"
 }
 
 resource "azurerm_public_ip" "hub-bounce-prod-ip" {
@@ -16,14 +16,50 @@ resource "azurerm_network_security_group" "hub-bounce-prod-nsg" {
   resource_group_name = "${azurerm_resource_group.hub-bounce-prod.name}"
 
   security_rule {
-    name                       = "default-allow-ssh"
+    name                       = "default-allow-ssh-office"
     priority                   = 1000
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "TCP"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefix      = "*"
+    source_address_prefix      = "${var.ips["office"]}"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "default-allow-ssh-mojvpn"
+    priority                   = 1001
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "TCP"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "${var.ips["mojvpn"]}"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "default-allow-ssh-dxc"
+    priority                   = 1002
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "TCP"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "${var.ips["dxc"]}"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "default-allow-ssh-dxc2"
+    priority                   = 1003
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "TCP"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "109.151.4.165"
     destination_address_prefix = "*"
   }
 
@@ -38,7 +74,6 @@ resource "azurerm_network_security_group" "hub-bounce-prod-nsg" {
     source_address_prefix      = "${var.ips["health-kick"]}"
     destination_address_prefix = "*"
   }
-
 }
 
 resource "azurerm_subnet" "default" {
@@ -88,7 +123,7 @@ resource "azurerm_virtual_machine" "hub-bounce-prod-vm" {
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
-    disk_size_gb       = "30"
+    disk_size_gb      = "30"
   }
 
   storage_data_disk {
@@ -108,8 +143,9 @@ resource "azurerm_virtual_machine" "hub-bounce-prod-vm" {
 
   os_profile_linux_config {
     disable_password_authentication = true
+
     ssh_keys {
-      path = "/home/provisioning/.ssh/authorized_keys"
+      path     = "/home/provisioning/.ssh/authorized_keys"
       key_data = "${file("${path.module}/sshkey.pub")}"
     }
   }

@@ -13,8 +13,10 @@ variable "tags" {
 }
 
 locals {
-  elite2_uri_root = "https://gateway.t2.nomis-api.hmpps.dsd.io/elite2api"
-  omic_clientid = "omicadmin"
-  server_timeout = "180000"
+  elite2_uri_root        = "https://gateway.t2.nomis-api.hmpps.dsd.io/elite2api"
+  omic_clientid          = "omicadmin"
+  server_timeout         = "180000"
+  azurerm_resource_group = "keyworker-api-stage"
+  azure_region           = "ukwest"
   deallocation_job_cron = "0 0 * ? * *"
 }

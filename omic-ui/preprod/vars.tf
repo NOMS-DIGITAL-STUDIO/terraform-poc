@@ -15,7 +15,7 @@ variable "tags" {
 # App settings
 locals {
   api_endpoint_url    = "https://gateway.preprod.nomis-api.service.hmpps.dsd.io/elite2api/"
-  api_client_id       = "omic"
+  api_client_id       = "elite2apiclient"
   keyworker_api_url   = "https://keyworker-api-preprod.service.hmpps.dsd.io/"
   nn_endpoint_url     = "https://notm-preprod.service.hmpps.dsd.io/"
   hmpps_cookie_name   = "hmpps-session-preprod"
