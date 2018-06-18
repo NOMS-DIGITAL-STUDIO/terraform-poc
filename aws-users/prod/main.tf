@@ -89,7 +89,7 @@ data "template_file" "newnomis-deploy-policy-keyworker-api" {
 
   vars {
     aws_account_id       = "${var.aws_account_id}"
-    aws_region          = "${var.aws_region}"
+    aws_region           = "${var.aws_region}"
     aws_application_name = "keyworker-api"
   }
 }
