@@ -17,19 +17,23 @@
         "cloudformation:*"
       ],
       "Effect": "Allow",
-      "Resource": ["${aws_application_name}"]
+      "Resource": ["arn:aws:elasticbeanstalk:*::solutionstack/*",
+        "arn:aws:elasticbeanstalk:${aws_region}:${aws_account_id}:application/${aws_application_name}",
+        "arn:aws:elasticbeanstalk:${aws_region}:${aws_account_id}:applicationversion/${aws_application_name}/*",
+        "arn:aws:elasticbeanstalk:${aws_region}:${aws_account_id}:environment/${aws_application_name}/*",
+        "arn:aws:elasticbeanstalk:${aws_region}:${aws_account_id}:template/${aws_application_name}/*"
+      ]
     },
-
-    {
-      "Action": [
-        "autoscaling:*",
-        "s3:*",
-        "ec2:*",
-        "elasticloadbalancing:*",
-        "elasticbeanstalk:DescribeEnvironmentManagedActions"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
-}
+      {
+        "Action": [
+          "autoscaling:*",
+          "s3:*",
+          "ec2:*",
+          "elasticloadbalancing:*",
+          "elasticbeanstalk:DescribeEnvironmentManagedActions"
+        ],
+        "Effect": "Allow",
+        "Resource": "*"
+      }
+    ]
+  }

@@ -1,19 +1,3 @@
-variable "newnomis-apps" {
-  default = [
-    "arn:aws:elasticbeanstalk:eu-west-2:589133037702:application/keyworker-api",
-    "arn:aws:elasticbeanstalk:eu-west-2:589133037702:application/omic-ui",
-    "arn:aws:elasticbeanstalk:eu-west-2:589133037702:applicationversion/keyworker-api/*",
-    "arn:aws:elasticbeanstalk:eu-west-2:589133037702:applicationversion/omic-ui/*",
-    "arn:aws:elasticbeanstalk:eu-west-2:589133037702:configurationtemplate/keyworker-api/*",
-    "arn:aws:elasticbeanstalk:eu-west-2:589133037702:configurationtemplate/omic-ui/*",
-    "arn:aws:elasticbeanstalk:eu-west-2:589133037702:environment/keyworker-api/*",
-    "arn:aws:elasticbeanstalk:eu-west-2:589133037702:environment/omic-ui/*"
-  ]
-}
-
-locals {
-  newnomis_apps_list = "${join("\",\"",var.newnomis-apps)}"
-}
 
 resource "aws_iam_account_password_policy" "strict" {
   minimum_password_length        = 14
@@ -90,12 +74,23 @@ data "template_file" "enable_mfa_policy" {
   }
 }
 
-data "template_file" "devs-elasticbeanstalk-deploy-policy" {
+data "template_file" "newnomis-deploy-policy-omic-ui" {
   template = "${file("../policies/devs-elasticbeanstalk-deploy-policy.json")}"
 
   vars {
     aws_account_id       = "${var.aws_account_id}"
-    aws_application_name = "${local.newnomis_apps_list}"
+    aws_region          = "${var.aws_region}"
+    aws_application_name = "omic-ui"
+  }
+}
+
+data "template_file" "newnomis-deploy-policy-keyworker-api" {
+  template = "${file("../policies/devs-elasticbeanstalk-deploy-policy.json")}"
+
+  vars {
+    aws_account_id       = "${var.aws_account_id}"
+    aws_region          = "${var.aws_region}"
+    aws_application_name = "keyworker-api"
   }
 }
 
@@ -105,10 +100,16 @@ resource "aws_iam_policy" "enable-mfa" {
   policy      = "${data.template_file.enable_mfa_policy.rendered}"
 }
 
-resource "aws_iam_policy" "devs-elasticbeanstalk-deploy" {
-  name        = "devs-elasticbeanstalk-deploy"
-  description = "Allow devs to deploy Elasticbeanstalk apps"
-  policy      = "${data.template_file.devs-elasticbeanstalk-deploy-policy.rendered}"
+resource "aws_iam_policy" "newnomis-deploy-policy-omic-ui" {
+  name        = "newnomis-deploy-policy-omic-ui"
+  description = "Allow devs to deploy Omic UI app"
+  policy      = "${data.template_file.newnomis-deploy-policy-omic-ui.rendered}"
+}
+
+resource "aws_iam_policy" "newnomis-deploy-policy-keyworker-api" {
+  name        = "newnomis-deploy-policy-keyworker-api"
+  description = "Allow devs to deploy Keyworker API app"
+  policy      = "${data.template_file.newnomis-deploy-policy-keyworker-api.rendered}"
 }
 
 resource "aws_iam_group_policy_attachment" "webops-attach-enable-mfa" {
@@ -121,9 +122,14 @@ resource "aws_iam_group_policy_attachment" "newnomis-developers-attach-enable-mf
   policy_arn = "${aws_iam_policy.enable-mfa.arn}"
 }
 
-resource "aws_iam_group_policy_attachment" "devs-elasticbeanstalk-deploy" {
+resource "aws_iam_group_policy_attachment" "newnomis-deploy-policy-omic-ui" {
   group      = "${aws_iam_group.newnomis-developers.name}"
-  policy_arn = "${aws_iam_policy.devs-elasticbeanstalk-deploy.arn}"
+  policy_arn = "${aws_iam_policy.newnomis-deploy-policy-omic-ui.arn}"
+}
+
+resource "aws_iam_group_policy_attachment" "newnomis-deploy-policy-keyworker-api" {
+  group      = "${aws_iam_group.newnomis-developers.name}"
+  policy_arn = "${aws_iam_policy.newnomis-deploy-policy-keyworker-api.arn}"
 }
 
 resource "aws_iam_group_policy_attachment" "webops-attach-iam-password-change" {
