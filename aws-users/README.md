@@ -7,6 +7,7 @@
  * [Azure CLI 2.0](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
  * [AWS CLI 1.14+] (https://aws.amazon.com/cli/)
  * [jq command line JSON processor](https://stedolan.github.io/jq/)
+ * pwgen [on Mac 'brew install pwgen']
 
 ## Managing users
 
@@ -15,6 +16,7 @@ The list of users is stored as a comma separated list in an Azure key vault. Ter
 1. Retrieve existing users for each type (admins/developers etc) from the Azure key vault.
 2. Add or delete users as required.
 3. Save the list back to the key vault.
+4. Run terraform in the appropriate environment to update AWS.
 
 To do this we use the ```manage-users.py``` script.
 
@@ -30,6 +32,8 @@ Parameters:
 -g, --group The group the user will belong to e.g. developers  
 
 TBC: Add groups of developers in the format <dev team>_developers   
+
+
 
 ## Generating an access token to use AWS CLI with MFA enabled.
 

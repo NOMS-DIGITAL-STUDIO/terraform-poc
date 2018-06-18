@@ -23,7 +23,7 @@ args = parser.parse_args()
 
 def manage_users(environment, user_action,group):
 
-    user_types = ['webops','developers']
+    user_types = ['webops','newnomis-developers']
 
     vault_name = "aws-users-" + environment
 

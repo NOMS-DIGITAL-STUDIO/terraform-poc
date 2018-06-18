@@ -1,0 +1,35 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+      "Action": [
+        "elasticbeanstalk:CreateApplication",
+        "elasticbeanstalk:DeleteApplication"
+      ],
+      "Effect": "Deny",
+      "Resource": "*"
+    },
+    {
+      "Action": [
+        "elasticbeanstalk:*",
+        "cloudwatch:*",
+        "sns:*",
+        "rds:*",
+        "cloudformation:*"
+      ],
+      "Effect": "Allow",
+      "Resource": ["${aws_application_name}"]
+    },
+
+    {
+      "Action": [
+        "autoscaling:*",
+        "s3:*",
+        "ec2:*",
+        "elasticloadbalancing:*",
+        "elasticbeanstalk:DescribeEnvironmentManagedActions"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
