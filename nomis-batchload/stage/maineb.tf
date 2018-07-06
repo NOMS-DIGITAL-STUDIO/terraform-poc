@@ -305,16 +305,7 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     name      = "ADMIN_API_CLIENT_SECRET"
     value     = "${data.aws_ssm_parameter.admin_api_client_secret.value}"
   }
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "NOMIS_GW_TOKEN"
-    value     = "${data.aws_ssm_parameter.api_gateway_token.value}"
-  }
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "NOMIS_GW_KEY"
-    value     = "${data.aws_ssm_parameter.api_gateway_private_key.value}"
-  }
+
 
   tags = "${var.tags}"
 }
@@ -328,9 +319,9 @@ resource "azurerm_dns_cname_record" "cname" {
 }
 
 resource "azurerm_dns_cname_record" "acm-verify" {
-  name                = "_4d69ee137a14e9cf43c11a6b3dd0f20f.nomis-batchload-stage"
+  name                = "_7ea51fb5fc19fbce905475e853af6de7.nomis-batchload-stage"
   zone_name           = "hmpps.dsd.io"
   resource_group_name = "webops"
   ttl                 = "300"
-  record              = "_268e3210c84d79b7c2f40926b98df74b.acm-validations.aws."
+  record              = "_454837f23ec4c3873154152284f7fdf5.acm-validations.aws."
 }

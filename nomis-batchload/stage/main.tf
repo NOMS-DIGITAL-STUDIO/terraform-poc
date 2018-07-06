@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "group" {
 }
 
 resource "azurerm_storage_account" "storage" {
-  name                     = "${replace(var.app-name, "-", "")}storage"
+  name                     = "${substr(format("%s%s", replace(var.app-name, "-", ""), "storage"),0,24)}"
   resource_group_name      = "${azurerm_resource_group.group.name}"
   location                 = "${azurerm_resource_group.group.location}"
   account_tier             = "Standard"
@@ -66,14 +66,6 @@ resource "azurerm_key_vault" "vault" {
   enabled_for_template_deployment = true
 
   tags = "${var.tags}"
-}
-
-data "aws_ssm_parameter" "api_gateway_token" {
-  name = "/nomis-batchload/stage/api_gateway_token"
-}
-
-data "aws_ssm_parameter" "api_gateway_private_key" {
-  name = "/nomis-batchload/stage/api_gateway_private_key"
 }
 
 data "aws_ssm_parameter" "api_client_secret" {
