@@ -310,7 +310,11 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     name      = "ADMIN_API_CLIENT_SECRET"
     value     = "${data.aws_ssm_parameter.admin_api_client_secret.value}"
   }
-
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "PORT"
+    value     = "3000"
+  }
   tags = "${var.tags}"
 }
 
