@@ -252,7 +252,7 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "BATCH_USER_ROLE"
-    value     = "ADMIN"
+    value     = "DM"
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
@@ -302,10 +302,14 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "ADMIN_API_CLIENT_ID"
+    value     = "batchadmin"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "ADMIN_API_CLIENT_SECRET"
     value     = "${data.aws_ssm_parameter.admin_api_client_secret.value}"
   }
-
 
   tags = "${var.tags}"
 }
