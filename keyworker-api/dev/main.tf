@@ -65,7 +65,7 @@ resource "aws_security_group" "ec2" {
 
 data "aws_elastic_beanstalk_solution_stack" "docker" {
   most_recent = true
-  name_regex  = "^64bit Amazon Linux .* v2.* running Docker 17.*$"
+  name_regex  = "^64bit Amazon Linux .* v2.* running Docker *.*$"
 }
 
 resource "azurerm_resource_group" "group" {
@@ -283,11 +283,6 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "API_GATEWAY_TOKEN"
-    value     = "${data.aws_ssm_parameter.api-gateway-token.value}"
-  }
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "JWT_PUBLIC_KEY"
     value     = "${data.aws_ssm_parameter.jwt-public-key.value}"
   }
@@ -295,11 +290,6 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "ELITE2_URI_ROOT"
     value     = "${local.elite2_uri_root}"
-  }
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "API_GATEWAY_PRIVATE_KEY"
-    value     = "${data.aws_ssm_parameter.api-gateway-private-key.value}"
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"

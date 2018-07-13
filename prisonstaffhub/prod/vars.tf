@@ -22,6 +22,12 @@ locals {
   google_analytics_id = "UA-106741063-2"
 }
 
+# Instance and Deployment settings
+locals {
+  instances = "2"
+  mininstances = "1"
+}
+
 # Azure config
 locals {
   azurerm_resource_group = "prisonstaffhub-prod"

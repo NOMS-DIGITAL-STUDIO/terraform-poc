@@ -56,7 +56,7 @@ resource "aws_security_group" "elb" {
 
 data "aws_elastic_beanstalk_solution_stack" "docker" {
   most_recent = true
-  name_regex  = "^64bit Amazon Linux .* v2.* running Docker 17.*$"
+  name_regex  = "^64bit Amazon Linux .* v2.* running Docker *.*$"
 }
 
 resource "aws_elastic_beanstalk_environment" "app-env" {
@@ -245,7 +245,7 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "USE_API_GATEWAY_AUTH"
-    value     = "yes"
+    value     = "no"
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
@@ -264,11 +264,6 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "API_GATEWAY_TOKEN"
-    value     = "${data.aws_ssm_parameter.api-gateway-token.value}"
-  }
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "API_CLIENT_ID"
     value     = "${local.api_client_id}"
   }
@@ -276,11 +271,6 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "API_CLIENT_SECRET"
     value     = "${data.aws_ssm_parameter.api-client-secret.value}"
-  }
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "API_GATEWAY_PRIVATE_KEY"
-    value     = "${data.aws_ssm_parameter.api-gateway-private-key.value}"
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
