@@ -83,6 +83,9 @@ variable "azure_secret_permissions_all" {
 }
 
 locals {
-  dns_zone_name = "hmpps.dsd.io"
-  dns_zone_rg   = "webops"
+  dns_zone_name  = "hmpps.dsd.io"
+  dns_zone_rg    = "webops"
+  studio_ip      = "217.33.148.210"
+  health_kick_ip = "35.177.252.195"
+  moj_vpn_ip      = "81.134.202.29"
 }

@@ -37,7 +37,7 @@ resource "azurerm_template_deployment" "insights" {
 }
 
 data "external" "vault" {
-    program = ["node", "../../tools/keyvault-data-cli-auth.js"]
+    program = ["python3", "../../tools/keyvault-data-cli-auth.py"]
     query {
         vault = "${azurerm_key_vault.vault.name}"
 
