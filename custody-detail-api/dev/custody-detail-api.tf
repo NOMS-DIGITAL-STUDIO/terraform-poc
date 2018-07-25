@@ -12,6 +12,10 @@ variable "tags" {
   }
 }
 
+locals {
+  "app-storage-name" = "${replace(var.app-name, "-", "")}storage"
+}
+
 resource "azurerm_resource_group" "group" {
   name     = "${var.app-name}"
   location = "ukwest"
@@ -53,7 +57,7 @@ resource "azurerm_application_insights" "insights" {
 }
 
 resource "azurerm_storage_account" "storage" {
-  name                     = "${replace(var.app-name, "-", "")}storage"
+  name                     = "${substr(local.app-storage-name, 0, min(24, length(local.app-storage-name)))}"
   resource_group_name      = "${azurerm_resource_group.group.name}"
   location                 = "${azurerm_resource_group.group.location}"
   account_tier             = "Standard"
