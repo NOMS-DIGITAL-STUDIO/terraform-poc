@@ -48,10 +48,36 @@ python3 tools/initial-setup.py
 
 ### Terraform initialization
 
-In order to authenticate with the Azure RM APIs you'll need to be able to login via the azure cli.  e.g.
+-In order to authenticate with the Azure RM APIs you'll need to be able to login via the azure cli.  e.g.
 
 ```
 $ az login
+
+-In order to authenticate with AWS CLI, there are 2 methond that you will to be able achieve this, see instruction below:
+
+Scripted
+--------
+Checkout https://github.com/ministryofjustice/digital-studio-infra
+source ./aws-users/get-access-token.sh [AWS profile name]
+This script will ask for your MFA code and setup the required AWS environment variables containing the session token.  See manual steps, or look inside the script.
+
+Manual Steps
+------------
+retreive the ARN for your MFA device from the IAM service above: "arn:aws:iam::409876543212:mfa/BobSmith"
+run following with aws cli, using token code from your device: 
+"aws sts get-session-token --serial-number 'arn:aws:iam::409876543212:mfa/BobSmith' --token-code 123456 --duration-seconds 129600"
+aws will return temporary credentials (expire after "duration-seconds" above):
+AccessKeyId
+SecretAccessKey
+SessionToken
+Re-export the temp credentials respecively as:
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_SESSION_TOKEN
+Test your access with something like aws s3 ls or aws describe-instances
+These credentials will be used and indeed required going forward - note that they expire after a max of 36 hours (129600 seconds from above).
+
+
 ```
 
 See [the terraform documentation](https://www.terraform.io/docs/providers/azurerm/authenticating_via_azure_cli.html) for full details.
@@ -186,32 +212,3 @@ It performs the following tasks:
 6. Creates the required Azure resource group, storage account.
 
 7. Performs terraform init to initialise the Terraform backend.
-
-## AWS beanstalk deployment for prisonhubstaff
-
-1. Run the command: git clone digital-infra-studio repo into your working dir.
-
-2. Log in to Azure subscription via use of az login.
-
-3. Log in to AWS preprod/Prod or Test/dev via AWS cli, instruction for that is provided below:
-
-https://dsdmoj.atlassian.net/wiki/spaces/NSW/pages/510001308/Creating+new+AWS+Management+Console+users
-
-4. cd to appropriate environment under prisonstaffhub and application (keyworker-api,omic-ui,...) directory.
-
-5. Run ```diginit``` to initialise and test the Terraform code. The command does not have any parameters  e.g. ```$ diginit```.
-
-6. Run ```terraform plan | landscape```
-
-7. Examine the output from previous command, ensuring there is no errors and the output shows the expected changes.
-
-8. Run ``` terraform apply``` *****type in yes @  prompted for confirmation 
-
-*****Caveat: if the output shows any error relating deployment, possibly certificate you should log into AWS console and under beanstalk use the button "rebuild".
-
-9. Upon completion of beanstalk deployment- progress can be monitored in AWS console-for sake of validation you should be able to hit beankstalk endpoint in a web browser, loading up beanstalk default page.
-
-*****Caveat: this will deploy Beanstalk infrastructure, however currently there is additional work concerning application deployment. This is exected to be undertaken by Dev team who only certain inidividual has the necessary AWS policy for this task, you may be required to assign the necessary policy to inidividual with Dev without the privilages.
-
-*****Caveat: Due to an issue in deployment code, in scenario where deploying the same application to 2 or more environments you may encounter and error on subsequent environement deployment of application with same name, in order to overcome this you need to ``terraform import``` with value of application ID before
-
