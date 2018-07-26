@@ -186,3 +186,32 @@ It performs the following tasks:
 6. Creates the required Azure resource group, storage account.
 
 7. Performs terraform init to initialise the Terraform backend.
+
+## AWS beanstalk deployment for prisonhubstaff
+
+1. Run the command: git clone digital-infra-studio repo into your working dir.
+
+2. Log in to Azure subscription via use of az login.
+
+3. Log in to AWS preprod/Prod or Test/dev via AWS cli, instruction for that is provided below:
+
+https://dsdmoj.atlassian.net/wiki/spaces/NSW/pages/510001308/Creating+new+AWS+Management+Console+users
+
+4. cd to appropriate environment under prisonstaffhub and application (keyworker-api,omic-ui,...) directory.
+
+5. Run ```diginit``` to initialise and test the Terraform code. The command does not have any parameters  e.g. ```$ diginit```.
+
+6. Run ```terraform plan | landscape```
+
+7. Examine the output from previous command, ensuring there is no errors and the output shows the expected changes.
+
+8. Run ``` terraform apply``` *****type in yes @  prompted for confirmation 
+
+*****Caveat: if the output shows any error relating deployment, possibly certificate you should log into AWS console and under beanstalk use the button "rebuild".
+
+9. Upon completion of beanstalk deployment- progress can be monitored in AWS console-for sake of validation you should be able to hit beankstalk endpoint in a web browser, loading up beanstalk default page.
+
+*****Caveat: this will deploy Beanstalk infrastructure, however currently there is additional work concerning application deployment. This is exected to be undertaken by Dev team who only certain inidividual has the necessary AWS policy for this task, you may be required to assign the necessary policy to inidividual with Dev without the privilages.
+
+*****Caveat: Due to an issue in deployment code, in scenario where deploying the same application to 2 or more environments you may encounter and error on subsequent environement deployment of application with same name, in order to overcome this you need to ``terraform import``` with value of application ID before
+
