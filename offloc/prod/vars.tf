@@ -24,6 +24,9 @@ locals {
 
   app_team_oid = "${local.azure_empty_group_oid}"
 
+  app_size  = "S2"
+  app_count = 2
+
   tags {
     Service     = "${var.app}"
     Environment = "${var.env}"

@@ -72,8 +72,8 @@ resource "azurerm_app_service_plan" "app" {
 
   sku {
     tier     = "Standard"
-    size     = "S1"
-    capacity = 1
+    size     = "${local.app_size}"
+    capacity = "${local.app_count}"
   }
 
   tags = "${local.tags}"
@@ -104,6 +104,7 @@ resource "azurerm_app_service" "app" {
     AZURE_STORAGE_RESOURCE_GROUP   = "${azurerm_resource_group.group.name}"
     AZURE_STORAGE_ACCOUNT_NAME     = "${azurerm_storage_account.app.name}"
     AZURE_STORAGE_SUBSCRIPTION_ID  = "${var.azure_subscription_id}"
+    WEBSITE_TIME_ZONE              = "GMT Standard Time"
 
     # Can't use resource property here otherwise we create a dependency cycle
     KEY_VAULT_URL = "https://${local.name}-users.vault.azure.net/"
