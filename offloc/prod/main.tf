@@ -232,6 +232,9 @@ resource "azurerm_template_deployment" "ssl-extra" {
     keyVaultCertName = "${replace("${azurerm_dns_cname_record.extra.name}.${azurerm_dns_cname_record.extra.zone_name}", ".", "DOT")}"
     service          = "${local.tags["Service"]}"
     environment      = "${local.tags["Environment"]}"
+
+    # This forces the app service to have a static public IP address
+    sslState = "IpBasedEnabled"
   }
 }
 
