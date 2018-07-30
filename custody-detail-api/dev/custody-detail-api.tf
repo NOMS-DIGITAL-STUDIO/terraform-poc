@@ -156,6 +156,7 @@ resource "azurerm_template_deployment" "custody-detail-api-github" {
 }
 
 resource "github_repository_webhook" "custody-detail-api-deploy" {
+  provider = "github.moj"
   repository = "custody-detail-api"
 
   name = "web"
