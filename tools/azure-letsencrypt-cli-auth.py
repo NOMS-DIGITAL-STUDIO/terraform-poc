@@ -284,6 +284,7 @@ def get_remote_certificate_expiry(fqdn):
     )
 
     try:
+        logging.info("Connecting with openssl to check expiry on existing cert.")
         openssl_sclient = subprocess.run(
             ["openssl", "s_client",
              "-servername", fqdn,
@@ -295,10 +296,11 @@ def get_remote_certificate_expiry(fqdn):
             check=True
         )
     except:
-        logging.info("Could not connect to host")
+        logging.info("Could not connect to host with openssl")
         return False
 
     try:
+        logging.info("Checking expiry on existing cert.")
         openssl_dates = subprocess.run(
             ["openssl", "x509",
              "-startdate",
