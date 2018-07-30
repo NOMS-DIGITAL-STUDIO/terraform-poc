@@ -148,11 +148,11 @@ resource "azurerm_application_gateway" "o11y-app-gw" {
     frontend_ip_configuration_name = "o11y-app-gw-feip-${local.env-name}"
     frontend_port_name             = "o11y-app-gw-feport-${local.env-name}"
     protocol                       = "Https"
-    ssl_certificate_name           = "o11y-app-gw-devtestSslCert"
+    ssl_certificate_name           = "o11y-app-gw-prodSslCert"
   }
 
   ssl_certificate {
-    name     = "o11y-app-gw-devtestSslCert"
+    name     = "o11y-app-gw-prodSslCert"
     data     = "${local.bootstrap_selfsigned_cert}"
     #data     = "${base64encode(file("o11y-app-gw-bootstrapcert.pfx"))}"
     password = "bootstrapcert"
