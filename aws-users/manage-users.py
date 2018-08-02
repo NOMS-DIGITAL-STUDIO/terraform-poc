@@ -8,6 +8,8 @@ import sys
 import os.path
 import logging
 import argparse
+import secrets
+import string
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
@@ -63,6 +65,9 @@ def manage_users(environment, user_action,group):
             if user_action == "add" and user_type == group :
                 if user not in user_list:
                     user_list.append(user)
+
+                    aws_user_create(user)
+
                     logging.info("User " + user + " created" )
                 else:
                     logging.warn("User " + user + " already exists" )
@@ -91,5 +96,38 @@ def manage_users(environment, user_action,group):
             ).stdout.decode()
         except subprocess.CalledProcessError:
             sys.exit("There was an error storing the user list to the vault")
+
+def aws_user_create(user):
+  logging.info("Creating AWS user " + user)
+
+  try:
+      aws_user = subprocess.run(
+          ["aws", "iam", "create-user",
+           "--user-name", user
+           ],
+          stdout=subprocess.PIPE,
+          check=True
+      ).stdout.decode()
+
+  except subprocess.CalledProcessError:
+      logging.info("Couldn't create AWS user " + user)
+
+  if (aws_user):
+
+      alphabet = string.ascii_letters + string.digits
+      password = ''.join(secrets.choice(alphabet) for i in range(20))
+
+      try:
+          user_list = subprocess.run(
+                ["aws", "iam", "create-login-profile",
+                 "--user-name", user,
+                 "--password", password
+                 ],
+                stdout=subprocess.PIPE,
+                check=True
+            ).stdout.decode()
+          logging.info("Password for " + user + ": " + password)
+      except subprocess.CalledProcessError:
+          logging.info("Couldn't set password for AWS user " + user)
 
 manage_users(args.environment, args.user_action, args.group)
