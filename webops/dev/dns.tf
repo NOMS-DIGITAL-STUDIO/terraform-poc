@@ -186,6 +186,34 @@ resource "azurerm_dns_ns_record" "probation" {
   }
 }
 
+resource "azurerm_dns_ns_record" "hwpv" {
+  name                = "hwpv"
+  zone_name           = "${azurerm_dns_zone.hmpps.name}"
+  resource_group_name = "${azurerm_resource_group.group.name}"
+  ttl                 = "300"
+
+  record {
+    nsdname = "ns1-04.azure-dns.com."
+  }
+
+  record {
+    nsdname = "ns2-04.azure-dns.net."
+  }
+
+  record {
+    nsdname = "ns3-04.azure-dns.org."
+  }
+
+  record {
+    nsdname = "ns4-04.azure-dns.info."
+  }
+
+  tags {
+    Service     = "WebOps"
+    Environment = "Management"
+  }
+}
+
 resource "azurerm_dns_cname_record" "search" {
   name                = "search"
   zone_name           = "${azurerm_dns_zone.noms.name}"
