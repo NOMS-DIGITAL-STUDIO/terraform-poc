@@ -113,7 +113,7 @@
 ,
 {
   "azure_app": "custody-detail-api-dev",
-  "hostname": "custody-detail-api",
+  "hostname": "custody-detail-api-dev",
   "zone": "hmpps.dsd.io",
   "dns_resource_group": "webops",
   "resource_group": "custody-detail-api-dev",
