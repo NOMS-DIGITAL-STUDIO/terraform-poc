@@ -23,6 +23,7 @@ locals {
   nomis_api_url       = "https://gateway.t3.nomis-api.hmpps.dsd.io/elite2api/api"
   api_client_id       = "licences"
   pdf_service_host    = "https://licences-pdf-generator-stage.hmpps.dsd.io"
+  tagging_company_phone = "999999"
 }
 
 # Azure config
