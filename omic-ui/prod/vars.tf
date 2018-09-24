@@ -26,6 +26,7 @@ locals {
   nn_endpoint_url     = "https://notm.service.hmpps.dsd.io/"
   hmpps_cookie_name   = "hmpps-session-prod"
   google_analytics_id = "UA-106741063-2"
+  maintain_roles_enabled = false
 }
 
 # Azure config
