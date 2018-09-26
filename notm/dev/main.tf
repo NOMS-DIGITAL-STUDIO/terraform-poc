@@ -129,7 +129,6 @@ resource "azurerm_app_service" "app" {
     KEYWORKER_API_URL              = "https://keyworker-api-dev.hmpps.dsd.io/"
     OMIC_UI_URL                    = "https://omic-dev.hmpps.dsd.io/"
     WHEREABOUTS_UI_URL             = "https://prisonstaffhub-dev.hmpps.dsd.io/"
-    USE_API_GATEWAY_AUTH           = "no"
     API_CLIENT_ID                  = "elite2apiclient"
     API_CLIENT_SECRET              = "${data.external.vault.result.api_client_secret}"
     GOOGLE_ANALYTICS_ID            = "${data.external.vault.result.google_analytics_id}"

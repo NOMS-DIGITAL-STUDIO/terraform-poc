@@ -119,7 +119,6 @@ resource "azurerm_app_service" "app" {
     APPINSIGHTS_INSTRUMENTATIONKEY = "${azurerm_template_deployment.insights.outputs["instrumentationKey"]}"
     NODE_ENV                       = "production"
     API_ENDPOINT_URL               = "https://gateway.nomis-api.service.justice.gov.uk/elite2api/"
-    USE_API_GATEWAY_AUTH           = "no"
     KEYWORKER_API_URL              = "https://keyworker-api.service.hmpps.dsd.io/"
     OMIC_UI_URL                    = "https://omic.service.hmpps.dsd.io/"
     WHEREABOUTS_UI_URL             = "https://prisonstaffhub.service.hmpps.dsd.io/"
