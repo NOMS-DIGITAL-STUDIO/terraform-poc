@@ -41,6 +41,7 @@ locals {
 locals {
   nomis_api_url       = "https://gateway.preprod.nomis-api.service.hmpps.dsd.io/elite2api/api"
   api_client_id       = "licences"
+  domain              = "https://licences-preprod.hmpps.dsd.io"
 }
 
 # Azure config

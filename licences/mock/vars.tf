@@ -20,9 +20,10 @@ locals {
 
 # App settings
 locals {
-  nomis_api_url       = "https://licences-nomis-mocks.herokuapp.com/elite2api"
+  nomis_api_url       = "https://licences-demo-mocks.herokuapp.com/elite2api"
   api_client_id       = "licences"
   pdf_service_host    = "https://licences-nomis-mocks.herokuapp.com"
+  domain              = "https://licences-mock.hmpps.dsd.io"
 }
 
 # Azure config
