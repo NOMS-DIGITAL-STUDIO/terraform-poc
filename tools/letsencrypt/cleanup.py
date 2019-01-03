@@ -21,6 +21,9 @@ for key,value in dns_names.items():
     else:
         acme_challenge_name = "_acme-challenge." + host
 
+    if host != os.getenv("CERTBOT_DOMAIN"):
+        continue
+
     logging.info("Deleting DNS record for " + acme_challenge_name )
 
     delete_dns_record = subprocess.run(
