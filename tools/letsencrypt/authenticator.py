@@ -55,9 +55,3 @@ for key,value in dns_names.items():
         stdout=subprocess.PIPE,
         check=True
     )
-
-    if create_dns_record.returncode == 0:
-        logging.info("Added validation value to txt record for %s.%s" % (host, zone))
-        logging.info("Certbot validation value: %s" % (os.getenv("CERTBOT_VALIDATION")))
-    else:
-        logging.warn("Error updating DNS txt record for %s.%s" % (host, zone))
