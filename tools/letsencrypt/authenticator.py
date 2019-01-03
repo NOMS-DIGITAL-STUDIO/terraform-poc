@@ -24,8 +24,10 @@ for key,value in dns_names.items():
         acme_challenge_name = "_acme-challenge." + host
 
     logging.info("CERTBOT_DOMAIN =  %s" % (os.getenv("CERTBOT_DOMAIN")))
+    
+    host_domain = ".".join(value)
 
-    if host != os.getenv("CERTBOT_DOMAIN"):
+    if host_domain != os.getenv("CERTBOT_DOMAIN"):
         continue
 
     cmd = ["az", "network", "dns", "record-set", "txt", "create",
