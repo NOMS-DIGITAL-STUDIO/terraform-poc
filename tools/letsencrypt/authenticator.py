@@ -41,13 +41,15 @@ for key,value in dns_names.items():
 
         logging.info("Created DNS empty txt record for %s.%s" % (host, zone))
 
-        create_dns_record = subprocess.run(
-            ["az", "network", "dns", "record-set", "txt", "add-record",
+        cmd = ["az", "network", "dns", "record-set", "txt", "add-record",
              "--record-set-name", acme_challenge_name,
              "--resource-group", resource_group,
              "--zone-name", zone,
              "--value", os.getenv("CERTBOT_VALIDATION")
-             ],
+             ]
+        logging.info("Running: %s" % (" ".join(cmd)))
+        create_dns_record = subprocess.run(
+            cmd,
             stdout=subprocess.PIPE,
             check=True
         )
