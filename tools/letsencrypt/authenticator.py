@@ -23,6 +23,7 @@ for key,value in dns_names.items():
     else:
         acme_challenge_name = "_acme-challenge." + host
 
+    logging.info("CERTBOT_DOMAIN =  %s" % (os.getenv("CERTBOT_DOMAIN"))
     if host != os.getenv("CERTBOT_DOMAIN"):
         continue
 
