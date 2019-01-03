@@ -111,7 +111,7 @@ def create_certificate(dns_names, resource_group, certbot_location):
            "--email", "noms-studio-webops@digital.justice.gov.uk",
            "--preferred-challenges", "dns",
            "--manual-auth-hook", manual_auth_hook,
-           "--manual-cleanup-hook", manual_cleanup_hook,
+           #"--manual-cleanup-hook", manual_cleanup_hook,
            "--manual-public-ip-logging-ok",
            "--config-dir", certbot_location,
            "--work-dir", certbot_location,
