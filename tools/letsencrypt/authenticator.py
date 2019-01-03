@@ -23,6 +23,9 @@ for key,value in dns_names.items():
     else:
         acme_challenge_name = "_acme-challenge." + host
 
+    if host != os.getenv("CERTBOT_DOMAIN")
+        continue
+
     create_record_set = subprocess.run(
         ["az", "network", "dns", "record-set", "txt", "create",
          "--name", acme_challenge_name,
@@ -36,7 +39,7 @@ for key,value in dns_names.items():
 
     if create_record_set.returncode == 0:
 
-        logging.info("Created DNS record set for %s.%s" % (host, zone))
+        logging.info("Created DNS empty txt record for %s.%s" % (host, zone))
 
         create_dns_record = subprocess.run(
             ["az", "network", "dns", "record-set", "txt", "add-record",
@@ -49,9 +52,10 @@ for key,value in dns_names.items():
             check=True
         )
         if create_dns_record.returncode == 0:
-            logging.info("Created DNS record for %s.%s" % (host, zone))
+            logging.info("Added validation value to txt record for %s.%s" % (host, zone))
+            logging.info("Certbot validation value: %s" % (os.getenv("CERTBOT_VALIDATION")))
         else:
-            logging.warn("Error updating DNS record for %s.%s" % (host, zone))
+            logging.warn("Error updating DNS txt record for %s.%s" % (host, zone))
     else:
         logging.warn("Error creating DNS record set for %s.%s" %
                      (host, zone))
