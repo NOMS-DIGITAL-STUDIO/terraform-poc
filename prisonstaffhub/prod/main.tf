@@ -307,6 +307,11 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     name      = "GOOGLE_ANALYTICS_ID"
     value     = "${local.google_analytics_id}"
   }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "REMOTE_AUTH_STRATEGY"
+    value     = "${local.remote_auth_strategy}"
+  }
   tags = "${var.tags}"
 }
 
