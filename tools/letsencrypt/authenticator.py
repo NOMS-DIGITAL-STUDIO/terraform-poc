@@ -27,7 +27,7 @@ for key,value in dns_names.items():
     
     host_domain = ".".join(value)
 
-    if host_domain != os.getenv("CERTBOT_DOMAIN"):
+    if host != "*" and host_domain != os.getenv("CERTBOT_DOMAIN"):
         continue
 
     cmd = ["az", "network", "dns", "record-set", "txt", "create",
