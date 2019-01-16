@@ -18,6 +18,7 @@
     "Microsoft.KeyVault/vaults/secrets/write"
   ],
   "AssignableScopes": [
-    "/subscriptions/a5ddf257-3b21-4ba9-a28c-ab30f751b383"
+    "/subscriptions/a5ddf257-3b21-4ba9-a28c-ab30f751b383",
+    "/subscriptions/19c0e044-6167-4048-a817-7ac7b4323f06"
   ]
 }
