@@ -145,7 +145,7 @@ resource "azurerm_template_deployment" "rsr-github" {
 
   parameters {
     name    = "${azurerm_app_service.app.name}"
-    repoURL = "https://github.com/noms-digital-studio/rsr-calculator-service.git"
+    repoURL = "https://github.com/ministryofjustice/rsr-calculator-service.git"
     branch  = "deploy-to-dev"
   }
 

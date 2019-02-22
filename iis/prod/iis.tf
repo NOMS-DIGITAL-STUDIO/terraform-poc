@@ -384,7 +384,7 @@ resource "azurerm_template_deployment" "stats-exposer-github" {
 
   parameters {
     name    = "${azurerm_template_deployment.stats-exposer.parameters.name}"
-    repoURL = "https://github.com/noms-digital-studio/ai-stats-exposer.git"
+    repoURL = "https://github.com/ministryofjustice/ai-stats-exposer.git"
     branch  = "master"
   }
 

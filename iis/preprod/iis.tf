@@ -287,7 +287,7 @@ resource "azurerm_template_deployment" "webapp-github" {
 
     parameters {
         name = "${var.app-name}"
-        repoURL = "https://github.com/noms-digital-studio/iis.git"
+        repoURL = "https://github.com/ministryofjustice/iis.git"
         branch = "deploy-to-preprod"
     }
 

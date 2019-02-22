@@ -91,7 +91,7 @@ resource "azurerm_template_deployment" "slackhook-github" {
 
   parameters {
     name    = "${azurerm_template_deployment.slackhook.parameters.name}"
-    repoURL = "https://github.com/noms-digital-studio/slackhook.git"
+    repoURL = "https://github.com/ministryofjustice/slackhook.git"
     branch  = "master"
   }
 }

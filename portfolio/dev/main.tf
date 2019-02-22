@@ -79,7 +79,7 @@ resource "azurerm_template_deployment" "app-github" {
 
     parameters {
         name = "${azurerm_template_deployment.app.parameters.name}"
-        repoURL = "https://github.com/noms-digital-studio/hmpps-portfolio.git"
+        repoURL = "https://github.com/ministryofjustice/hmpps-portfolio.git"
         branch = "master"
     }
 
