@@ -53,11 +53,18 @@ Scripted
 --------
 Checkout https://github.com/ministryofjustice/digital-studio-infra
 
-source ./aws-users/get-access-token.sh [AWS profile name]
+For AWS provider and AWS resources you will need to auth against the mgmt account. See https://github.com/ministryofjustice/dso-infra-aws-mgmt for more details.  Run this to authenticate against mgmt:
+
+```
+source ./aws-users/get-access-token.sh mgmt
+```
 
 This script will ask for your MFA code and setup the required AWS environment variables containing the session token.  See manual steps, or look inside the script.
 
 If this returns an error 'Invalid
+
+The provider config in `aws-devtest.tf` and `aws-prod.tf` now contains the role which will be assumed in either dev or prod AWS accounts.
+
 
 Manual Steps
 ------------
