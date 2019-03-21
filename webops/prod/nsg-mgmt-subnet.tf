@@ -37,7 +37,7 @@ resource "azurerm_network_security_group" "mgmt-app-gw" {
 
   security_rule {
     name                       = "mgmtwebhooks"
-    description                = "Access mgmt tools from the office/vpn and AWS health-kick app"
+    description                = "Access for github webhooks"
     priority                   = 2010
     direction                  = "Inbound"
     access                     = "Allow"

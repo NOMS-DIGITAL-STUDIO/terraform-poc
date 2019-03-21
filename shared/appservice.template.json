@@ -35,7 +35,8 @@
             "properties": {
                 "name": "[parameters('name')]",
                 "serverFarmId": "[parameters('name')]",
-                "clientAffinityEnabled": false
+                "clientAffinityEnabled": false,
+                "httpsOnly": true
             },
             "location": "[resourceGroup().location]",
             "tags": "[variables('tagvalues')]",
