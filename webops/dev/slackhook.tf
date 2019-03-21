@@ -72,17 +72,6 @@ module "slackhook" {
   app_name = "${azurerm_template_deployment.slackhook.parameters.name}"
 }
 
-resource "azurerm_template_deployment" "slackhook-ssl" {
-  name                = "slackhook-ssl"
-  resource_group_name = "${azurerm_resource_group.group.name}"
-  deployment_mode     = "Incremental"
-  template_body       = "${file("../../shared/appservice-sslonly.template.json")}"
-
-  parameters {
-    name = "${azurerm_template_deployment.slackhook.parameters.name}"
-  }
-}
-
 resource "azurerm_template_deployment" "slackhook-github" {
   name                = "slackhook-github"
   resource_group_name = "${azurerm_resource_group.group.name}"
