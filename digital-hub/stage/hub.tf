@@ -112,16 +112,16 @@ resource "azurerm_managed_disk" "hub-data" {
   name                 = "${local.name}-data"
   location             = "${azurerm_resource_group.group.location}"
   resource_group_name  = "${azurerm_resource_group.group.name}"
-  storage_account_type = "Standard_LRS"
+  storage_account_type = "Premium_LRS"
   create_option        = "Empty"
-  disk_size_gb         = "64"
+  disk_size_gb         = "256"
 }
 
 resource "azurerm_managed_disk" "hub-content" {
   name                 = "${local.name}-content"
   location             = "${azurerm_resource_group.group.location}"
   resource_group_name  = "${azurerm_resource_group.group.name}"
-  storage_account_type = "Standard_LRS"
+  storage_account_type = "Premium_LRS"
   create_option        = "Empty"
   disk_size_gb         = "256"
 }
@@ -131,7 +131,7 @@ resource "azurerm_virtual_machine" "hub" {
   location              = "uksouth"
   resource_group_name   = "${azurerm_resource_group.group.name}"
   network_interface_ids = ["${azurerm_network_interface.hub.id}"]
-  vm_size               = "Standard_B1ms"
+  vm_size               = "Standard_DS2_v2"
 
   boot_diagnostics {
     enabled     = true
@@ -152,8 +152,8 @@ resource "azurerm_virtual_machine" "hub" {
     name              = "${local.name}-os-disk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
-    disk_size_gb      = "30"
+    managed_disk_type = "Premium_LRS"
+    disk_size_gb      = "128"
   }
 
   storage_data_disk {
@@ -177,13 +177,16 @@ resource "azurerm_virtual_machine" "hub" {
     admin_username = "provisioning"
   }
 
+  
   os_profile_linux_config {
     disable_password_authentication = true
 
+    /* COMMENTED OUT AS DEPLOYMENT FAILS WITH HARD CODED SSH KEY FROM FILE
     ssh_keys {
       path     = "/home/provisioning/.ssh/authorized_keys"
       key_data = "${file("${path.module}/sshkey.pub")}"
     }
+    */
   }
 
   tags = "${local.tags}"
