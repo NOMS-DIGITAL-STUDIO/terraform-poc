@@ -27,6 +27,7 @@ locals {
   api_endpoint_url            = "${local.api_base_endpoint}/elite2api/"
   oauth_endpoint_url          = "${local.api_base_endpoint}/auth/"
   keyworker_api_url           = "https://keyworker-api-dev.hmpps.dsd.io/"
+  categorisation_ui_url       = "https://categorisation-tool-dev.apps.cloud-platform-live-0.k8s.integration.dsd.io/"
   nn_endpoint_url             = "https://notm-dev.hmpps.dsd.io/"
   omic_ui_url                 = "https://omic-dev.hmpps.dsd.io/"
   whereabouts_ui_url          = "https://prisonstaffhub-dev.hmpps.dsd.io/whereaboutssearch"
