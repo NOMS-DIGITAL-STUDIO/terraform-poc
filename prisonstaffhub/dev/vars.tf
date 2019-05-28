@@ -23,7 +23,7 @@ locals {
   nn_endpoint_url              = "https://notm-dev.hmpps.dsd.io/"
   licences_endpoint_url        = "https://licences-stage.hmpps.dsd.io/"
   prison_staff_hub_ui_url      = "https://prisonstaffhub-dev.hmpps.dsd.io/"
-  api_whereabouts_endpoint_url = "https://whereabouts-api.apps.cloud-platform-live-0.k8s.integration.dsd.io/"
+  api_whereabouts_endpoint_url = "https://whereabouts-api-dev.service.justice.gov.uk/"
   hmpps_cookie_name            = "hmpps-session-dev"
   google_analytics_id          = "UA-106741063-1"
   remote_auth_strategy         = "true"
