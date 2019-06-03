@@ -275,6 +275,16 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "API_WHEREABOUTS_ENDPOINT_URL"
+    value     = "${local.api_whereabouts_endpoint_url}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "UPDATE_ATTENDANCE_ENABLED"
+    value     = "${local.update_attendance_enabled}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "LICENCES_URL"
     value     = "${local.licences_endpoint_url}"
   }
