@@ -46,8 +46,8 @@ deploy_to_devtest() {
 # the prod s3 bucket, the bucket access policy in devtest needed to be modified to allow read only access.
 promote_to_preprod() {
   [[ "${LOGGED_IN}" = "${PROD_ACCOUNT_ID}" ]] || (echo "You are not logged into the prod AWS account. Fail :(" && exit 1)
-  echo "Promoting release to preprod"
-  aws s3 cp s3://${DEVTEST_S3_BUCKET}/${APP}/${VERSION}.json s3://${PROD_S3_BUCKET}/${APP}/${VERSION}.json
+  echo "Promoting release to preprod, .json or .zip app versions"
+  aws s3 cp s3://${DEVTEST_S3_BUCKET}/${APP}/ s3://${PROD_S3_BUCKET}/${APP}/ --exclude "*" --include "${VERSION}.*"
   
   # Check if app version already exists, then create the eb app version if not.
   if !(check_for_existing_version); then
