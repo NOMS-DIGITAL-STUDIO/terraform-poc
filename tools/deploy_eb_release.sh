@@ -51,7 +51,7 @@ promote_to_preprod() {
   
   # Check if app version already exists, then create the eb app version if not.
   if !(check_for_existing_version); then
-    aws elasticbeanstalk create-application-version --application-name="${APP}" --version-label="${VERSION}" --source-bundle="{\"S3Bucket\": \"${DEVTEST_S3_BUCKET}\",\"S3Key\": \"${APP}/${VERSION}.json\"}"
+    aws elasticbeanstalk create-application-version --application-name="${APP}" --version-label="${VERSION}" --source-bundle="{\"S3Bucket\": \"${PROD_S3_BUCKET}\",\"S3Key\": \"${APP}/${VERSION}.json\"} || aws elasticbeanstalk create-application-version --application-name="${APP}" --version-label="${VERSION}" --source-bundle="{\"S3Bucket\": \"${PROD_S3_BUCKET}\",\"S3Key\": \"${APP}/${VERSION}.zip\"}"
   fi
 
   # Deploy the app version to the preprod environment
