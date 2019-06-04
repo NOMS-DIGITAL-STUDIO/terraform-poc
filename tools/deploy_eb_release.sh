@@ -47,7 +47,7 @@ deploy_to_devtest() {
 promote_to_preprod() {
   [[ "${LOGGED_IN}" = "${PROD_ACCOUNT_ID}" ]] || (echo "You are not logged into the prod AWS account. Fail :(" && exit 1)
   echo "Promoting release to preprod, .json or .zip app versions"
-  aws s3 cp s3://${DEVTEST_S3_BUCKET}/${APP}/ s3://${PROD_S3_BUCKET}/${APP}/ --exclude "*" --include "${VERSION}.*"
+  aws s3 cp s3://${DEVTEST_S3_BUCKET}/${APP}/ s3://${PROD_S3_BUCKET}/${APP}/ --recursive --exclude "*" --include "${VERSION}.*"
   
   # Check if app version already exists, then create the eb app version if not.
   if !(check_for_existing_version); then
