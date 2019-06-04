@@ -49,6 +49,7 @@ locals {
   remindersScheduleRo = "0 1 * * 1-5"
   scheduledJobAuto    = "no"
   scheduledJobOverlap = "5000"
+  notifyActiveTemplates = "CA_RETURN,CA_DECISION,RO_NEW,RO_TWO_DAYS,RO_DUE,RO_OVERDUE,DM_NEW"
 }
 
 # Azure config

@@ -367,11 +367,6 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "REMINDERS_SYSTEM_USER"
-    value     = "${data.aws_ssm_parameter.reminders-system-user.value}"
-  }
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "REMINDERS_SCHEDULE_RO"
     value     = "${local.remindersScheduleRo}"
   }
@@ -384,6 +379,11 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "SCHEDULED_JOBS_OVERLAP"
     value     = "${local.scheduledJobOverlap}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "NOTIFY_ACTIVE_TEMPLATES"
+    value     = "${local.notifyActiveTemplates}"
   }
   tags = "${var.tags}"
 }
