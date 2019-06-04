@@ -14,20 +14,21 @@ variable "tags" {
 
 # App settings
 locals {
-  api_base_endpoint            = "https://gateway.prod.nomis-api.service.hmpps.dsd.io"
-  api_endpoint_url             = "${local.api_base_endpoint}/elite2api/"
-  oauth_endpoint_url           = "${local.api_base_endpoint}/auth/"
-  api_client_id                = "elite2apiclient"
-  api_system_client_id         = "prisonstaffhubclient"
-  keyworker_api_url            = "https://keyworker-api.service.hmpps.dsd.io/"
-  nn_endpoint_url              = "https://notm.service.hmpps.dsd.io/"
-  licences_endpoint_url        = "https://licences.service.hmpps.dsd.io/"
-  prison_staff_hub_ui_url      = "https://prisonstaffhub.service.hmpps.dsd.io/"
-  api_whereabouts_endpoint_url = "https://whereabouts-api.service.justice.gov.uk/"
-  hmpps_cookie_name            = "hmpps-session-prod"
-  google_analytics_id          = "UA-106741063-2"
-  remote_auth_strategy         = "true"
-  update_attendance_enabled    = "false"
+  api_base_endpoint              = "https://gateway.prod.nomis-api.service.hmpps.dsd.io"
+  api_endpoint_url               = "${local.api_base_endpoint}/elite2api/"
+  oauth_endpoint_url             = "${local.api_base_endpoint}/auth/"
+  api_client_id                  = "elite2apiclient"
+  api_system_client_id           = "prisonstaffhubclient"
+  keyworker_api_url              = "https://keyworker-api.service.hmpps.dsd.io/"
+  nn_endpoint_url                = "https://notm.service.hmpps.dsd.io/"
+  licences_endpoint_url          = "https://licences.service.hmpps.dsd.io/"
+  prison_staff_hub_ui_url        = "https://prisonstaffhub.service.hmpps.dsd.io/"
+  api_whereabouts_endpoint_url   = "https://whereabouts-api.service.justice.gov.uk/"
+  hmpps_cookie_name              = "hmpps-session-prod"
+  google_analytics_id            = "UA-106741063-2"
+  remote_auth_strategy           = "true"
+  update_attendance_enabled      = "false"
+  attendance_detail_link_enabled = "false"
 }
 
 # Instance and Deployment settings
