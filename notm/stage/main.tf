@@ -4,29 +4,6 @@ resource "aws_elastic_beanstalk_application" "app" {
   description = "notm"
 }
 
-
-# TODO:  Check required?
-resource "azurerm_resource_group" "group" {
-  name     = "${var.app-name}"
-  location = "ukwest"
-  tags     = "${var.tags}"
-}
-
-# TODO: Check required?
-resource "azurerm_template_deployment" "insights" {
-  name                = "${var.app-name}"
-  resource_group_name = "${azurerm_resource_group.group.name}"
-  deployment_mode     = "Incremental"
-  template_body       = "${file("../../shared/insights.template.json")}"
-
-  parameters {
-    name        = "${var.app-name}"
-    location    = "northeurope"                // Not in UK yet
-    service     = "${var.tags["Service"]}"
-    environment = "${var.tags["Environment"]}"
-  }
-}
-
 resource "aws_security_group" "elb" {
 
   name        = "${var.app-name}-elb"
@@ -354,7 +331,7 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "APPINSIGHTS_INSTRUMENTATIONKEY"
-    value     = "${azurerm_template_deployment.insights.outputs["instrumentationKey"]}"
+    value     = "${data.aws_ssm_parameter.appinsights_instrumentationkey.value}"
   }
 
   setting {
