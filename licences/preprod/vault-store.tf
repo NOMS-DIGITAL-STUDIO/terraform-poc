@@ -17,3 +17,7 @@ data "aws_ssm_parameter" "notify-api-client-secret" {
 data "aws_ssm_parameter" "reminders-system-user" {
   name = "/${lower(var.tags["Service"])}/${lower(var.tags["Environment"])}/reminders_system_user"
 }
+
+data "aws_ssm_parameter" "appinsights_instrumentationkey" {
+  name = "/${lower(var.tags["Environment"])}/appinsights_instrumentationkey"
+}
