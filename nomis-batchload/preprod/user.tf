@@ -5,8 +5,7 @@ resource "aws_iam_user" "deployer" {
 resource "aws_iam_group_membership" "ci" {
   name  = "${aws_iam_user.deployer.name}"
   users = [
-    "${aws_iam_user.deployer.name}",
-    "${split(",", data.aws_ssm_parameter.developer-list.value)}"
+    "${aws_iam_user.deployer.name}"
   ]
   group = "${aws_iam_group.deployers.name}"
 }
