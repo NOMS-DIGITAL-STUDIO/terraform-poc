@@ -29,6 +29,7 @@ locals {
   remote_auth_strategy           = "true"
   update_attendance_enabled      = "true"
   attendance_detail_link_enabled = "false"
+  iep_change_link_enabled        = "false"
 }
 
 # Instance and Deployment settings
