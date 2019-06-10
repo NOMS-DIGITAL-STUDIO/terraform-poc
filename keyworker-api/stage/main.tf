@@ -115,6 +115,24 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
   }
 
   setting {
+    namespace = "aws:elb:healthcheck"
+    name      = "Interval"
+    value     = "30"
+  }
+
+  setting {
+    namespace = "aws:elb:healthcheck"
+    name      = "HealthyThreshold"
+    value     = "2"
+  }
+
+  setting {
+    namespace = "aws:elb:healthcheck"
+    name      = "UnhealthyThreshold"
+    value     = "3"
+  }
+
+  setting {
     namespace = "aws:elasticbeanstalk:environment"
     name      = "ServiceRole"
     value     = "aws-elasticbeanstalk-service-role"
