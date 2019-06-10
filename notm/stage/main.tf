@@ -123,6 +123,24 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
   }
 
   setting {
+    namespace = "aws:elasticbeanstalk:environment:process:default"
+    name      = "HealthCheckInterval"
+    value     = "30"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:environment:process:default"
+    name      = "HealthyThresholdCount"
+    value     = "2"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:environment:process:default"
+    name      = "UnhealthyThresholdCount"
+    value     = "3"
+  }
+
+  setting {
     namespace = "aws:elasticbeanstalk:environment"
     name      = "ServiceRole"
     value     = "aws-elasticbeanstalk-service-role"
