@@ -9,3 +9,7 @@ data "aws_ssm_parameter" "admin-api-client-secret" {
 data "aws_ssm_parameter" "developer-list" {
   name = "developers"
 }
+
+data "aws_ssm_parameter" "appinsights_instrumentationkey" {
+  name = "/${lower(var.tags["Environment"])}/appinsights_instrumentationkey"
+}
