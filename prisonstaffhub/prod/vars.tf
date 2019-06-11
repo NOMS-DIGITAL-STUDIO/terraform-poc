@@ -28,7 +28,7 @@ locals {
   google_analytics_id            = "UA-106741063-2"
   remote_auth_strategy           = "true"
   update_attendance_enabled      = "false"
-  attendance_detail_link_enabled = "false"
+  attendance_detail_link_enabled = "true"
   iep_change_link_enabled        = "false"
 }
 
