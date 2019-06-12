@@ -329,6 +329,11 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "APPINSIGHTS_INSTRUMENTATIONKEY"
+    value     = "${data.aws_ssm_parameter.appinsights_instrumentationkey.value}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "SESSION_SECRET"
     value     = "${random_id.session-secret.b64}"
   }
