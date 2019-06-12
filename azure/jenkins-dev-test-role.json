@@ -16,7 +16,11 @@
     "Microsoft.Resources/subscriptions/resourcegroups/read",
     "Microsoft.Resources/subscriptions/resourcegroups/write",
     "Microsoft.Storage/storageAccounts/read",
-    "Microsoft.Storage/storageAccounts/write"
+    "Microsoft.Storage/storageAccounts/write",
+    "Microsoft.Insights/components/read",
+    "Microsoft.Insights/components/write",
+    "Microsoft.Authorization/roleAssignments/read",
+    "Microsoft.Authorization/roleAssignments/write"
   ],
   "NotActions": [
     "Microsoft.KeyVault/vaults/accessPolicies/write",
