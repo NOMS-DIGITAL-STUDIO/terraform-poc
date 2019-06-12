@@ -21,8 +21,7 @@
     "Microsoft.Insights/components/write",
     "Microsoft.Authorization/roleAssignments/read",
     "Microsoft.Authorization/roleAssignments/write",
-    "Microsoft.Web/sites/read",
-    "Microsoft.Web/sites/write"
+    "Microsoft.Web/sites/*"
   ],
   "NotActions": [
     "Microsoft.KeyVault/vaults/accessPolicies/write",
