@@ -295,8 +295,8 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "UPDATE_ATTENDANCE_ENABLED"
-    value     = "${local.update_attendance_enabled}"
+    name      = "UPDATE_ATTENDANCE_PRISONS"
+    value     = "${local.update_attendance_prisons}"
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
