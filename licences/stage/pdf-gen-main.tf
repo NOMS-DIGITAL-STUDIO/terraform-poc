@@ -243,5 +243,11 @@ resource "aws_elastic_beanstalk_environment" "pdf-gen-app-env" {
   }
 
   # Begin app-specific config settings
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "APPINSIGHTS_INSTRUMENTATIONKEY"
+    value     = "${data.aws_ssm_parameter.appinsights_instrumentationkey.value}"
+  }
+
   tags = "${var.pdf-gen-tags}"
 }
