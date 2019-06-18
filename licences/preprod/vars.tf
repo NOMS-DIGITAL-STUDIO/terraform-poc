@@ -51,7 +51,7 @@ locals {
   scheduledJobAuto    = "yes"
   scheduledJobOverlap = "5000"
   notifyActiveTemplates = "CA_RETURN,CA_DECISION,RO_NEW,DM_NEW"
-
+  roServiceType       = 'NOMIS'
 }
 
 # Azure config
