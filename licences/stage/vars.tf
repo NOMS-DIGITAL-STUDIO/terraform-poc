@@ -50,7 +50,7 @@ locals {
   scheduledJobAuto    = "no"
   scheduledJobOverlap = "5000"
   notifyActiveTemplates = "CA_RETURN,CA_DECISION,RO_NEW,RO_TWO_DAYS,RO_DUE,RO_OVERDUE,DM_NEW"
-  roServiceType       = 'DELIUS'
+  roServiceType       = "DELIUS"
 }
 
 # Azure config
