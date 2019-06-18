@@ -29,7 +29,7 @@ locals {
   remote_auth_strategy           = "true"
   update_attendance_prisons      = ""
   attendance_detail_link_enabled = "true"
-  iep_change_link_enabled        = "false"
+  iep_change_link_enabled        = "true"
 }
 
 # Instance and Deployment settings
