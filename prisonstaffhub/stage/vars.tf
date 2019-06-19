@@ -28,7 +28,6 @@ locals {
   google_analytics_id            = ""
   remote_auth_strategy           = "true"
   update_attendance_prisons      = "MDI"
-  attendance_detail_link_enabled = "false"
   iep_change_link_enabled        = "false"
 }
 

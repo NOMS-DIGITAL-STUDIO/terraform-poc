@@ -269,11 +269,6 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "ATTENDANCE_DETAIL_LINK_ENABLED"
-    value     = "${local.attendance_detail_link_enabled}"
-  }
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "IEP_CHANGE_LINK_ENABLED"
     value     = "${local.iep_change_link_enabled}"
   }
