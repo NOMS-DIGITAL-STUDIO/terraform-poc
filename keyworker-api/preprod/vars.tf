@@ -29,3 +29,17 @@ locals {
   azurerm_resource_group = "keyworker-api-preprod"
   azure_region           = "ukwest"
 }
+
+locals {
+  allowed-list = [
+    "${var.ips["office"]}/32",
+    "${var.ips["health-kick"]}/32",
+    "${var.ips["mojvpn"]}/32",
+    "${var.ips["omic-ui-preprod"]}/32",
+    "${var.ips["notm-preprod-1"]}/32",
+    "${var.ips["notm-preprod-2"]}/32",
+    "${var.ips["cloudplatform-live1-1"]}/32",
+    "${var.ips["cloudplatform-live1-2"]}/32",
+    "${var.ips["cloudplatform-live1-3"]}/32",
+  ]
+}

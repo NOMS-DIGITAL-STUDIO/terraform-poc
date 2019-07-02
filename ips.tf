@@ -24,6 +24,15 @@ variable "ips" {
     sodexo2                     = "80.86.46.17"
     sodexo3                     = "80.86.46.18"
     oakwood                     = "194.176.200.113"
+    omic-ui-preprod             = "35.177.34.17"
+    omic-ui-prod                = "35.178.134.131"
+    notm-preprod-1              = "35.178.222.134"
+    notm-preprod-2              = "35.178.106.85"
+    notm-prod-1                 = "3.8.245.29"
+    notm-prod-2                 = "3.9.32.149"
+    cloudplatform-live1-1       = "35.178.209.113"
+    cloudplatform-live1-2       = "3.8.51.207"
+    cloudplatform-live1-3       = "35.177.252.54"
   }
 }
 
