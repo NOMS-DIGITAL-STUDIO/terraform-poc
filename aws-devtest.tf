@@ -38,5 +38,5 @@ locals {
 #Config for Azure
 locals {
   azure_dns_zone_name = "hmpps.dsd.io"
-  azure_dns_zone_rg   = "webops"
+  azure_dns_zone_rg   = "webops-shared-dns-devtest"
 }
