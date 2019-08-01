@@ -27,7 +27,7 @@ locals {
   hmpps_cookie_name              = "hmpps-session-preprod"
   google_analytics_id            = ""
   remote_auth_strategy           = "true"
-  update_attendance_prisons      = "MDI,HMI,NHI,PVI,WWI,BXI"
+  update_attendance_prisons      = "MDI,HMI,NHI,PVI,WWI,BXI,STI"
   iep_change_link_enabled        = "true"
 }
 
