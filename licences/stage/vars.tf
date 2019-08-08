@@ -52,6 +52,7 @@ locals {
   notifyActiveTemplates = "CA_RETURN,CA_DECISION,RO_NEW,RO_TWO_DAYS,RO_DUE,RO_OVERDUE,DM_NEW,DM_TO_CA_RETURN"
   roServiceType       = "DELIUS"
   deliusApiUrl        = "https://community-api-t2.hmpps.dsd.io/communityapi/api"
+  clearingOfficeEmail = "hdc_test+co@digital.justice.gov.uk"
 }
 
 # Azure config

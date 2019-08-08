@@ -408,6 +408,11 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     name      = "RO_SERVICE_TYPE"
     value     = "${local.roServiceType}"
   }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "CLEARING_OFFICE_EMAIL"
+    value     = "${local.clearingOfficeEmail}"
+  }
   tags = "${var.tags}"
 }
 
