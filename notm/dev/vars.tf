@@ -27,6 +27,7 @@ locals {
   api_endpoint_url            = "${local.api_base_endpoint}/elite2api/"
   oauth_endpoint_url          = "${local.api_base_endpoint}/auth/"
   keyworker_api_url           = "https://keyworker-api-dev.hmpps.dsd.io/"
+  casenotes_api_url           = "https://dev.offender-case-notes.service.justice.gov.uk"
   categorisation_ui_url       = "https://dev.offender-categorisation.service.justice.gov.uk/"
   nn_endpoint_url             = "https://notm-dev.hmpps.dsd.io/"
   omic_ui_url                 = "https://omic-dev.hmpps.dsd.io/"

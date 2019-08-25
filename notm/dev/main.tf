@@ -336,6 +336,12 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
 
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "CASENOTES_API_URL"
+    value     = "${local.casenotes_api_url}"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "NN_ENDPOINT_URL"
     value     = "${local.nn_endpoint_url}"
   }

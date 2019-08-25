@@ -26,6 +26,7 @@ locals {
   api_endpoint_url            = "${local.api_base_endpoint}/elite2api/"
   oauth_endpoint_url          = "${local.api_base_endpoint}/auth/"
   keyworker_api_url           = "https://keyworker-api-stage.hmpps.dsd.io/"
+  casenotes_api_url           = ""
   categorisation_ui_url       = ""
   nn_endpoint_url             = "https://notm-stage.hmpps.dsd.io/"
   omic_ui_url                 = "https://omic-stage.hmpps.dsd.io/"
