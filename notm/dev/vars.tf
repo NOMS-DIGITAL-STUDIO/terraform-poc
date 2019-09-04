@@ -30,7 +30,7 @@ locals {
   casenotes_api_url           = "https://dev.offender-case-notes.service.justice.gov.uk"
   categorisation_ui_url       = "https://dev.offender-categorisation.service.justice.gov.uk/"
   nn_endpoint_url             = "https://notm-dev.hmpps.dsd.io/"
-  omic_ui_url                 = "https://omic-dev.hmpps.dsd.io/"
+  omic_ui_url                 = "https://dev.manage-key-workers.service.justice.gov.uk/"
   whereabouts_ui_url          = "https://prisonstaffhub-dev.hmpps.dsd.io/whereaboutssearch"
   establishment_rollcheck_url = "https://prisonstaffhub-dev.hmpps.dsd.io/establishmentroll"
   prison_staff_hub_ui_url     = "https://prisonstaffhub-dev.hmpps.dsd.io/"

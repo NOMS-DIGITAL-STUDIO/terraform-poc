@@ -26,7 +26,7 @@ locals {
   casenotes_api_url           = "https://preprod.offender-case-notes.service.justice.gov.uk"
   categorisation_ui_url       = "https://preprod.offender-categorisation.service.justice.gov.uk/"
   nn_endpoint_url             = "https://notm-preprod.service.hmpps.dsd.io/"
-  omic_ui_url                 = "https://omic-preprod.service.hmpps.dsd.io/"
+  omic_ui_url                 = "https://preprod.manage-key-workers.service.justice.gov.uk/"
   whereabouts_ui_url          = "https://prisonstaffhub-preprod.service.hmpps.dsd.io/whereaboutssearch"
   establishment_rollcheck_url = "https://prisonstaffhub-preprod.service.hmpps.dsd.io/establishmentroll"
   prison_staff_hub_ui_url     = "https://prisonstaffhub-preprod.service.hmpps.dsd.io/"
