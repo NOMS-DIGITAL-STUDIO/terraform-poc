@@ -364,6 +364,11 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     name      = "WEB_SESSION_TIMEOUT_IN_MINUTES"
     value     = "${local.session_timeout_mins}"
   }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "API_COMMUNITY_ENDPOINT_URL"
+    value     = "${local.api_community_endpoint_url}"
+  }
   tags = "${var.tags}"
 }
 

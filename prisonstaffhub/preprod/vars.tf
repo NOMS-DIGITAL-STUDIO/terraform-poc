@@ -24,6 +24,7 @@ locals {
   licences_endpoint_url          = "https://licences-preprod.service.hmpps.dsd.io/"
   prison_staff_hub_ui_url        = "https://prisonstaffhub-preprod.service.hmpps.dsd.io/"
   api_whereabouts_endpoint_url   = "https://whereabouts-api-preprod.service.justice.gov.uk/"
+  api_community_endpoint_url     = "https://community-api-t2.hmpps.dsd.io/communityapi/"
   hmpps_cookie_name              = "hmpps-session-preprod"
   google_analytics_id            = ""
   remote_auth_strategy           = "true"
