@@ -12,21 +12,6 @@ variable "tags" {
   }
 }
 
-variable "pdf-gen-app-name" {
-  type    = "string"
-  default = "licences-pdf-generator-prod"
-}
-
-variable "pdf-gen-tags" {
-  type = "map"
-
-  default {
-    Service     = "licences-pdf-generator"
-    Environment = "Prod"
-  }
-}
-
-
 # Instance and Deployment settings
 locals {
   instances = "3"
