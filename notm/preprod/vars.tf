@@ -33,8 +33,10 @@ locals {
   api_client_id               = "elite2apiclient"
   hmpps_cookie_name           = "hmpps-session-preprod"
   hmpps_cookie_domain         = "service.hmpps.dsd.io"
-  remote_auth_strategy         = "true"
+  remote_auth_strategy        = "true"
   session_timeout_mins        = "60"
+  use_of_force_prisons        = "WRI"
+  use_of_force_url            = "https://preprod.use-of-force.service.justice.gov.uk"
 }
 
 # Azure config
