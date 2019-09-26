@@ -369,16 +369,6 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     name      = "API_COMMUNITY_ENDPOINT_URL"
     value     = "${local.api_community_endpoint_url}"
   }
-    setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "USE_OF_FORCE_PRISONS"
-    value     = "${local.use_of_force_prisons}"
-  }
-    setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "USE_OF_FORCE_URL"
-    value     = "${local.use_of_force_url}"
-  }
   tags = "${var.tags}"
 }
 
