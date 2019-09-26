@@ -39,8 +39,8 @@ locals {
   hmpps_cookie_domain         = "hmpps.dsd.io"
   remote_auth_strategy        = "true"
   session_timeout_mins        = "60"
-  use_of_force_prisons           = "WRI"
-  use_of_force_url               = "https://dev.use-of-force.service.justice.gov.uk"
+  use_of_force_prisons        = "WRI"
+  use_of_force_url            = "https://dev.use-of-force.service.justice.gov.uk"
 }
 
 # TODO: Required? Azure config
