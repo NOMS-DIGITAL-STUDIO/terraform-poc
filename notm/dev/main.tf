@@ -363,7 +363,16 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     name      = "CATEGORISATION_UI_URL"
     value     = "${local.categorisation_ui_url}"
   }
-
+    setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "USE_OF_FORCE_URL"
+    value     = "${local.use_of_force_url}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "USE_OF_FORCE_PRISONS"
+    value     = "${local.use_of_force_prisons}"
+  }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "API_CLIENT_ID"
