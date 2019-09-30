@@ -15,5 +15,5 @@ data "aws_ssm_parameter" "notify-api-client-secret" {
 }
 
 data "aws_ssm_parameter" "appinsights_instrumentationkey" {
-  name = "/${lower(var.tags["Environment"])}/appinsights_instrumentationkey"
+  name = "/dev/appinsights_instrumentationkey"
 }
