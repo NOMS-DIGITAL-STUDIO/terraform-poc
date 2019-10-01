@@ -366,6 +366,12 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
 
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "PATHFINDER_URL"
+    value     = "${local.pathfinder_url}"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "USE_OF_FORCE_URL"
     value     = "${local.use_of_force_url}"
   }

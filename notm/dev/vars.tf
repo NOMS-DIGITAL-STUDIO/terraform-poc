@@ -41,6 +41,7 @@ locals {
   session_timeout_mins        = "60"
   use_of_force_prisons        = "WRI"
   use_of_force_url            = "https://dev.use-of-force.service.justice.gov.uk"
+  pathfinder_url              = "https://dev.pathfinder.service.justice.gov.uk"
 }
 
 # TODO: Required? Azure config
