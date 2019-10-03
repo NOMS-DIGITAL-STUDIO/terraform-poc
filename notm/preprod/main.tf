@@ -471,6 +471,29 @@ resource "aws_lb_listener_rule" "redirect_http_to_https" {
   }
 }
 
+data "aws_lb_listener" "listener_443" {
+  load_balancer_arn = "${aws_elastic_beanstalk_environment.app-env.load_balancers[0]}"
+  port = 443
+}
+
+resource "aws_lb_listener_rule" "redirect_to_cp" {
+  listener_arn = "${data.aws_lb_listener.listener_443.arn}"
+
+  action {
+    type = "redirect"
+    redirect {
+      host = "digital-preprod.prison.service.justice.gov.uk"
+      protocol = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+
+  condition {
+    field  = "path-pattern"
+    values = ["/*"]
+  }
+}
+
 locals {
   cname = "${replace(var.app-name,"-prod","")}"
 }
