@@ -29,7 +29,7 @@ locals {
   api_client_id       = "licences"
   domain              = "https://licences-stage.hmpps.dsd.io"
   authStrategy        = "oauth"
-  global_search_url   = "https://prisonstaffhub-dev.hmpps.dsd.io/global-search"
+  global_search_url   = "https://whereabouts-dev.prison.service.justice.gov.uk/global-search"
   pushToNomis         = "yes"
   remindersScheduleRo = "0 1 * * 1-5"
   scheduledJobAuto    = "no"
