@@ -36,7 +36,7 @@ locals {
   scheduledJobAuto    = "yes"
   scheduledJobOverlap = "5000"
   notifyActiveTemplates = "CA_RETURN,CA_DECISION,RO_NEW,DM_NEW,DM_TO_CA_RETURN"
-  roServiceType       = "NOMIS"
+  roServiceType       = "DELIUS"
   deliusApiUrl        = "https://community-api.service.hmpps.dsd.io/communityapi/api"
   clearingOfficeEmail = "HDC.ClearingOffice@justice.gov.uk"
 }
