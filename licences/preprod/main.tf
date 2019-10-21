@@ -75,7 +75,7 @@ data "aws_elastic_beanstalk_solution_stack" "docker" {
 resource "aws_elastic_beanstalk_environment" "app-env" {
   name                = "${var.app-name}"
   application         = "${aws_elastic_beanstalk_application.app.name}"
-  solution_stack_name = "${data.aws_elastic_beanstalk_solution_stack.docker.name}"
+  solution_stack_name = "64bit Amazon Linux 2018.03 v2.12.17 running Docker 18.06.1-ce"
   tier                = "WebServer"
 
   setting {
