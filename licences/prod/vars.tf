@@ -51,6 +51,7 @@ locals {
     "${var.ips["dxc_webproxy1"]}/32",
     "${var.ips["dxc_webproxy2"]}/32",
     "${var.ips["dxc_webproxy3"]}/32",
+    "${var.ips["dxc_webproxy4"]}/32",
     "${var.ips["office"]}/32",
     "${var.ips["quantum"]}/32",
     "${var.ips["quantum_alt"]}/32",

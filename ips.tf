@@ -4,7 +4,8 @@ variable "ips" {
   default {
     dxc_webproxy1            = "195.92.38.20"
     dxc_webproxy2            = "195.92.38.21"
-    dxc_webproxy3            = "195.92.38.23"
+    dxc_webproxy3            = "195.92.38.22"
+    dxc_webproxy4            = "195.92.38.23"
     office                   = "217.33.148.210"
     quantum                  = "62.25.109.197"
     quantum_alt              = "212.137.36.230"

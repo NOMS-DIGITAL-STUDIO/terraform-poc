@@ -289,6 +289,12 @@ resource "azurerm_app_service" "app" {
 
     #dxc_webproxy3
     ip_restriction {
+      ip_address  = "195.92.38.22"
+      subnet_mask = "255.255.255.255"
+    }
+
+    #dxc_webproxy4
+    ip_restriction {
       ip_address  = "195.92.38.23"
       subnet_mask = "255.255.255.255"
     }
