@@ -61,6 +61,23 @@ resource "aws_lb_listener" "redirect" {
 
 }
 
+
+resource "aws_lb_listener" "redirect_to_443" {
+  load_balancer_arn = "${aws_lb.redirect.arn}"
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    type = "redirect"
+
+    redirect {
+      port = "443"
+      protocol = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
 locals {
   cname = "${replace(var.app-name,"-prod","")}"
 }
