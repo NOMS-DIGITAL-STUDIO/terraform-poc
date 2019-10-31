@@ -49,13 +49,22 @@ resource "aws_lb_listener" "redirect" {
   ssl_policy        = "${local.elb_ssl_policy}"
   certificate_arn   = "${aws_acm_certificate.cert.arn}"
 
-  default_action {
-    type = "fixed-response"
+#  default_action {
+#    type = "fixed-response"
+#
+#    fixed_response {
+#      content_type = "text/plain"
+#      message_body = "This site has moved to https://digital.prison.service.justice.gov.uk\nPlease update your bookmarks."
+#      status_code  = "200"
+#    }
+#  }
 
-    fixed_response {
-      content_type = "text/plain"
-      message_body = "This site has moved to https://digital.prison.service.justice.gov.uk\nPlease update your bookmarks."
-      status_code  = "200"
+  default_action {
+   type = "redirect"
+    redirect {
+      host = "whereabouts.prison.service.justice.gov.uk"
+      protocol = "HTTPS"
+      status_code = "HTTP_301"
     }
   }
 
