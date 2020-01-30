@@ -20,12 +20,13 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 parser = argparse.ArgumentParser(
     description='Script to create LetsEncrypt SSL certificates and store in Azure Key Vault')
 
-parser.add_argument("-z", "--zone", help="DNS Zone")
-parser.add_argument("-n", "--hostname", help="Hostname")
-parser.add_argument("-g", "--resource-group", help="Azure Resource Group for the DNS zone")
-parser.add_argument("-s", "--subscription-id", help="Azure Subscription ID")
-parser.add_argument("-c", "--certbot",
-                    help="Certbot configuration directory set during 'certbot register'. User must have write permissions.")
+parser.add_argument('-z', '--zone', help='DNS Zone')
+parser.add_argument('-n', '--hostname', help='Hostname')
+parser.add_argument('-g', '--resource-group', help='Azure Resource Group for the DNS zone')
+parser.add_argument('-s', '--zone-subscription-id', help='Azure Zone Subscription ID')
+parser.add_argument('-kvs', '--keyvault-subscription-id', help='Key Vault Subscription ID')
+parser.add_argument('-c', '--certbot',
+                    help='Certbot configuration directory set during "certbot register". User must have write permissions.')
 parser.add_argument(
     '-v', '--vault', help='Azure Key Vault to store certificate in')
 parser.add_argument(
@@ -381,15 +382,18 @@ def certificate_renewal_due(fqdn):
         sys.exit(1)
 
 
-    logging.debug("function: get_cert_expiry_from_keyvault")
+def get_cert_expiry_from_keyvault(vault_name, fqdn, keyvault_subscription_id):
+
+    logging.debug('function: get_cert_expiry_from_keyvault')
 
     name = fqdn.replace('.', 'DOT')
 
     # adding this extra try block as it catches issues with the vault being inaccessable
     try:
         vault = subprocess.run(
-            ["az", "keyvault", "show",
-             "--name", vault_name        
+            ['az', 'keyvault', 'show',
+             '--name', vault_name,
+             '--subscription', keyvault_subscription_id
              ],
             stdout=subprocess.PIPE,
         ).stdout.decode()
@@ -403,11 +407,12 @@ def certificate_renewal_due(fqdn):
         sys.exit('There was an error accessing the key vault')
 
     try:
-        cmd = ["az", "keyvault", "certificate", "show",
-        "--name", name,
-        "--vault-name", vault_name       
-        ]
-    
+        cmd = ['az', 'keyvault', 'certificate', 'show',
+               '--name', name,
+               '--vault-name', vault_name,
+               '--subscription', keyvault_subscription_id
+               ]
+
         cert = subprocess.run(
             cmd,
             stdout=subprocess.PIPE,
@@ -458,7 +463,15 @@ def check_if_cert_renewal_due(current_cert_expiry):
 
     return True
 
-azure_account.azure_set_subscription(args.subscription_id)
+
+# Check if zone_subscription_id is equal to keyvault_subscription_id
+def check_subs_id(zone_subscription_id, keyvault_subscription_id):
+    if keyvault_subscription_id == zone_subscription_id:
+        keyvault_subscription_id = zone_subscription_id
+
+
+check_subs_id(args.zone_subscription_id, args.keyvault_subscription_id)
+azure_account.azure_set_subscription(args.zone_subscription_id)
 
 if not get_zone_details(args.resource_group, args.zone):
     sys.exit('Failed to find existing zone ' + args.zone)
@@ -479,8 +492,8 @@ else:
         logging.debug('Calling "certificate_renewal_due"')
         certificate_renewal_due(fqdn)
     else:
-        logging.debug("args.internal is true, check expiry via date from vault.")
-        current_cert_expiry = get_cert_expiry_from_keyvault(args.vault, fqdn)
+        logging.debug('args.internal is true, check expiry via date from vault.')
+        current_cert_expiry = get_cert_expiry_from_keyvault(args.vault, fqdn, args.keyvault_subscription_id)
         if current_cert_expiry:
             check_if_cert_renewal_due(current_cert_expiry)
         else:
@@ -504,7 +517,7 @@ saved_cert = create_certificate(dns_names, args.resource_group, args.certbot)
 
 if not args.certificate_only:
 
-    store_certificate(args.vault, fqdn, args.certbot, saved_cert)
+    store_certificate(args.vault, fqdn, args.certbot, saved_cert, args.keyvault_subscription_id)
 
 
 logging.info('Certificate update complete.')
