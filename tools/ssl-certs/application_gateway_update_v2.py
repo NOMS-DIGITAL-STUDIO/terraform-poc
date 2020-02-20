@@ -23,7 +23,7 @@ args = parser.parse_args()
 
 if args.debug:
     print('Setting logging level to debug')
-    logging.basicConfig(stream=sys.stdout, level=logging.debug)
+    logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
     logging.getLogger().setLevel(10)
 else:
     print('Setting logging level to info')
