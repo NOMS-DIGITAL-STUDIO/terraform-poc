@@ -108,10 +108,10 @@ def create_certificate(dns_names, resource_group, certbot_location):
 
     path_to_hook_scripts = azure_account.get_git_root() + '/tools/letsencrypt'
 
-    manual_auth_hook = 'python3 {path_to_scripts}/authenticator-v2.py {dns_names} {resource_group}'.format(
+    manual_auth_hook = "python3 {path_to_scripts}/authenticator-v2.py '{dns_names}' {resource_group}".format(
         dns_names=json.dumps(dns_names), resource_group=resource_group, path_to_scripts=path_to_hook_scripts)
 
-    manual_cleanup_hook = 'python3 {path_to_scripts}/cleanup-v2.py {dns_names} {resource_group}'.format(
+    manual_cleanup_hook = "python3 {path_to_scripts}/cleanup-v2.py '{dns_names}' {resource_group}".format(
         dns_names=json.dumps(dns_names), resource_group=resource_group, path_to_scripts=path_to_hook_scripts)
 
     logging.info('Creating certificate')
