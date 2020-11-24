@@ -1,5 +1,5 @@
 terraform {
-    required_version = ">= 0.10.7"
+    required_version = "= 0.12.28"
     backend "s3" {
         bucket = "moj-studio-webops-terraform"
         key = "deliusapi-dev.terraform.tfstate"
@@ -8,28 +8,33 @@ terraform {
     }
 }
 
+provider "azurerm" {
+  version ="=2.0.0"
+  features {}
+}
+
 variable "app-name" {
-    type = "string"
+    type = string
     default = "deliusapi-dev"
 }
 variable "tags" {
-    type = "map"
-    default {
+    type = map
+    default = {
         Service = "deliusapi"
         Environment = "Dev"
     }
 }
 
 resource "aws_elastic_beanstalk_application" "app" {
-    name = "${var.app-name}"
-    description = "${var.app-name}"
+    name = var.app-name
+    description = var.app-name
 }
 
 
 resource "aws_elastic_beanstalk_environment" "app-env" {
-    name = "${var.app-name}"
-    application = "${aws_elastic_beanstalk_application.app.name}"
-    solution_stack_name = "${var.elastic-beanstalk-single-docker}"
+    name = var.app-name
+    application = aws_elastic_beanstalk_application.app.name
+    solution_stack_name = var.elastic-beanstalk-single-docker
     tier = "WebServer"
 
     setting {
@@ -60,7 +65,7 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     # setting {
     #     namespace = "aws:elb:listener:443"
     #     name = "SSLCertificateId"
-    #     value = "${data.aws_acm_certificate.cert.arn}"
+    #     value = data.aws_acm_certificate.cert.arn
     # }
     # setting {
     #     namespace = "aws:elb:listener:443"
@@ -98,5 +103,5 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
         value = "true"
     }
 
-    tags = "${var.tags}"
+    tags = var.tags
 }
