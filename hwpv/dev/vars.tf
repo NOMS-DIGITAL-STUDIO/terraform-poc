@@ -2,7 +2,7 @@ locals {
   name    = "hwpv"
   dnszone = "hwpv.hmpps.dsd.io"
 
-  tags {
+  tags = {
     Service     = "HWPV"
     Environment = "MGMT"
   }
