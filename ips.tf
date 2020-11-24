@@ -1,7 +1,7 @@
 variable "ips" {
-  type = "map"
+  type = map
 
-  default {
+  default = {
     dxc_webproxy1            = "195.92.38.20"
     dxc_webproxy2            = "195.92.38.21"
     dxc_webproxy3            = "195.92.38.22"
