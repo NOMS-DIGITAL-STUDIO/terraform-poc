@@ -1,22 +1,22 @@
 variable "app_name" {
-    type = "string"
+    type = string
     description = "name of the app service application"
 }
 
 variable "channels" {
-    type = "list"
+    type = list
     description = "the slack channel(s) to notify"
     default = ["shef_webops"]
 }
 
 variable "azure_subscription" {
-    type = "string"
+    type = string
     description = "either 'development' or 'production'"
     default = "development"
 }
 
 variable "azure_tenant_id" {
-    type = "string"
+    type = string
     default = "747381f4-e81f-4a43-bf68-ced6a1e14edf"
 }
 
@@ -42,9 +42,9 @@ resource "random_id" "hook-password" {
 }
 resource "null_resource" "create-hook-user" {
     triggers = {
-        app = "${var.app_name}"
-        password = "${random_id.hook-password.hex}"
-        channels = "${jsonencode(var.channels)}"
+        app = var.app_name
+        password = random_id.hook-password.hex
+        channels = jsonencode(var.channels)
     }
     provisioner "local-exec" {
         command = <<CMD
