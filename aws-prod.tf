@@ -1,26 +1,26 @@
 variable "aws_account_id" {
-  type    = "string"
+  type    = string
   default = "589133037702"
 }
 
 variable "aws_region" {
-  type    = "string"
+  type    = string
   default = "eu-west-2"
 }
 
 variable "aws_az_a" {
-  type    = "string"
+  type    = string
   default = "eu-west-2a"
 }
 
 variable "aws_az_b" {
-  type    = "string"
+  type    = string
   default = "eu-west-2b"
 }
 
 provider "aws" {
-  allowed_account_ids = ["${var.aws_account_id}"]
-  region              = "${var.aws_region}"
+  allowed_account_ids = [var.aws_account_id]
+  region              = var.aws_region
   assume_role {
     role_arn     = "arn:aws:iam::${var.aws_account_id}:role/terraform"
   }
