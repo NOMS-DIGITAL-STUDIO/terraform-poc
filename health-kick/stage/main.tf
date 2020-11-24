@@ -1,20 +1,20 @@
 variable "app-name" {
-  type    = "string"
+  type    = string
   default = "health-kick-stage"
 }
 
 variable "tags" {
-  type = "map"
+  type = map
 
-  default {
+  default = {
     Service     = "health-kick"
     Environment = "Stage"
   }
 }
 
 resource "aws_elastic_beanstalk_application" "app" {
-  name        = "${var.app-name}"
-  description = "${var.app-name}"
+  name        = var.app-name
+  description = var.app-name
 }
 
 data "aws_elastic_beanstalk_solution_stack" "docker" {
@@ -23,9 +23,9 @@ data "aws_elastic_beanstalk_solution_stack" "docker" {
 }
 
 resource "aws_elastic_beanstalk_environment" "app-env" {
-  name                = "${var.app-name}"
-  application         = "${aws_elastic_beanstalk_application.app.name}"
-  solution_stack_name = "${data.aws_elastic_beanstalk_solution_stack.docker.name}"
+  name                = var.app-name
+  application         = aws_elastic_beanstalk_application.app.name
+  solution_stack_name = data.aws_elastic_beanstalk_solution_stack.docker.name
   tier                = "WebServer"
 
   setting {
@@ -47,11 +47,11 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     name      = "SystemType"
     value     = "enhanced"
   }
-  
+
   setting {
     namespace = "aws:elasticbeanstalk:healthreporting:system"
     name      = "ConfigDocument"
-    value     = "${file("../../shared/aws_eb_health_config.json")}"
+    value     = file("../../shared/aws_eb_health_config.json")
   }
 
   #<<< HEALTH MONITORING
@@ -77,7 +77,7 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
   setting {
     namespace = "aws:elb:listener:443"
     name      = "SSLCertificateId"
-    value     = "${aws_acm_certificate.cert.arn}"
+    value     = aws_acm_certificate.cert.arn
   }
 
   setting {
@@ -101,25 +101,25 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
   setting {
     namespace = "aws:elb:policies:tlshigh"
     name      = "SSLReferencePolicy"
-    value     = "${local.elb_ssl_policy}"
+    value     = local.elb_ssl_policy
   }
 
   setting {
     namespace = "aws:ec2:vpc"
     name      = "VPCId"
-    value     = "${aws_vpc.vpc.id}"
+    value     = aws_vpc.vpc.id
   }
 
   setting {
     namespace = "aws:ec2:vpc"
     name      = "Subnets"
-    value     = "${aws_subnet.private-a.id}"
+    value     = aws_subnet.private-a.id
   }
 
   setting {
     namespace = "aws:ec2:vpc"
     name      = "ELBSubnets"
-    value     = "${aws_subnet.public-a.id}"
+    value     = aws_subnet.public-a.id
   }
 
   setting {
@@ -171,31 +171,31 @@ resource "aws_elastic_beanstalk_environment" "app-env" {
     name      = "NODE_ENV"
     value     = "production"
   }
-  tags = "${var.tags}"
+  tags = var.tags
 }
 
 resource "aws_acm_certificate" "cert" {
   domain_name       = "health-kick.hmpps.dsd.io"
   validation_method = "DNS"
-  tags              = "${var.tags}"
+  tags              = var.tags
 }
 
 locals {
-  aws_record_name = "${replace(aws_acm_certificate.cert.domain_validation_options.0.resource_record_name,local.azure_dns_zone_name,"")}"
+  aws_record_name = replace(aws_acm_certificate.cert.domain_validation_options.0.resource_record_name,local.azure_dns_zone_name,"")
 }
 
 resource "azurerm_dns_cname_record" "acm-verify" {
-  name                = "${substr(local.aws_record_name, 0, length(local.aws_record_name)-2)}"
-  zone_name           = "${local.azure_dns_zone_name}"
-  resource_group_name = "${local.azure_dns_zone_rg}"
+  name                = substr(local.aws_record_name, 0, length(local.aws_record_name)-2)
+  zone_name           = local.azure_dns_zone_name
+  resource_group_name = local.azure_dns_zone_rg
   ttl                 = "300"
-  record              = "${aws_acm_certificate.cert.domain_validation_options.0.resource_record_value}"
+  record              = aws_acm_certificate.cert.domain_validation_options.0.resource_record_value
 }
 
 resource "azurerm_dns_cname_record" "cname" {
   name                = "health-kick"
-  zone_name           = "${local.azure_dns_zone_name}"
-  resource_group_name = "${local.azure_dns_zone_rg}"
+  zone_name           = local.azure_dns_zone_name
+  resource_group_name = local.azure_dns_zone_rg
   ttl                 = "60"
-  record              = "${aws_elastic_beanstalk_environment.app-env.cname}"
+  record              = aws_elastic_beanstalk_environment.app-env.cname
 }

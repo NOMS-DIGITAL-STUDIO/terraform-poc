@@ -2,14 +2,14 @@ resource "aws_iam_user" "deployer" {
     name = "${var.app-name}-deployer"
 }
 resource "aws_iam_group_membership" "ci" {
-    name = "${aws_iam_user.deployer.name}"
-    users = ["${aws_iam_user.deployer.name}"]
-    group = "${aws_iam_group.deployers.name}"
+    name = aws_iam_user.deployer.name
+    users = [aws_iam_user.deployer.name]
+    group = aws_iam_group.deployers.name
 }
 
 resource "aws_iam_user_policy" "deployer" {
     name = "${var.app-name}-deployer"
-    user = "${aws_iam_user.deployer.name}"
+    user = aws_iam_user.deployer.name
     # Based on https://gist.github.com/magnetikonline/5034bdbb049181a96ac9
     # and https://gist.github.com/jakubholynet/0055cf69b5b2a9554af67a11828209a5
     policy = <<JSON
@@ -40,7 +40,7 @@ resource "aws_iam_group" "deployers" {
 
 resource "aws_iam_group_policy" "deployers" {
     name = "elasticbeanstalk-deployment"
-    group = "${aws_iam_group.deployers.name}"
+    group = aws_iam_group.deployers.name
     # Based on https://gist.github.com/magnetikonline/5034bdbb049181a96ac9
     # and https://gist.github.com/jakubholynet/0055cf69b5b2a9554af67a11828209a5
     #
@@ -137,5 +137,5 @@ JSON
 
 
 resource "aws_iam_access_key" "deployer" {
-    user = "${aws_iam_user.deployer.name}"
+    user = aws_iam_user.deployer.name
 }
