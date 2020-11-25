@@ -51,26 +51,30 @@ variable "azure_certificate_permissions_all" {
   type = list
 
   default = [
-    "create",
-      "delete",
-      "deleteissuers",
-      "get",
-      "getissuers",
-      "import",
-      "list",
-      "listissuers",
-      "managecontacts",
-      "manageissuers",
-      "setissuers",
-      "update",
+    "Get",
+    "List",
+    "Update",
+    "Create",
+    "Import",
+    "Delete",
+    "Recover",
+    "Backup",
+    "Restore",
+    "ManageContacts",
+    "ManageIssuers",
+    "GetIssuers",
+    "ListIssuers",
+    "SetIssuers",
+    "DeleteIssuers",
+    "Purge",
   ]
 }
 
 locals {
-  dns_zone_name = "service.hmpps.dsd.io"
-  dns_zone_rg   = "webops-prod"
+  dns_zone_name  = "service.hmpps.dsd.io"
+  dns_zone_rg    = "webops-prod"
   studio_ip      = "217.33.148.210"
   health_kick_ip = "35.177.252.195"
-  moj_vpn_ip      = "81.134.202.29"
+  moj_vpn_ip     = "81.134.202.29"
   prod_forti_ip  = "51.141.53.111"
 }
