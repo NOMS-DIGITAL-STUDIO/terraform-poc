@@ -197,7 +197,6 @@ resource "azurerm_app_service" "app" {
       {ip_address = "${var.ips["office"]}/32"},
       {ip_address = "${var.ips["quantum"]}/32"},
       {ip_address = "${var.ips["quantum_alt"]}/32"},
-      {ip_address = "${var.ips["health-kick"]}/32"},
       {ip_address = "${var.ips["mojvpn"]}/32"},
       {ip_address = "157.203.176.138/31"},
       {ip_address = "157.203.176.140/32"},
