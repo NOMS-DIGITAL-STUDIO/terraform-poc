@@ -209,10 +209,6 @@ resource "azurerm_app_service" "app" {
     }
 
     ip_restriction {
-      ip_address = "${var.ips["health-kick"]}"
-    }
-
-    ip_restriction {
       ip_address = "${var.ips["mojvpn"]}"
     }
 
