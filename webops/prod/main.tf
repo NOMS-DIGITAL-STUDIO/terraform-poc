@@ -3,8 +3,8 @@ locals {
 }
 
 variable "tags" {
-    type = "map"
-    default {
+    type = map
+    default = {
         Service = "WebOps"
         Environment = "Management"
     }
@@ -13,33 +13,32 @@ variable "tags" {
 resource "azurerm_resource_group" "group" {
   name = "webops-prod"
   location = "ukwest"
-  tags = "${var.tags}"
+  tags = var.tags
 }
 
 resource "azurerm_key_vault" "vault" {
     name = "webops-prod"
-    resource_group_name = "${azurerm_resource_group.group.name}"
-    location = "${azurerm_resource_group.group.location}"
-    sku {
-        name = "standard"
-    }
-    tenant_id = "${var.azure_tenant_id}"
+    resource_group_name = azurerm_resource_group.group.name
+    location = azurerm_resource_group.group.location
+    sku_name = "standard"
+
+    tenant_id = var.azure_tenant_id
 
     access_policy {
-        tenant_id = "${var.azure_tenant_id}"
-        object_id = "${var.azure_webops_group_oid}"
+        tenant_id = var.azure_tenant_id
+        object_id = var.azure_webops_group_oid
         key_permissions = []
-        secret_permissions = "${var.azure_secret_permissions_all}"
+        secret_permissions = var.azure_secret_permissions_all
     }
     access_policy {
-        tenant_id = "${var.azure_tenant_id}"
-        object_id = "${var.azure_app_service_oid}"
+        tenant_id = var.azure_tenant_id
+        object_id = var.azure_app_service_oid
         key_permissions = []
         secret_permissions = ["get"]
     }
     access_policy {
-        object_id = "${var.slackhook_app_oid}"
-        tenant_id = "${var.azure_tenant_id}"
+        object_id = var.slackhook_app_oid
+        tenant_id = var.azure_tenant_id
         key_permissions = []
         secret_permissions = ["get"]
     }
@@ -48,6 +47,6 @@ resource "azurerm_key_vault" "vault" {
     enabled_for_disk_encryption = false
     enabled_for_template_deployment = true
 
-    tags = "${var.tags}"
+    tags = var.tags
 
 }

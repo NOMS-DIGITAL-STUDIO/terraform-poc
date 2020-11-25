@@ -1,34 +1,32 @@
 
 resource "azurerm_key_vault" "ssl_az_justice_gov_uk" {
   name                = "certs-az-justice-gov-uk"
-  resource_group_name = "${azurerm_resource_group.group.name}"
-  location            = "${azurerm_resource_group.group.location}"
+  resource_group_name = azurerm_resource_group.group.name
+  location            = azurerm_resource_group.group.location
 
-  sku {
-    name = "standard"
-  }
+  sku_name = "standard"
 
-  tenant_id = "${var.azure_tenant_id}"
+  tenant_id = var.azure_tenant_id
 
   access_policy {
-    tenant_id          = "${var.azure_tenant_id}"
-    object_id          = "${var.azure_webops_group_oid}"
+    tenant_id          = var.azure_tenant_id
+    object_id          = var.azure_webops_group_oid
     key_permissions    = []
-    secret_permissions = "${var.azure_secret_permissions_all}"
-    certificate_permissions = "${var.azure_certificate_permissions_all}"
+    secret_permissions = var.azure_secret_permissions_all
+    certificate_permissions = var.azure_certificate_permissions_all
   }
 
   access_policy {
-    tenant_id          = "${var.azure_tenant_id}"
-    object_id          = "${var.azure_app_service_oid}"
+    tenant_id          = var.azure_tenant_id
+    object_id          = var.azure_app_service_oid
     key_permissions    = []
     secret_permissions = ["get"]
     certificate_permissions = ["get"]
   }
 
   access_policy {
-      tenant_id = "${var.azure_tenant_id}"
-      object_id = "${var.azure_jenkins_sp_oid}"
+      tenant_id = var.azure_tenant_id
+      object_id = var.azure_jenkins_sp_oid
       key_permissions = []
       secret_permissions = ["set", "get"]
       certificate_permissions = ["list", "get", "import"]
@@ -38,6 +36,5 @@ resource "azurerm_key_vault" "ssl_az_justice_gov_uk" {
   enabled_for_disk_encryption     = false
   enabled_for_template_deployment = true
 
-  tags = "${var.tags}"
+  tags = var.tags
 }
-
