@@ -1,6 +1,6 @@
 variable "environment-name" {
-    type = string
-    default = "prod"
+  type    = string
+  default = "prod"
 }
 
 variable "application-name" {
@@ -8,7 +8,7 @@ variable "application-name" {
 }
 
 variable "key-pair-name" {
-   default =   "cw_prod"
+  default = "cw_prod"
 }
 
 variable "dns-zone-name" {
@@ -17,4 +17,4 @@ variable "dns-zone-name" {
 
 variable "dns-zone-rg" {
   default = "webops-prod"
- }
+}

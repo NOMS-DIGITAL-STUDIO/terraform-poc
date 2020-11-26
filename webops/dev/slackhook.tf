@@ -32,7 +32,7 @@ resource "azurerm_template_deployment" "insights" {
 
   parameters = {
     name         = azurerm_template_deployment.slackhook.parameters.name
-    location     = "northeurope"                                                    // Not in UK yet
+    location     = "northeurope" // Not in UK yet
     service      = var.tags["Service"]
     environment  = var.tags["Environment"]
     appServiceId = azurerm_template_deployment.slackhook.outputs["resourceId"]

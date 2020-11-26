@@ -94,7 +94,7 @@ resource "azurerm_dns_ns_record" "probation" {
   resource_group_name = azurerm_resource_group.group.name
   ttl                 = "300"
 
-  records =["ns-1247.awsdns-27.org.", "ns-1910.awsdns-46.co.uk.", "ns-244.awsdns-30.com.", "ns-972.awsdns-57.net."]
+  records = ["ns-1247.awsdns-27.org.", "ns-1910.awsdns-46.co.uk.", "ns-244.awsdns-30.com.", "ns-972.awsdns-57.net."]
 
   tags = {
     Service     = "WebOps"

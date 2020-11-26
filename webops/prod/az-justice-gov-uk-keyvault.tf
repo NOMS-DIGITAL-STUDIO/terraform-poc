@@ -9,27 +9,27 @@ resource "azurerm_key_vault" "ssl_az_justice_gov_uk" {
   tenant_id = var.azure_tenant_id
 
   access_policy {
-    tenant_id          = var.azure_tenant_id
-    object_id          = var.azure_webops_group_oid
-    key_permissions    = []
-    secret_permissions = var.azure_secret_permissions_all
+    tenant_id               = var.azure_tenant_id
+    object_id               = var.azure_webops_group_oid
+    key_permissions         = []
+    secret_permissions      = var.azure_secret_permissions_all
     certificate_permissions = var.azure_certificate_permissions_all
   }
 
   access_policy {
-    tenant_id          = var.azure_tenant_id
-    object_id          = var.azure_app_service_oid
-    key_permissions    = []
-    secret_permissions = ["get"]
+    tenant_id               = var.azure_tenant_id
+    object_id               = var.azure_app_service_oid
+    key_permissions         = []
+    secret_permissions      = ["get"]
     certificate_permissions = ["get"]
   }
 
   access_policy {
-      tenant_id = var.azure_tenant_id
-      object_id = var.azure_jenkins_sp_oid
-      key_permissions = []
-      secret_permissions = ["set", "get"]
-      certificate_permissions = ["list", "get", "import"]
+    tenant_id               = var.azure_tenant_id
+    object_id               = var.azure_jenkins_sp_oid
+    key_permissions         = []
+    secret_permissions      = ["set", "get"]
+    certificate_permissions = ["list", "get", "import"]
   }
 
   enabled_for_deployment          = false

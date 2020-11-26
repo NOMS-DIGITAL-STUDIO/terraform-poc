@@ -67,6 +67,29 @@ locals {
   azure_fixngo_jenkins_oid = "23d9e503-7bb8-4f5a-8080-72329bd434cf"
 }
 
+variable "azure_certificate_permissions_all" {
+  type = list
+
+  default = [
+    "Get",
+    "List",
+    "Update",
+    "Create",
+    "Import",
+    "Delete",
+    "Recover",
+    "Backup",
+    "Restore",
+    "ManageContacts",
+    "ManageIssuers",
+    "GetIssuers",
+    "ListIssuers",
+    "SetIssuers",
+    "DeleteIssuers",
+    "Purge",
+  ]
+}
+
 variable "azure_secret_permissions_all" {
   type = list
 
@@ -83,9 +106,9 @@ variable "azure_secret_permissions_all" {
 }
 
 locals {
-  dns_zone_name  = "hmpps.dsd.io"
-  dns_zone_rg    = "webops"
-  studio_ip      = "217.33.148.210"
-  moj_vpn_ip     = "81.134.202.29"
-  dev_forti_ip   = "51.141.45.69"
+  dns_zone_name = "hmpps.dsd.io"
+  dns_zone_rg   = "webops"
+  studio_ip     = "217.33.148.210"
+  moj_vpn_ip    = "81.134.202.29"
+  dev_forti_ip  = "51.141.45.69"
 }

@@ -33,13 +33,14 @@ resource "random_id" "sql-sgandalwar-password" {
 }
 
 resource "azurerm_storage_account" "storage" {
-  name                     = "${replace(var.app-name, "-", "")}storage"
-  resource_group_name      = azurerm_resource_group.group.name
-  location                 = azurerm_resource_group.group.location
-  account_tier             = "Standard"
-  account_replication_type = "RAGRS"
-
-  tags = var.tags
+  name                      = "${replace(var.app-name, "-", "")}storage"
+  resource_group_name       = azurerm_resource_group.group.name
+  location                  = azurerm_resource_group.group.location
+  account_tier              = "Standard"
+  account_replication_type  = "RAGRS"
+  enable_https_traffic_only = false
+  account_kind              = "Storage"
+  tags                      = var.tags
 }
 
 variable "log-containers" {
@@ -117,10 +118,10 @@ module "sql" {
   tags                  = var.tags
 
   db_users = {
-    iisuser    = random_id.sql-iisuser-password.b64_std
-    atodd      = random_id.sql-atodd-password.b64_std
-    mwhitfield = random_id.sql-mwhitfield-password.b64_std
-    sgandalwar = random_id.sql-sgandalwar-password.b64_std
+    iisuser    = random_id.sql-iisuser-password.b64_url
+    atodd      = random_id.sql-atodd-password.b64_url
+    mwhitfield = random_id.sql-mwhitfield-password.b64_url
+    sgandalwar = random_id.sql-sgandalwar-password.b64_url
   }
 
   setup_queries = [
@@ -246,10 +247,10 @@ resource "azurerm_template_deployment" "webapp-config" {
   parameters = {
     name                           = azurerm_template_deployment.webapp.parameters.name
     DB_USER                        = "iisuser"
-    DB_PASS                        = random_id.sql-iisuser-password.b64_std
+    DB_PASS                        = random_id.sql-iisuser-password.b64_url
     DB_SERVER                      = module.sql.db_server
     DB_NAME                        = module.sql.db_name
-    SESSION_SECRET                 = random_id.session-secret.b64_std
+    SESSION_SECRET                 = random_id.session-secret.b64_url
     CLIENT_ID                      = data.external.vault.result["client_id"]
     CLIENT_SECRET                  = data.external.vault.result["client_secret"]
     TOKEN_HOST                     = "https://signon.service.justice.gov.uk"

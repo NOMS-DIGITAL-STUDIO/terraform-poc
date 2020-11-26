@@ -25,7 +25,7 @@ variable "cnames" {
 }
 
 resource "azurerm_dns_cname_record" "cname" {
-  count    = length(var.cnames)
+  count               = length(var.cnames)
   name                = element(keys(var.cnames[count.index]), 0)
   zone_name           = local.dnszone
   resource_group_name = azurerm_resource_group.group.name

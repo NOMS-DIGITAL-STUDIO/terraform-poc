@@ -23,10 +23,10 @@ resource "azurerm_key_vault" "webops_jenkins" {
   }
 
   access_policy {
-      tenant_id = var.azure_tenant_id
-      object_id = var.azure_jenkins_sp_oid
-      key_permissions = []
-      secret_permissions = ["set", "get"]
+    tenant_id          = var.azure_tenant_id
+    object_id          = var.azure_jenkins_sp_oid
+    key_permissions    = []
+    secret_permissions = ["set", "get"]
   }
 
   enabled_for_deployment          = false

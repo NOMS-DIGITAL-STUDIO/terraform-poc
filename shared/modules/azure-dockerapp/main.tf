@@ -3,20 +3,20 @@ variable "resource_group" {
 }
 
 variable "location" {
-  type = string
+  type    = string
   default = "ukwest"
 }
 
 variable "app_name" {
-  type    = string
+  type = string
 }
 
 variable "binding_hostname" {
-  type    = string
+  type = string
 }
 
 variable "docker_image" {
-  type    = string
+  type = string
 }
 
 variable "app_settings" {
@@ -33,7 +33,7 @@ variable "tags" {
 
 resource "azurerm_app_service_plan" "service_plan" {
   name                = var.app_name
-  kind                =  "linux"
+  kind                = "linux"
   location            = var.location
   resource_group_name = var.resource_group
   sku {
@@ -62,9 +62,9 @@ resource "azurerm_template_deployment" "docker_app" {
   template_body       = file("${path.module}/webapp-docker-image.template.json")
 
   parameters {
-    app_name = azurerm_app_service.docker_app.name
-    docker_image = var.docker_image
-    app_serviceplan = azurerm_app_service_plan.service_plan.name
+    app_name         = azurerm_app_service.docker_app.name
+    docker_image     = var.docker_image
+    app_serviceplan  = azurerm_app_service_plan.service_plan.name
     hostname         = var.binding_hostname
     keyVaultId       = var.ssl_cert_keyvault
     keyVaultCertName = replace(var.binding_hostname, ".", "DOT")

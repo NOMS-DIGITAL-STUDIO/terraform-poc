@@ -58,30 +58,33 @@ resource "azurerm_key_vault" "vault" {
   name                = var.app-name
   resource_group_name = azurerm_resource_group.group.name
   location            = azurerm_resource_group.group.location
+  soft_delete_enabled = true
 
   sku_name = "standard"
 
   tenant_id = var.azure_tenant_id
 
   access_policy {
-    tenant_id          = var.azure_tenant_id
-    object_id          = var.azure_webops_group_oid
-    key_permissions    = []
-    secret_permissions = var.azure_secret_permissions_all
+    tenant_id               = var.azure_tenant_id
+    object_id               = var.azure_webops_group_oid
+    certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Recover", "Backup", "Restore", "ManageContacts", "ManageIssuers", "GetIssuers", "ListIssuers"]
+    key_permissions         = []
+    secret_permissions      = var.azure_secret_permissions_all
   }
 
   access_policy {
     tenant_id          = var.azure_tenant_id
     object_id          = var.azure_app_service_oid
     key_permissions    = []
-    secret_permissions = ["get"]
+    secret_permissions = ["set"]
   }
 
   access_policy {
-    tenant_id          = var.azure_tenant_id
-    object_id          = var.azure_jenkins_sp_oid
-    key_permissions    = []
-    secret_permissions = ["set"]
+    tenant_id               = var.azure_tenant_id
+    object_id               = var.azure_jenkins_sp_oid
+    certificate_permissions = ["Get", "List", "Import"]
+    key_permissions         = []
+    secret_permissions      = ["Set", "Get"]
   }
 
   enabled_for_deployment          = false
@@ -119,9 +122,9 @@ module "sql" {
   tags                  = var.tags
 
   db_users = {
-    iisuser = random_id.sql-iisuser-password.b64_std
-    mwhitfield = random_id.sql-mwhitfield-password.b64_std
-    sgandalwar = random_id.sql-sgandalwar-password.b64_std
+    iisuser    = random_id.sql-iisuser-password.b64_url
+    mwhitfield = random_id.sql-mwhitfield-password.b64_url
+    sgandalwar = random_id.sql-sgandalwar-password.b64_url
   }
 
   setup_queries = [
@@ -165,18 +168,17 @@ resource "azurerm_app_service_plan" "plan" {
 }
 
 resource "azurerm_app_service" "app" {
-  name                      = var.app-name
-  location                  = azurerm_resource_group.group.location
-  resource_group_name       = azurerm_resource_group.group.name
-  app_service_plan_id       = azurerm_app_service_plan.plan.id
-  use_32_bit_worker_process = true
+  name                = var.app-name
+  location            = azurerm_resource_group.group.location
+  resource_group_name = azurerm_resource_group.group.name
+  app_service_plan_id = azurerm_app_service_plan.plan.id
 
   app_settings = {
     DB_USER                            = "iisuser"
-    DB_PASS                            = random_id.sql-iisuser-password.b64_std
+    DB_PASS                            = random_id.sql-iisuser-password.b64_url
     DB_SERVER                          = module.sql.db_server
     DB_NAME                            = module.sql.db_name
-    SESSION_SECRET                     = random_id.session-secret.b64_std
+    SESSION_SECRET                     = random_id.session-secret.b64_url
     CLIENT_ID                          = data.external.vault.result.client_id
     CLIENT_SECRET                      = data.external.vault.result.client_secret
     TOKEN_HOST                         = "https://signon.service.justice.gov.uk"
@@ -193,34 +195,103 @@ resource "azurerm_app_service" "app" {
 
     default_documents = ["Default.htm", "Default.html", "Default.asp", "index.htm", "index.html", "iisstart.htm", "default.aspx", "index.php", "hostingstart.html"]
 
-    ip_restriction = [
-      {ip_address = "${var.ips["office"]}/32"},
-      {ip_address = "${var.ips["quantum"]}/32"},
-      {ip_address = "${var.ips["quantum_alt"]}/32"},
-      {ip_address = "${var.ips["mojvpn"]}/32"},
-      {ip_address = "157.203.176.138/31"},
-      {ip_address = "157.203.176.140/32"},
-      {ip_address = "157.203.177.190/31"},
-      {ip_address = "157.203.177.192/32"},
-      {ip_address = "62.25.109.201/32"},
-      {ip_address = "62.25.109.203/32"},
-      {ip_address = "212.137.36.233/32"},
-      {ip_address = "212.137.36.234/32"},
-      {ip_address = "195.59.75.0/24"},
-      {ip_address = "194.33.192.0/25"},
-      {ip_address = "194.33.193.0/25"},
-      {ip_address = "194.33.196.0/25"},
-      {ip_address = "194.33.197.0/25"},
-      {ip_address = "195.92.38.20/32"}, #dxc_webproxy1
-      {ip_address = "195.92.38.21/32"}, #dxc_webproxy2
-      {ip_address = "195.92.38.22/32"}, #dxc_webproxy3
-      {ip_address = "195.92.38.23/32"} #dxc_webproxy4
+    ip_restriction {
+      ip_address = "${var.ips["office"]}/32"
+    }
+
+    ip_restriction {
+      ip_address = "${var.ips["quantum"]}/32"
+    }
+
+    ip_restriction {
+      ip_address = "${var.ips["quantum_alt"]}/32"
+    }
+
+    ip_restriction {
+      ip_address = "35.177.252.195/32"
+    }
+
+    ip_restriction {
+      ip_address = "${var.ips["mojvpn"]}/32"
+    }
+
+    ip_restriction {
+      ip_address = "157.203.176.138/31"
+    }
+
+    ip_restriction {
+      ip_address = "157.203.176.140/32"
+    }
+
+    ip_restriction {
+      ip_address = "157.203.177.190/31"
+    }
+
+    ip_restriction {
+      ip_address = "157.203.177.192/32"
+    }
+
+    ip_restriction {
+      ip_address = "62.25.109.201/32"
+    }
+
+    ip_restriction {
+      ip_address = "62.25.109.203/32"
+    }
+
+    ip_restriction {
+      ip_address = "212.137.36.233/32"
+    }
+
+    ip_restriction {
+      ip_address = "212.137.36.234/32"
+    }
+
+    ip_restriction {
+      ip_address = "195.59.75.0/24"
+    }
+
+    ip_restriction {
+      ip_address = "194.33.192.0/25"
+    }
+
+    ip_restriction {
+      ip_address = "194.33.193.0/25"
+    }
+
+    ip_restriction {
+      ip_address = "194.33.196.0/25"
+    }
+
+    ip_restriction {
+      ip_address = "194.33.197.0/25"
+    }
+
+    #dxc_webproxy1
+    ip_restriction {
+      ip_address = "195.92.38.20/32"
+    }
+
+    #dxc_webproxy2
+    ip_restriction {
+      ip_address = "195.92.38.21/32"
+    }
+
+    #dxc_webproxy3
+    ip_restriction {
+      ip_address = "195.92.38.22/32"
+    }
+
+    #dxc_webproxy4
+    ip_restriction {
+      ip_address = "195.92.38.23/32"
+    }
   }
 }
 
 resource "azurerm_application_insights" "app" {
   name                = var.app-name
-  location            = "northeurope"                          // Not in UK yet
+  location            = "northeurope" // Not in UK yet
   resource_group_name = azurerm_resource_group.group.name
   application_type    = "web"
   retention_in_days   = 90

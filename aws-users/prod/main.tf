@@ -27,10 +27,10 @@ data "external" "vault" {
 }
 
 locals {
-  aws_users_webops              = compact(split(",",data.external.vault.result.users-webops))
-  aws_users_newnomis_developers = compact(split(",",data.external.vault.result.users-newnomis-developers))
+  aws_users_webops              = compact(split(",", data.external.vault.result.users-webops))
+  aws_users_newnomis_developers = compact(split(",", data.external.vault.result.users-newnomis-developers))
 
-  all_users = concat(local.aws_users_webops,local.aws_users_newnomis_developers)
+  all_users = concat(local.aws_users_webops, local.aws_users_newnomis_developers)
 }
 
 
@@ -59,7 +59,7 @@ data "template_file" "newnomis-deploy-policy-omic-ui" {
 
   vars = {
     aws_account_id       = var.aws_account_id
-    aws_region          = var.aws_region
+    aws_region           = var.aws_region
     aws_application_name = "omic-ui"
   }
 }

@@ -71,9 +71,9 @@ variable "azure_certificate_permissions_all" {
 }
 
 locals {
-  dns_zone_name  = "service.hmpps.dsd.io"
-  dns_zone_rg    = "webops-prod"
-  studio_ip      = "217.33.148.210"
-  moj_vpn_ip      = "81.134.202.29"
-  prod_forti_ip  = "51.141.53.111"
+  dns_zone_name = "service.hmpps.dsd.io"
+  dns_zone_rg   = "webops-prod"
+  studio_ip     = "217.33.148.210"
+  moj_vpn_ip    = "81.134.202.29"
+  prod_forti_ip = "51.141.53.111"
 }

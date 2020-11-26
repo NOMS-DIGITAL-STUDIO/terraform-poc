@@ -96,7 +96,7 @@ resource "azurerm_app_service" "app" {
     WEBSITE_NODE_DEFAULT_VERSION   = "8.4.0"
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.insights.instrumentation_key
     NODE_ENV                       = "production"
-    SESSION_SECRET                 = random_id.session.b64_std
+    SESSION_SECRET                 = random_id.session.b64_url
     AZURE_STORAGE_CONTAINER_NAME   = "cde"
     AZURE_STORAGE_RESOURCE_GROUP   = azurerm_resource_group.group.name
     AZURE_STORAGE_ACCOUNT_NAME     = azurerm_storage_account.app.name
