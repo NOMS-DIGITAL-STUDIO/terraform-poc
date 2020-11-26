@@ -12,6 +12,7 @@ variable "app-name" {
   type    = string
   default = "deliusapi-dev"
 }
+
 variable "tags" {
   type = map
   default = {
