@@ -13,7 +13,7 @@ resource "azurerm_dns_ns_record" "nomis-api" {
   resource_group_name = azurerm_resource_group.group.name
   ttl                 = "300"
 
-  records = ["ns1-07.azure-dns.com.", "ns2-07.azure-dns.net.", "ns3-07.azure-dns.org.", "ns4-07.azure-dns.info."]
+  records = ["ns2-07.azure-dns.net.", "ns3-07.azure-dns.org.", "ns1-07.azure-dns.com.", "ns4-07.azure-dns.info."]
 
   tags = {
     Service     = "WebOps"
@@ -49,7 +49,7 @@ resource "azurerm_dns_ns_record" "studio-hosting" {
   zone_name           = azurerm_dns_zone.service-hmpps.name
   resource_group_name = azurerm_resource_group.group.name
   ttl                 = 300
-  records             = azurerm_dns_zone.service-hmpps.name_servers
+  records             = ["ns4-07.azure-dns.info.", "ns3-07.azure-dns.org.", "ns2-07.azure-dns.net.", "ns1-07.azure-dns.com."]
   tags = {
     Service     = "WebOps"
     Environment = "Management"

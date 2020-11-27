@@ -10,9 +10,23 @@ resource "azurerm_key_vault" "webops_jenkins" {
 
   access_policy {
     tenant_id          = var.azure_tenant_id
+    object_id          = "2b59743a-aae5-4961-ae3e-57ebd0d0889c"
+    key_permissions    = []
+    secret_permissions = ["Get"]
+  }
+
+  access_policy {
+    tenant_id          = var.azure_tenant_id
+    object_id          = "bc67b5d4-0df5-4791-9747-b8f7d1bf16a3"
+    key_permissions    = []
+    secret_permissions = ["Get"]
+  }
+
+  access_policy {
+    tenant_id          = var.azure_tenant_id
     object_id          = var.azure_webops_group_oid
     key_permissions    = []
-    secret_permissions = var.azure_secret_permissions_all
+    secret_permissions = ["Get", "List", "Set", "Delete", "Recover", "Backup", "Restore"]
   }
 
   access_policy {
@@ -26,7 +40,7 @@ resource "azurerm_key_vault" "webops_jenkins" {
     tenant_id          = var.azure_tenant_id
     object_id          = var.azure_jenkins_sp_oid
     key_permissions    = []
-    secret_permissions = ["set", "get"]
+    secret_permissions = ["Set", "Get"]
   }
 
   enabled_for_deployment          = false

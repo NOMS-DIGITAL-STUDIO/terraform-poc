@@ -9,6 +9,7 @@ resource "azurerm_storage_account" "storage" {
   resource_group_name       = azurerm_resource_group.group.name
   location                  = azurerm_resource_group.group.location
   account_tier              = "Standard"
+  account_kind              = "Storage"
   account_replication_type  = "RAGRS"
   enable_https_traffic_only = true
 
@@ -25,10 +26,11 @@ resource "azurerm_key_vault" "vault" {
   tenant_id = var.azure_tenant_id
 
   access_policy {
-    tenant_id          = var.azure_tenant_id
-    object_id          = var.azure_webops_group_oid
-    key_permissions    = []
-    secret_permissions = var.azure_secret_permissions_all
+    tenant_id               = var.azure_tenant_id
+    object_id               = var.azure_webops_group_oid
+    certificate_permissions = var.azure_certificate_permissions_all
+    key_permissions         = []
+    secret_permissions      = var.azure_secret_permissions_all
   }
 
   access_policy {
@@ -39,10 +41,11 @@ resource "azurerm_key_vault" "vault" {
   }
 
   access_policy {
-    tenant_id          = var.azure_tenant_id
-    object_id          = var.azure_jenkins_sp_oid
-    key_permissions    = []
-    secret_permissions = ["set"]
+    tenant_id               = var.azure_tenant_id
+    object_id               = var.azure_jenkins_sp_oid
+    certificate_permissions = ["Get", "List", "Import"]
+    key_permissions         = []
+    secret_permissions      = ["Set", "Get"]
   }
 
   access_policy {
@@ -84,11 +87,12 @@ resource "azurerm_application_insights" "insights" {
 }
 
 resource "azurerm_app_service" "app" {
-  name                = local.name
-  location            = azurerm_resource_group.group.location
-  resource_group_name = azurerm_resource_group.group.name
-  app_service_plan_id = azurerm_app_service_plan.app.id
-  https_only          = true
+  name                    = local.name
+  location                = azurerm_resource_group.group.location
+  resource_group_name     = azurerm_resource_group.group.name
+  app_service_plan_id     = azurerm_app_service_plan.app.id
+  https_only              = true
+  client_affinity_enabled = true
 
   tags = local.tags
 
@@ -117,6 +121,7 @@ resource "azurerm_storage_account" "app" {
   resource_group_name       = azurerm_resource_group.group.name
   location                  = azurerm_resource_group.group.location
   account_tier              = "Standard"
+  account_kind              = "Storage"
   account_replication_type  = "RAGRS"
   enable_https_traffic_only = true
 

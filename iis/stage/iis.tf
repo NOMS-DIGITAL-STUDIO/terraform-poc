@@ -27,7 +27,9 @@ resource "azurerm_storage_account" "storage" {
   name                     = "${replace(var.app-name, "-", "")}storage"
   resource_group_name      = azurerm_resource_group.group.name
   location                 = azurerm_resource_group.group.location
+  enable_https_traffic_only        = false
   account_tier             = "Standard"
+  account_kind             = "Storage"
   account_replication_type = "RAGRS"
 
   tags = var.tags

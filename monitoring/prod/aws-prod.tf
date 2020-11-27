@@ -26,6 +26,11 @@ provider "aws" {
   }
 }
 
+provider "azurerm" {
+  version = "=2.38.0"
+  features {}
+}
+
 locals {
   elb_ssl_policy = "ELBSecurityPolicy-TLS-1-2-2017-01"
 }

@@ -36,14 +36,37 @@ variable "azure_secret_permissions_all" {
   type = list
 
   default = [
-    "backup",
-    "delete",
-    "get",
-    "list",
-    "purge",
-    "recover",
-    "restore",
-    "set",
+    "Get",
+    "List",
+    "Set",
+    "Delete",
+    "Recover",
+    "Backup",
+    "Restore",
+    "Purge",
+  ]
+}
+
+variable "azure_key_permissions_all" {
+  type = list
+
+  default = [
+    "Get",
+    "List",
+    "Update",
+    "Create",
+    "Import",
+    "Delete",
+    "Recover",
+    "Backup",
+    "Restore",
+    "Decrypt",
+    "Encrypt",
+    "UnwrapKey",
+    "WrapKey",
+    "Verify",
+    "Sign",
+    "Purge",
   ]
 }
 

@@ -33,11 +33,13 @@ resource "random_id" "sql-sgandalwar-password" {
   byte_length = 16
 }
 resource "azurerm_storage_account" "storage" {
-  name                     = "${replace(var.app-name, "-", "")}storage"
-  resource_group_name      = azurerm_resource_group.group.name
-  location                 = azurerm_resource_group.group.location
-  account_tier             = "Standard"
-  account_replication_type = "RAGRS"
+  name                      = "${replace(var.app-name, "-", "")}storage"
+  resource_group_name       = azurerm_resource_group.group.name
+  location                  = azurerm_resource_group.group.location
+  account_tier              = "Standard"
+  account_kind              = "Storage"
+  account_replication_type  = "RAGRS"
+  enable_https_traffic_only = false
 
   tags = var.tags
 }
@@ -76,7 +78,7 @@ resource "azurerm_key_vault" "vault" {
     tenant_id          = var.azure_tenant_id
     object_id          = var.azure_app_service_oid
     key_permissions    = []
-    secret_permissions = ["set"]
+    secret_permissions = ["Get"]
   }
 
   access_policy {
