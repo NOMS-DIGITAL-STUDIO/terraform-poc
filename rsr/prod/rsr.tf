@@ -19,11 +19,13 @@ resource "azurerm_resource_group" "group" {
 }
 
 resource "azurerm_storage_account" "storage" {
-  name                     = "${replace(var.app-name, "-", "")}storage"
-  resource_group_name      = azurerm_resource_group.group.name
-  location                 = azurerm_resource_group.group.location
-  account_tier             = "Standard"
-  account_replication_type = "RAGRS"
+  name                      = "${replace(var.app-name, "-", "")}storage"
+  resource_group_name       = azurerm_resource_group.group.name
+  location                  = azurerm_resource_group.group.location
+  account_tier              = "Standard"
+  account_kind              = "Storage"
+  account_replication_type  = "RAGRS"
+  enable_https_traffic_only = false
 
   tags = var.tags
 }
@@ -38,10 +40,11 @@ resource "azurerm_key_vault" "vault" {
   tenant_id = var.azure_tenant_id
 
   access_policy {
-    tenant_id          = var.azure_tenant_id
-    object_id          = var.azure_webops_group_oid
-    key_permissions    = []
-    secret_permissions = var.azure_secret_permissions_all
+    tenant_id               = var.azure_tenant_id
+    object_id               = var.azure_webops_group_oid
+    certificate_permissions = var.azure_certificate_permissions_all
+    key_permissions         = []
+    secret_permissions      = var.azure_secret_permissions_all
   }
 
   access_policy {
@@ -52,10 +55,11 @@ resource "azurerm_key_vault" "vault" {
   }
 
   access_policy {
-    tenant_id          = var.azure_tenant_id
-    object_id          = var.azure_jenkins_sp_oid
-    key_permissions    = []
-    secret_permissions = ["set"]
+    tenant_id               = var.azure_tenant_id
+    object_id               = var.azure_jenkins_sp_oid
+    certificate_permissions = ["Get", "List", "Import"]
+    key_permissions         = []
+    secret_permissions      = ["Set", "Get"]
   }
 
   enabled_for_deployment          = false
@@ -98,6 +102,8 @@ resource "azurerm_application_insights" "insights" {
   location            = "North Europe"
   resource_group_name = azurerm_resource_group.group.name
   application_type    = "web"
+  retention_in_days   = 90
+  sampling_percentage = 0
 }
 
 resource "azurerm_dns_cname_record" "rsr" {
