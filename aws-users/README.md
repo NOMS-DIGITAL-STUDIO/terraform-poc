@@ -2,7 +2,7 @@
 
 ## Required Software
 
- * [Terraform 0.11.1+](http://terraform.io/)
+ * [Terraform 0.12.28](http://terraform.io/)
  * [Python 3.6] (https://www.python.org/)
  * [Azure CLI 2.0](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
  * [AWS CLI 1.14+] (https://aws.amazon.com/cli/)
