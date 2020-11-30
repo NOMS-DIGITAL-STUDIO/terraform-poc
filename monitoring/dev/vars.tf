@@ -1,6 +1,6 @@
 variable "environment-name" {
-    type = "string"
-    default = "dev"
+  type    = string
+  default = "dev"
 }
 
 variable "application-name" {
@@ -8,7 +8,7 @@ variable "application-name" {
 }
 
 variable "key-pair-name" {
-   default =   "cw_dev"
+  default = "cw_dev"
 }
 
 variable "dns-zone-name" {
@@ -17,4 +17,4 @@ variable "dns-zone-name" {
 
 variable "dns-zone-rg" {
   default = "webops"
- }
+}

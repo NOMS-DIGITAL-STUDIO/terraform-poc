@@ -67,7 +67,8 @@ def create_config_file():
             'azurerm': {
                 'tenant_id': azure_account_ids[environment]["tenant_id"],
                 'subscription_id': azure_account_ids[environment]["subscription_id"],
-                'version': env_versions["azurerm_version"]
+                'version': env_versions["azurerm_version"],
+                'features': {}
             }
         }
     }
@@ -136,8 +137,8 @@ storage_creation.create_storage_account(resource_group, storage_account)
 if ("ARM_CLIENT_ID" in os.environ) and ("ARM_CLIENT_SECRET" in os.environ):
     logging.info("Running terraform init with a Service Principal")
     subprocess.run(
-        ["terraform", "init", 
-            "-backend-config=arm_client_id=%s" % os.environ.get('ARM_CLIENT_ID'), 
+        ["terraform", "init",
+            "-backend-config=arm_client_id=%s" % os.environ.get('ARM_CLIENT_ID'),
             "-backend-config=arm_client_secret=%s" % os.environ.get('ARM_CLIENT_SECRET'),
             "-backend-config=arm_tenant_id=%s" % tenant_id,
             "-backend-config=arm_subscription_id=%s" % subscription_id],
@@ -155,7 +156,7 @@ else:
         stdout=subprocess.PIPE,
         check=True
     ).stdout.decode()
-    
+
     subprocess.run(
         ["terraform", "init", "-backend-config", "access_key=%s" % key],
         check=True

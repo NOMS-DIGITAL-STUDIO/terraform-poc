@@ -8,7 +8,7 @@ Each directory represents a distinct project, and is effectively a separate terr
 
 ### Required Software
 
- * [terraform 0.11.1+](http://terraform.io/)
+ * [terraform 0.12.28](http://terraform.io/)
  * [Node.JS 8+](https://nodejs.org/)
  * [Yarn](https://yarnpkg.com/en/)
  * [Python 3.6] (https://www.python.org/)
@@ -267,12 +267,12 @@ python3 tools/application_gateway_update.py \
 
 > This step can now (from Terraform 1.30.0) be carried out via Terraform, so should not need to be done through the Azure CLI.
 
-Prior to v1.30.0, Terraform didn not support SSL profile configuration for App Gateays ([GitHub issue](https://github.com/terraform-providers/terraform-provider-azurerm/issues/1576)). If you 
-wish to change the SSL Profile of your app gateways, you will need to do so using the Azure CLI.  This is a one-time 
-manual step for now and has intentionally been kept clear of the `null_resource`/`local_exec` features of terraform as 
+Prior to v1.30.0, Terraform didn not support SSL profile configuration for App Gateays ([GitHub issue](https://github.com/terraform-providers/terraform-provider-azurerm/issues/1576)). If you
+wish to change the SSL Profile of your app gateways, you will need to do so using the Azure CLI.  This is a one-time
+manual step for now and has intentionally been kept clear of the `null_resource`/`local_exec` features of terraform as
 it doesn't cause a changed state when run and subsequent terraform changes will not undo this!  
 
-In order to change the profile of all your app gateways within a state, do the following from the root of your 
+In order to change the profile of all your app gateways within a state, do the following from the root of your
 terraform directory:
 
 ```bash

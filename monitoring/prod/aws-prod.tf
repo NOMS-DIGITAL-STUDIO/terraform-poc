@@ -1,6 +1,6 @@
 variable "aws_account_id" {
   type    = string
-  default = "429061350814"
+  default = "589133037702"
 }
 
 variable "aws_region" {
@@ -26,17 +26,16 @@ provider "aws" {
   }
 }
 
-variable "elastic-beanstalk-single-docker" {
-  type    = string
-  default = "64bit Amazon Linux 2017.09 v2.9.2 running Docker 17.12.0-ce"
+provider "azurerm" {
+  version = "=2.38.0"
+  features {}
 }
 
 locals {
   elb_ssl_policy = "ELBSecurityPolicy-TLS-1-2-2017-01"
 }
 
-#Config for Azure
 locals {
-  azure_dns_zone_name = "hmpps.dsd.io"
-  azure_dns_zone_rg   = "webops-shared-dns-devtest"
+  azure_dns_zone_name = "service.hmpps.dsd.io"
+  azure_dns_zone_rg   = "webops-prod"
 }
