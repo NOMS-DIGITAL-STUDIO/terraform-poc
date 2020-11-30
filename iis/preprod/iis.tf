@@ -38,7 +38,6 @@ resource "azurerm_storage_account" "storage" {
   location                  = azurerm_resource_group.group.location
   account_tier              = "Standard"
   account_replication_type  = "RAGRS"
-  enable_https_traffic_only = false
   account_kind              = "Storage"
   tags                      = var.tags
 }

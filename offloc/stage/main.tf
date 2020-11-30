@@ -11,8 +11,6 @@ resource "azurerm_storage_account" "storage" {
   account_tier              = "Standard"
   account_kind              = "Storage"
   account_replication_type  = "RAGRS"
-  enable_https_traffic_only = true
-
   tags = local.tags
 }
 
@@ -122,8 +120,6 @@ resource "azurerm_storage_account" "app" {
   account_tier              = "Standard"
   account_kind              = "Storage"
   account_replication_type  = "RAGRS"
-  enable_https_traffic_only = true
-
   tags = local.tags
 }
 

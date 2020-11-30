@@ -28,22 +28,17 @@ resource "azurerm_storage_account" "storage" {
   resource_group_name      = azurerm_resource_group.group.name
   location                 = azurerm_resource_group.group.location
   account_tier             = "Standard"
+  account_kind             = "Storage"
   account_replication_type = "RAGRS"
-  enable_blob_encryption   = true
-
-  tags = var.tags
+  tags                     = var.tags
 }
 
 resource "azurerm_key_vault" "vault" {
   name                = var.app-name
   resource_group_name = azurerm_resource_group.group.name
   location            = azurerm_resource_group.group.location
-
-  sku {
-    name = "standard"
-  }
-
-  tenant_id = var.azure_tenant_id
+  sku_name            = "standard"
+  tenant_id           = var.azure_tenant_id
 
   access_policy {
     tenant_id          = var.azure_tenant_id

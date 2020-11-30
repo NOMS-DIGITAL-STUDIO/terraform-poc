@@ -4,7 +4,6 @@ resource "azurerm_storage_account" "webops" {
   location                  = azurerm_resource_group.group.location
   account_kind              = "BlobStorage"
   account_tier              = "Standard"
-  enable_https_traffic_only = false
   account_replication_type  = "GRS"
   access_tier               = "Hot"
   tags = {
