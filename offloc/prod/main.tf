@@ -5,21 +5,21 @@ resource "azurerm_resource_group" "group" {
 }
 
 resource "azurerm_storage_account" "storage" {
-  name                      = local.storage
-  resource_group_name       = azurerm_resource_group.group.name
-  location                  = azurerm_resource_group.group.location
-  account_tier              = "Standard"
-  account_kind              = "Storage"
-  account_replication_type  = "RAGRS"
-  tags = local.tags
+  name                     = local.storage
+  resource_group_name      = azurerm_resource_group.group.name
+  location                 = azurerm_resource_group.group.location
+  account_tier             = "Standard"
+  account_kind             = "Storage"
+  account_replication_type = "RAGRS"
+  tags                     = local.tags
 }
 
 resource "azurerm_key_vault" "vault" {
   name                = local.name
   resource_group_name = azurerm_resource_group.group.name
   location            = azurerm_resource_group.group.location
-
-  sku_name = "standard"
+  soft_delete_enabled = true
+  sku_name            = "standard"
 
   tenant_id = var.azure_tenant_id
 
@@ -82,6 +82,8 @@ resource "azurerm_application_insights" "insights" {
   location            = "North Europe"
   resource_group_name = azurerm_resource_group.group.name
   application_type    = "web"
+  retention_in_days   = 90
+  sampling_percentage = 0
 }
 
 resource "azurerm_app_service" "app" {
@@ -115,13 +117,13 @@ resource "azurerm_app_service" "app" {
 }
 
 resource "azurerm_storage_account" "app" {
-  name                      = "${replace(local.name, "-", "")}app"
-  resource_group_name       = azurerm_resource_group.group.name
-  location                  = azurerm_resource_group.group.location
-  account_tier              = "Standard"
-  account_kind              = "Storage"
-  account_replication_type  = "RAGRS"
-  tags = local.tags
+  name                     = "${replace(local.name, "-", "")}app"
+  resource_group_name      = azurerm_resource_group.group.name
+  location                 = azurerm_resource_group.group.location
+  account_tier             = "Standard"
+  account_kind             = "Storage"
+  account_replication_type = "RAGRS"
+  tags                     = local.tags
 }
 
 resource "azurerm_role_assignment" "jenkins-write-storage" {
@@ -140,8 +142,8 @@ resource "azurerm_key_vault" "app" {
   name                = "${local.name}-users"
   resource_group_name = azurerm_resource_group.group.name
   location            = azurerm_resource_group.group.location
-
-  sku_name = "standard"
+  soft_delete_enabled = true
+  sku_name            = "standard"
 
   tenant_id = var.azure_tenant_id
 

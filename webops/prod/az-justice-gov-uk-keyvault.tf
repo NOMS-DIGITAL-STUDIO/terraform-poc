@@ -3,10 +3,26 @@ resource "azurerm_key_vault" "ssl_az_justice_gov_uk" {
   name                = "certs-az-justice-gov-uk"
   resource_group_name = azurerm_resource_group.group.name
   location            = azurerm_resource_group.group.location
-
-  sku_name = "standard"
+  soft_delete_enabled = true
+  sku_name            = "standard"
 
   tenant_id = var.azure_tenant_id
+
+  access_policy {
+    tenant_id               = var.azure_tenant_id
+    object_id               = "a3186d6c-b760-4cc4-b3f2-83fbafbd101a"
+    key_permissions         = var.azure_key_permissions_all
+    secret_permissions      = var.azure_secret_permissions_all
+    certificate_permissions = var.azure_certificate_permissions_all
+  }
+
+  access_policy {
+    tenant_id               = var.azure_tenant_id
+    object_id               = "8ec82615-1643-4fb6-9aaa-2c68fac3c0b7"
+    key_permissions         = var.azure_key_permissions_all
+    secret_permissions      = var.azure_secret_permissions_all
+    certificate_permissions = var.azure_certificate_permissions_all
+  }
 
   access_policy {
     tenant_id               = var.azure_tenant_id

@@ -19,21 +19,21 @@ resource "azurerm_resource_group" "group" {
 }
 
 resource "azurerm_storage_account" "storage" {
-  name                      = "${replace(var.app-name, "-", "")}storage"
-  resource_group_name       = azurerm_resource_group.group.name
-  location                  = azurerm_resource_group.group.location
-  account_tier              = "Standard"
-  account_kind              = "Storage"
-  account_replication_type  = "RAGRS"
-  tags = var.tags
+  name                     = "${replace(var.app-name, "-", "")}storage"
+  resource_group_name      = azurerm_resource_group.group.name
+  location                 = azurerm_resource_group.group.location
+  account_tier             = "Standard"
+  account_kind             = "Storage"
+  account_replication_type = "RAGRS"
+  tags                     = var.tags
 }
 
 resource "azurerm_key_vault" "vault" {
   name                = var.app-name
   resource_group_name = azurerm_resource_group.group.name
   location            = azurerm_resource_group.group.location
-
-  sku_name = "standard"
+  soft_delete_enabled = true
+  sku_name            = "standard"
 
   tenant_id = var.azure_tenant_id
 
