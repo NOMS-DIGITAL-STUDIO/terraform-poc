@@ -286,6 +286,11 @@ resource "azurerm_app_service" "app" {
     ip_restriction {
       ip_address = "195.92.38.23/32"
     }
+
+    #pttp access
+    ip_restriction {
+      ip_address = "10.40.164.32/27"
+    }
   }
 }
 
