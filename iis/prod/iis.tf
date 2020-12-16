@@ -289,7 +289,7 @@ resource "azurerm_app_service" "app" {
 
     #pttp access
     ip_restriction {
-      ip_address = "10.40.164.32/27"
+      ip_address = "51.149.250.0/24"
     }
   }
 }
