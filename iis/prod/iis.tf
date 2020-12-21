@@ -288,7 +288,7 @@ resource "azurerm_app_service" "app" {
     }
 
     ip_restriction {
-      ip_address = "${var.ips["studiohosting-live "]}/32"
+      ip_address = "${var.ips["studiohosting-live"]}/32"
     }
   }
 }
