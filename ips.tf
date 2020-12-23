@@ -37,6 +37,7 @@ variable "ips" {
     cloudplatform-live1-1    = "35.178.209.113"
     cloudplatform-live1-2    = "3.8.51.207"
     cloudplatform-live1-3    = "35.177.252.54"
+    studiohosting-live       = "20.49.225.111"
   }
 }
 

@@ -220,6 +220,8 @@ resource "azurerm_template_deployment" "webapp-whitelist" {
     ip1  = var.ips["office"]
     ip2  = var.ips["quantum"]
     ip3  = var.ips["quantum_alt"]
+    ip4  = var.ips["studiohosting-live"]
+    
   }
 
   depends_on = [azurerm_template_deployment.webapp]

@@ -290,6 +290,9 @@ resource "azurerm_app_service" "app" {
     #pttp access
     ip_restriction {
       ip_address = "51.149.250.0/24"
+
+    ip_restriction {
+      ip_address = "${var.ips["studiohosting-live"]}/32"
     }
   }
 }
