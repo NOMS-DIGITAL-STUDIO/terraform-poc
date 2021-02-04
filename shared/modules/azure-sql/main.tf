@@ -164,8 +164,8 @@ resource "azurerm_template_deployment" "sql-tde" {
   parameters = {
     serverName   = azurerm_sql_server.sql.name
     databaseName = azurerm_sql_database.db.name
-    service      = var.tags["Service"]
-    environment  = var.tags["Environment"]
+    service      = var.tags["service"]
+    environment  = var.tags["environment_name"]
   }
 }
 

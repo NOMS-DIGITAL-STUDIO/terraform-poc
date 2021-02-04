@@ -106,9 +106,7 @@ variable "azure_secret_permissions_all" {
 }
 
 locals {
-  dns_zone_name = "hmpps.dsd.io"
-  dns_zone_rg   = "webops"
-  studio_ip     = "217.33.148.210"
-  moj_vpn_ip    = "81.134.202.29"
-  dev_forti_ip  = "51.141.45.69"
+  studio_ip    = "217.33.148.210"
+  moj_vpn_ip   = "81.134.202.29"
+  dev_forti_ip = "51.141.45.69"
 }

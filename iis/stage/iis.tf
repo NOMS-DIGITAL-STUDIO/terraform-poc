@@ -2,11 +2,13 @@ variable "app-name" {
   type    = string
   default = "iis-stage"
 }
+
 variable "tags" {
   type = map
   default = {
-    Service     = "IIS"
-    Environment = "Stage"
+    application      = "HPA"
+    environment_name = "devtest"
+    service          = "Misc"
   }
 }
 
@@ -30,7 +32,7 @@ resource "azurerm_storage_account" "storage" {
   account_tier             = "Standard"
   account_kind             = "Storage"
   account_replication_type = "RAGRS"
-  tags = var.tags
+  tags                     = var.tags
 }
 
 variable "log-containers" {
@@ -106,7 +108,11 @@ module "sql" {
   edition               = "Basic"
   scale                 = "Basic"
   collation             = "SQL_Latin1_General_CP1_CI_AS"
-  tags                  = var.tags
+  tags                  = {
+    application      = "HPA"
+    environment_name = "devtest"
+    service          = "Misc"
+  }
 }
 
 resource "azurerm_template_deployment" "webapp" {
@@ -116,8 +122,8 @@ resource "azurerm_template_deployment" "webapp" {
   template_body       = file("../../shared/appservice.template.json")
   parameters = {
     name        = var.app-name
-    service     = var.tags["Service"]
-    environment = var.tags["Environment"]
+    service     = var.tags["service"]
+    environment = var.tags["environment_name"]
     workers     = "2"
     sku_name    = "S1"
     sku_tier    = "Standard"
@@ -160,8 +166,8 @@ resource "azurerm_template_deployment" "insights" {
   parameters = {
     name         = azurerm_template_deployment.webapp.parameters.name
     location     = "northeurope" // Not in UK yet
-    service      = var.tags["Service"]
-    environment  = var.tags["Environment"]
+    service      = var.tags["service"]
+    environment  = var.tags["environment_name"]
     appServiceId = azurerm_template_deployment.webapp.outputs["resourceId"]
   }
 }
@@ -227,8 +233,8 @@ resource "azurerm_template_deployment" "webapp-ssl" {
     hostname         = "${azurerm_dns_cname_record.cname.name}.${azurerm_dns_cname_record.cname.zone_name}"
     keyVaultId       = azurerm_key_vault.vault.id
     keyVaultCertName = "hpa-stageDOThmppsDOTdsdDOTio"
-    service          = var.tags["Service"]
-    environment      = var.tags["Environment"]
+    service          = var.tags["service"]
+    environment      = "Misc"
   }
 
   depends_on = [azurerm_template_deployment.webapp]

@@ -6,5 +6,4 @@ graph.png
 node_modules/
 *.swp
 *.pyc
-config.tf.json
 .idea
