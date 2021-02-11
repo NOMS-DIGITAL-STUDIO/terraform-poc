@@ -7,10 +7,22 @@ variable "tags" {
   type = map
 
   default = {
-    Service     = "IIS"
-    Environment = "Prod"
+    application      = "HPA"
+    environment_name = "prod"
+    service          = "Misc"
   }
 }
+
+locals {
+  key_vault_secrets = ["signon-client-id", "signon-client-secret", "administrators"]
+}
+
+data "azurerm_key_vault_secret" "kv_secrets" {
+  for_each     = toset(local.key_vault_secrets)
+  name         = each.value
+  key_vault_id = azurerm_key_vault.vault.id
+}
+
 
 resource "azurerm_resource_group" "group" {
   name     = var.app-name
@@ -33,13 +45,13 @@ resource "random_id" "sql-sgandalwar-password" {
   byte_length = 16
 }
 resource "azurerm_storage_account" "storage" {
-  name                      = "${replace(var.app-name, "-", "")}storage"
-  resource_group_name       = azurerm_resource_group.group.name
-  location                  = azurerm_resource_group.group.location
-  account_tier              = "Standard"
-  account_kind              = "Storage"
-  account_replication_type  = "RAGRS"
-  tags = var.tags
+  name                     = "${replace(var.app-name, "-", "")}storage"
+  resource_group_name      = azurerm_resource_group.group.name
+  location                 = azurerm_resource_group.group.location
+  account_tier             = "Standard"
+  account_kind             = "Storage"
+  account_replication_type = "RAGRS"
+  tags                     = var.tags
 }
 
 variable "log-containers" {
@@ -58,7 +70,6 @@ resource "azurerm_key_vault" "vault" {
   name                = var.app-name
   resource_group_name = azurerm_resource_group.group.name
   location            = azurerm_resource_group.group.location
-  soft_delete_enabled = true
 
   sku_name = "standard"
 
@@ -85,6 +96,13 @@ resource "azurerm_key_vault" "vault" {
     certificate_permissions = ["Get", "List", "Import"]
     key_permissions         = []
     secret_permissions      = ["Set", "Get"]
+  }
+  access_policy {
+    tenant_id               = var.azure_tenant_id
+    object_id               = var.dso_certificates_oid
+    certificate_permissions = ["get", "list", "import"]
+    key_permissions         = []
+    secret_permissions      = ["get"]
   }
 
   enabled_for_deployment          = false
@@ -158,13 +176,10 @@ resource "azurerm_app_service_plan" "plan" {
   sku {
     tier     = "Standard"
     size     = "S1"
-    capacity = "2"
+    capacity = "1"
   }
 
-  tags = {
-    Service     = var.tags["Service"]
-    Environment = var.tags["Environment"]
-  }
+  tags = var.tags
 }
 
 resource "azurerm_app_service" "app" {
@@ -172,26 +187,27 @@ resource "azurerm_app_service" "app" {
   location            = azurerm_resource_group.group.location
   resource_group_name = azurerm_resource_group.group.name
   app_service_plan_id = azurerm_app_service_plan.plan.id
-
+  tags                = var.tags
   app_settings = {
-    DB_USER                            = "iisuser"
-    DB_PASS                            = random_id.sql-iisuser-password.b64_url
-    DB_SERVER                          = module.sql.db_server
-    DB_NAME                            = module.sql.db_name
-    SESSION_SECRET                     = random_id.session-secret.b64_url
-    CLIENT_ID                          = data.external.vault.result.client_id
-    CLIENT_SECRET                      = data.external.vault.result.client_secret
-    TOKEN_HOST                         = "https://signon.service.justice.gov.uk"
-    ADMINISTRATORS                     = data.external.vault.result.administrators
-    APPINSIGHTS_INSTRUMENTATIONKEY     = azurerm_application_insights.app.instrumentation_key
-    WEBSITE_HTTPLOGGING_RETENTION_DAYS = "180"
-    WEBSITE_NODE_DEFAULT_VERSION       = "6.9.1"
+    DB_USER                        = "iisuser"
+    DB_PASS                        = random_id.sql-iisuser-password.b64_url
+    DB_SERVER                      = module.sql.db_server
+    DB_NAME                        = module.sql.db_name
+    SESSION_SECRET                 = random_id.session-secret.b64_url
+    CLIENT_ID                      = data.azurerm_key_vault_secret.kv_secrets["signon-client-id"].value
+    CLIENT_SECRET                  = data.azurerm_key_vault_secret.kv_secrets["signon-client-secret"].value
+    TOKEN_HOST                     = "https://signon.service.justice.gov.uk"
+    ADMINISTRATORS                 = data.azurerm_key_vault_secret.kv_secrets["administrators"].value
+    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.app.instrumentation_key
+    WEBSITE_NODE_DEFAULT_VERSION   = "6.9.1"
   }
 
+
   site_config {
-    always_on   = true
-    scm_type    = "LocalGit"
-    php_version = "5.6"
+    always_on                   = true
+    scm_type                    = "LocalGit"
+    php_version                 = "5.6"
+    scm_use_main_ip_restriction = true
 
     default_documents = ["Default.htm", "Default.html", "Default.asp", "index.htm", "index.html", "iisstart.htm", "default.aspx", "index.php", "hostingstart.html"]
 
@@ -290,12 +306,13 @@ resource "azurerm_app_service" "app" {
     #pttp access
     ip_restriction {
       ip_address = "51.149.250.0/24"
-
+    }
     ip_restriction {
       ip_address = "${var.ips["studiohosting-live"]}/32"
     }
   }
 }
+
 
 resource "azurerm_application_insights" "app" {
   name                = var.app-name
@@ -305,56 +322,29 @@ resource "azurerm_application_insights" "app" {
   retention_in_days   = 90
   sampling_percentage = 0
 
-  tags = {
-    Service     = var.tags["Service"]
-    Environment = var.tags["Environment"]
-  }
+  tags = var.tags
 }
 
-/*
-built in feature now - can remove once tf resource added
-https://www.terraform.io/docs/providers/azurerm/d/key_vault_secret.html
-*/
-
-data "external" "vault" {
-  program = ["python3", "../../tools/keyvault-data-cli-auth.py"]
-
-  query = {
-    vault = azurerm_key_vault.vault.name
-
-    client_id     = "signon-client-id"
-    client_secret = "signon-client-secret"
-
-    administrators = "administrators"
-
-    dashboard_token     = "dashboard-token"
-    appinsights_api_key = "appinsights-api-key"
-  }
-}
-
-resource "azurerm_template_deployment" "webapp-ssl" {
-  name                = "webapp-ssl"
+resource "azurerm_app_service_certificate" "webapp-ssl" {
+  name                = "iis-prod-iis-prod-CERThpaDOTserviceDOThmppsDOTdsdDOTio"
   resource_group_name = azurerm_resource_group.group.name
-  deployment_mode     = "Incremental"
-  template_body       = file("../../shared/appservice-ssl.template.json")
-
-  parameters = {
-    name             = azurerm_app_service.app.name
-    hostname         = "${azurerm_dns_cname_record.cname.name}.${azurerm_dns_cname_record.cname.zone_name}"
-    keyVaultId       = azurerm_key_vault.vault.id
-    keyVaultCertName = "hpaDOTserviceDOThmppsDOTdsdDOTio"
-    service          = var.tags["Service"]
-    environment      = var.tags["Environment"]
-  }
-
-  depends_on = [azurerm_app_service.app]
+  location            = azurerm_resource_group.group.location
+  tags                = var.tags
+  #When you need to re-create add the key vault secret key id in, comment after so it doesn't get in the way of the plan or you'll need to main after every cert refresh
+  #key_vault_secret_id = "https://iis-prod.vault.azure.net/secrets/iis-prod-iis-prod-CERThpaDOTserviceDOThmppsDOTdsdDOTio"
 }
 
-module "slackhook" {
-  source             = "../../shared/modules/slackhook"
-  app_name           = azurerm_app_service.app.name
-  azure_subscription = "production"
-  channels           = ["shef_changes", "hpa"]
+
+resource "azurerm_app_service_certificate_binding" "binding" {
+  hostname_binding_id = "/subscriptions/a5ddf257-3b21-4ba9-a28c-ab30f751b383/resourceGroups/iis-prod/providers/Microsoft.Web/sites/iis-prod/hostNameBindings/hpa.service.hmpps.dsd.io"
+  certificate_id      = "/subscriptions/a5ddf257-3b21-4ba9-a28c-ab30f751b383/resourceGroups/iis-prod/providers/Microsoft.Web/certificates/iis-prod-iis-prod-CERThpaDOTserviceDOThmppsDOTdsdDOTio"
+  ssl_state           = "SniEnabled"
+}
+
+resource "azurerm_app_service_custom_hostname_binding" "custom-binding" {
+  hostname            = "hpa.service.hmpps.dsd.io"
+  app_service_name    = azurerm_app_service.app.name
+  resource_group_name = azurerm_resource_group.group.name
 }
 
 resource "azurerm_dns_cname_record" "cname" {
@@ -366,70 +356,7 @@ resource "azurerm_dns_cname_record" "cname" {
   tags                = var.tags
 }
 
-resource "azurerm_template_deployment" "stats-exposer" {
-  name                = "stats-exposer-app"
-  resource_group_name = azurerm_resource_group.group.name
-  deployment_mode     = "Incremental"
-  template_body       = file("../../shared/appservice.template.json")
 
-  parameters = {
-    name        = "${var.app-name}-stats-exposer"
-    service     = var.tags["Service"]
-    environment = var.tags["Environment"]
-    workers     = "2"
-    sku_name    = "S1"
-    sku_tier    = "Standard"
-  }
-}
-
-resource "azurerm_template_deployment" "stats-expos-erconfig" {
-  name                = "stats-exposer-config"
-  resource_group_name = azurerm_resource_group.group.name
-  deployment_mode     = "Incremental"
-  template_body       = file("../stats-webapp-config.template.json")
-
-  parameters = {
-    name                        = azurerm_template_deployment.stats-exposer.parameters.name
-    DASHBOARD_TARGET            = "https://iis-monitoring.herokuapp.com"
-    DASHBOARD_TOKEN             = data.external.vault.result.dashboard_token
-    APPINSIGHTS_APP_ID          = "5595f5b0-cfb0-4af0-ac47-f46f8abc2c1e"
-    APPINSIGHTS_API_KEY         = data.external.vault.result.appinsights_api_key
-    APPINSIGHTS_UPDATE_INTERVAL = 15
-    APPINSIGHTS_QUERY_week      = "traces | where timestamp > ago(7d) | where message == 'AUDIT' | summarize count() by tostring(customDimensions.key)"
-    APPINSIGHTS_QUERY_today     = "traces | where timestamp > startofday(now()) | where message == 'AUDIT' | summarize count() by tostring(customDimensions.key)"
-  }
-
-  depends_on = [azurerm_template_deployment.stats-exposer]
-}
-
-resource "azurerm_template_deployment" "stats-exposer-github" {
-  name                = "stats-exposer-github"
-  resource_group_name = azurerm_resource_group.group.name
-  deployment_mode     = "Incremental"
-  template_body       = file("../../shared/appservice-scm.template.json")
-
-  parameters = {
-    name    = azurerm_template_deployment.stats-exposer.parameters.name
-    repoURL = "https://github.com/ministryofjustice/ai-stats-exposer.git"
-    branch  = "master"
-  }
-
-  depends_on = [azurerm_template_deployment.stats-exposer]
-}
-
-resource "github_repository_webhook" "stats-exposer-deploy" {
-  repository = "ai-stats-exposer"
-
-  configuration {
-    url          = "${azurerm_template_deployment.stats-exposer-github.outputs["deployTrigger"]}?scmType=GitHub"
-    content_type = "form"
-    insecure_ssl = false
-  }
-
-  active = true
-
-  events = ["push"]
-}
 
 output "advice" {
   value = [
