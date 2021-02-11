@@ -262,11 +262,11 @@ resource "azurerm_app_service" "webapp" {
 
 resource "azurerm_application_insights" "insights" {
   name                = var.app-name
-  location            = "northeurope" #zurerm_resource_group.group.location
+  location            = azurerm_resource_group.group.location
   resource_group_name = azurerm_resource_group.group.name
   application_type    = "web"
   retention_in_days   = 90
-  sampling_percentage = 0
+  sampling_percentage = 100
   tags                = var.tags
 }
 

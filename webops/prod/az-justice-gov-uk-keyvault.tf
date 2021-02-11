@@ -3,7 +3,6 @@ resource "azurerm_key_vault" "ssl_az_justice_gov_uk" {
   name                = "certs-az-justice-gov-uk"
   resource_group_name = azurerm_resource_group.group.name
   location            = azurerm_resource_group.group.location
-  soft_delete_enabled = true
   sku_name            = "standard"
 
   tenant_id = var.azure_tenant_id

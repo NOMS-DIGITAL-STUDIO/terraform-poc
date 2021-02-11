@@ -9,7 +9,6 @@ For managing the github provider you need to export two environment variables.
 If you dont have a Personal access token(PAT) already you will need to set it up and enable SSO with the MOJ org.
 ```
 export GITHUB_TOKEN="..."
-xEport GITHUB_ORGANIZATION="ministryofjustice"
 ```
 
 Known Risks:
