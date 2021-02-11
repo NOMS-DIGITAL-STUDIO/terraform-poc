@@ -215,11 +215,11 @@ resource "azurerm_app_service" "webapp" {
 
 resource "azurerm_application_insights" "insights" {
   name                = var.app-name
-  location            = "northeurope" #zurerm_resource_group.group.location
+  location            = azurerm_resource_group.group.location
   resource_group_name = azurerm_resource_group.group.name
   application_type    = "web"
   retention_in_days   = 90
-  sampling_percentage = 0
+  sampling_percentage = 100
   tags                = var.tags
 }
 
@@ -254,15 +254,6 @@ resource "azurerm_app_service_custom_hostname_binding" "custom-binding" {
   hostname            = "hpa-stage.hmpps.dsd.io"
   app_service_name    = azurerm_app_service.webapp.name
   resource_group_name = azurerm_resource_group.group.name
-}
-
-resource "azurerm_dns_cname_record" "cname" {
-  name                = "hpa-stage"
-  zone_name           = "hmpps.dsd.io"
-  resource_group_name = "webops-shared-dns-devtest"
-  ttl                 = "300"
-  record              = "${var.app-name}.azurewebsites.net"
-  tags                = var.tags
 }
 
 output "advice" {

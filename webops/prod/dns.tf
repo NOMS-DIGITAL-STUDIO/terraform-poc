@@ -25,13 +25,13 @@ output "service_hmpps_dsd_io_namesevers" {
 resource "azurerm_dns_zone" "az_justice_gov_uk" {
   name                = "az.justice.gov.uk"
   resource_group_name = azurerm_resource_group.group.name
-  tags = var.tags
+  tags                = var.tags
 }
 
 resource "azurerm_dns_zone" "studio-hosting" {
   name                = "studio-hosting.service.hmpps.dsd.io"
   resource_group_name = azurerm_resource_group.group.name
-  tags = var.tags
+  tags                = var.tags
 }
 
 resource "azurerm_dns_ns_record" "studio-hosting" {
