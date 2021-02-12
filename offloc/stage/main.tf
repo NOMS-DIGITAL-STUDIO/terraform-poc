@@ -263,9 +263,3 @@ resource "github_repository_webhook" "deploy" {
   events = ["push"]
 }
 
-module "slackhook" {
-  source             = "../../shared/modules/slackhook"
-  app_name           = azurerm_app_service.app.name
-  channels           = var.deployment-channels
-  azure_subscription = local.azure_subscription
-}
