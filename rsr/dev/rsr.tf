@@ -1,17 +1,3 @@
-variable "app-name" {
-  type    = string
-  default = "rsr-dev"
-}
-
-variable "tags" {
-  type = map
-
-  default = { "application" = "RSR"
-    "environment_name" = "devtest"
-    "service"          = "Misc"
-  }
-
-}
 
 resource "azurerm_resource_group" "group" {
   name     = var.app-name
