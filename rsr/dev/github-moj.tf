@@ -1,1 +1,1 @@
-github-moj.tf
+../../github-moj.tf

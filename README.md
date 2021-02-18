@@ -6,6 +6,8 @@ Each directory represents a distinct project, and is effectively a separate terr
 
 This repository contains mainly azure app service architectures with some AWS projects.
 
+
+
 ## Setup
 
 Please see the relevant README for the project for any extra dependencies if needed.
