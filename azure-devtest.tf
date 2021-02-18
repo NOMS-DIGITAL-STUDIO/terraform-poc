@@ -47,11 +47,6 @@ variable "azure_nomis_api_group_oid" {
   default = "c9028ae9-59e2-46c5-8ea6-2eba74271d86"
 }
 
-variable "azure_iis_group_oid" {
-  type    = string
-  default = "cce161c1-f0fb-499f-bbef-cf7788cc3928"
-}
-
 variable "azure_aap_group_oid" {
   type    = string
   default = "e48a63e8-9b32-427a-8cd5-12b5faacb50a"
@@ -62,11 +57,6 @@ variable "azure_licences_group_oid" {
   default = "deb8884e-c108-4aa5-995c-14609c0cc7d2"
 }
 
-variable "dso_certificates_oid" {
-  #app id: 11efc5bf-0012-4a0f-ae6b-d21f1c43f251 display name: dso-certificates
-  type    = string
-  default = "a3415938-d0a1-4cfe-b312-edf87c251a69"
-}
 
 locals {
   azure_offloc_group_oid   = "f7185b7d-392e-43a0-9fc7-06b8639766ed"

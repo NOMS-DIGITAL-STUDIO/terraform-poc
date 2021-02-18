@@ -23,15 +23,15 @@ resource "azurerm_storage_account" "storage" {
   location                 = azurerm_resource_group.group.location
   account_tier             = "Standard"
   account_replication_type = "RAGRS"
-  tags = var.tags
+  tags                     = var.tags
 }
 
 resource "azurerm_key_vault" "vault" {
   name                = "APPNAME"
   resource_group_name = azurerm_resource_group.group.name
   location            = azurerm_resource_group.group.location
-  sku_name = "standard"
-  tenant_id = var.azure_tenant_id
+  sku_name            = "standard"
+  tenant_id           = var.azure_tenant_id
 
   access_policy {
     tenant_id          = var.azure_tenant_id
