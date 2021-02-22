@@ -1,4 +1,5 @@
 terraform {
+  required_version = "= 0.12.28"
   backend "s3" {
     bucket  = "moj-studio-webops-terraform"
     key     = "deliusapi-dev.terraform.tfstate"

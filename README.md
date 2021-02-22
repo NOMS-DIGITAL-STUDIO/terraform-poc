@@ -1,12 +1,12 @@
-# Infrastructure Orchestration
+# App Infrastructure Orchestration
 
 **Never check passwords or other similar secrets into source control**
 
 Each directory represents a distinct project, and is effectively a separate terraform environment.
 
-This repository contains mainly azure app service architectures with some AWS projects.
+This repository contains mainly azure app service architectures with one AWS monitoring project which may not be used.
 
-
+The webops project contains shared resources used across apps e.g. dns zones or other resources not related to an app but in the subscriptions.
 
 ## Setup
 
@@ -14,11 +14,9 @@ Please see the relevant README for the project for any extra dependencies if nee
 
 ### Required Software
 
- * [terraform 0.12.28](http://terraform.io/)
+ * [terraform 0.14+](http://terraform.io/)
  * [Azure CLI 2.0] (https://docs.microsoft.com/en-us/cli/azure/overview?view=azure-cli-latest)
  * [AWS CLI]
-
- NOTE: There are some python scripts in tools but are not required to run the terraform projects. (Python 3.6+)
 
 ### Azure provider initialization
 
@@ -38,7 +36,6 @@ see https://github.com/hashicorp/terraform-provider-aws/issues/2420
 This affects the following projects which use the AWS provider:
 
 ```
-delius-api
 monitoring
 ```
 

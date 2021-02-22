@@ -4,7 +4,6 @@ A NodeJS with express application deployed onto app service in Azure with an Azu
 
 There is no app support currently for this application except a reasonable endavours basis by Paul Solecki.
 
-
 For managing the github provider you need to export two environment variables.
 If you dont have a Personal access token(PAT) already you will need to set it up and enable SSO with the MOJ org.
 ```
