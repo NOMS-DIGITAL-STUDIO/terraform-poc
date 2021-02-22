@@ -16,14 +16,14 @@ module "app_service" {
   https_only               = true
   azure_jenkins_sp_oid     = var.azure_jenkins_sp_oid
   ip_restriction_addresses = var.ip_restriction_addresses
-  sc_branch = var.sc_branch
-  repo_url = var.repo_url
+  sc_branch                = var.sc_branch
+  repo_url                 = var.repo_url
   log_containers           = var.log_containers
-  sa_name = "${replace(local.name, "-", "")}storage"
+  sa_name                  = "${replace(local.name, "-", "")}storage"
   signon_hostname          = var.signon_hostname
   sampling_percentage      = var.sampling_percentage
   custom_hostname          = var.custom_hostname
-  has_storage         = var.has_storage
+  has_storage              = var.has_storage
   default_documents = [
     "Default.htm",
     "Default.html",
@@ -43,13 +43,13 @@ module "app_service" {
   app_settings = {
     DB_PASS        = random_id.sql-user-password.b64_url
     SESSION_SECRET = random_id.session-secret.b64_url
-    ADMINISTRATORS                 = data.azurerm_key_vault_secret.kv_secrets["administrators"].value
-    CLIENT_ID                      = data.azurerm_key_vault_secret.kv_secrets["signon-client-id"].value
-    CLIENT_SECRET                  = data.azurerm_key_vault_secret.kv_secrets["signon-client-secret"].value
-    DB_SERVER  = "${local.name}.database.windows.net"
-    DB_USER    = "${var.app}user"
-    DB_NAME    = local.name
-    TOKEN_HOST = var.signon_hostname
+    ADMINISTRATORS = data.azurerm_key_vault_secret.kv_secrets["administrators"].value
+    CLIENT_ID      = data.azurerm_key_vault_secret.kv_secrets["signon-client-id"].value
+    CLIENT_SECRET  = data.azurerm_key_vault_secret.kv_secrets["signon-client-secret"].value
+    DB_SERVER      = "${local.name}.database.windows.net"
+    DB_USER        = "${var.app}user"
+    DB_NAME        = local.name
+    TOKEN_HOST     = var.signon_hostname
   }
 }
 

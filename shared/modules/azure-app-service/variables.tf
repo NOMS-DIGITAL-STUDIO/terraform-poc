@@ -18,7 +18,7 @@ variable "certificate_kv_secret_id" {
   description = "Used to bind a certificate to the app"
 }
 variable "key_vault_secrets" {
-  type = list(string)
+  type    = list(string)
   default = []
 }
 
@@ -27,27 +27,27 @@ variable "certificate_name" {
 }
 
 variable "ssl_state" {
-  type = string
+  type    = string
   default = "SniEnabled"
 }
 
 variable "scm_type" {
-  type = string
+  type    = string
   default = null
 }
 variable "tags" {
-  type = map
+  type = map(any)
 }
 variable "insights_location" {
-  type = string
+  type    = string
   default = "ukwest"
 }
 variable "storage_replication_type" {
-  type = string
+  type    = string
   default = "LRS"
 }
 variable "app_service_kind" {
-  type = string
+  type    = string
   default = "app"
 }
 variable "client_affinity_enabled" {
@@ -91,7 +91,7 @@ variable "use_32_bit_worker_process" {
   default = true
 }
 variable "ip_restriction_addresses" {
-  type = list(string)
+  type    = list(string)
   default = []
 }
 
@@ -116,12 +116,12 @@ variable "has_storage" {
 
 variable "signon_hostname" {
   type        = string
-  default = null
+  default     = null
   description = "If the app uses a token host in the app config which redirects to a signon page"
 }
 
 variable "app_settings" {
-  type = map
+  type    = map(any)
   default = {}
 }
 variable "dso_certificates_oid" {
@@ -151,7 +151,7 @@ variable "azure_webops_group_oid" {
 
 
 variable "azure_certificate_permissions_all" {
-  type = list
+  type = list(any)
 
   default = [
     "Get",
@@ -173,12 +173,12 @@ variable "azure_certificate_permissions_all" {
   ]
 }
 variable "log_containers" {
-  type    = list
+  type    = list(any)
   default = []
 }
 
 variable "azure_secret_permissions_all" {
-  type = list
+  type = list(any)
 
   default = [
     "backup",

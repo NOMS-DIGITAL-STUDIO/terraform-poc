@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "group" {
 }
 
 resource "azurerm_storage_account" "storage" {
-  count = var.has_storage ? 1 : 0
+  count                    = var.has_storage ? 1 : 0
   name                     = var.sa_name
   resource_group_name      = azurerm_resource_group.group.name
   location                 = azurerm_resource_group.group.location
@@ -83,21 +83,21 @@ resource "azurerm_app_service_plan" "webapp-plan" {
 }
 
 resource "azurerm_app_service" "webapp" {
-  name                = local.name
-  location            = azurerm_resource_group.group.location
-  resource_group_name = azurerm_resource_group.group.name
-  app_service_plan_id = azurerm_app_service_plan.webapp-plan.id
-  tags                = var.tags
-  https_only          = var.https_only
-  client_cert_enabled = false
+  name                    = local.name
+  location                = azurerm_resource_group.group.location
+  resource_group_name     = azurerm_resource_group.group.name
+  app_service_plan_id     = azurerm_app_service_plan.webapp-plan.id
+  tags                    = var.tags
+  https_only              = var.https_only
+  client_cert_enabled     = false
   client_affinity_enabled = var.client_affinity_enabled
   site_config {
     http2_enabled               = var.http2_enabled
-    scm_use_main_ip_restriction= var.scm_use_main_ip_restriction
-    php_version               = "5.6"
-    use_32_bit_worker_process = var.use_32_bit_worker_process
-    always_on                 = var.always_on
-    default_documents         = var.default_documents
+    scm_use_main_ip_restriction = var.scm_use_main_ip_restriction
+    php_version                 = "5.6"
+    use_32_bit_worker_process   = var.use_32_bit_worker_process
+    always_on                   = var.always_on
+    default_documents           = var.default_documents
     dynamic "ip_restriction" {
       for_each = var.ip_restriction_addresses
       content {
@@ -120,7 +120,7 @@ resource "azurerm_app_service" "webapp" {
   #    }
   #  }
   source_control {
-    branch = var.sc_branch
+    branch   = var.sc_branch
     repo_url = var.repo_url
   }
   app_settings = merge({
@@ -138,10 +138,10 @@ resource "azurerm_application_insights" "insights" {
   sampling_percentage = var.sampling_percentage
   tags                = var.tags
   lifecycle {
-  ignore_changes = [
-    application_type
-  ]
-}
+    ignore_changes = [
+      application_type
+    ]
+  }
 }
 
 resource "azurerm_app_service_certificate" "webapp-ssl" {
@@ -182,7 +182,7 @@ output "advice" {
 }
 
 output "vault_id" {
-  value =  azurerm_key_vault.vault.id
+  value = azurerm_key_vault.vault.id
 }
 
 output "sa_id" {

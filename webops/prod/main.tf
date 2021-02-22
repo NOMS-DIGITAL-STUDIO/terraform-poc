@@ -3,7 +3,7 @@ locals {
 }
 
 variable "tags" {
-  type = map
+  type = map(any)
   default = {
     "application"      = "Management"
     "environment_name" = "prod"
