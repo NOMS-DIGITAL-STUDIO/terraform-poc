@@ -1,5 +1,5 @@
 variable "ips" {
-  type = map
+  type = map(any)
 
   default = {
     dxc_webproxy1            = "195.92.38.20"

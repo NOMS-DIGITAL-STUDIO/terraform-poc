@@ -1,0 +1,17 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "type": "String"
+        }
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('name'), '/RedirectHttpToHttps')]",
+            "type": "Microsoft.Web/sites/siteextensions",
+            "apiVersion": "2015-08-01",
+            "properties": { }
+        }
+    ]
+}

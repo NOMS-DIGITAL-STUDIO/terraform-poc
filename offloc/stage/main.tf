@@ -1,147 +1,64 @@
-resource "azurerm_resource_group" "group" {
-  name     = local.name
-  location = "ukwest"
-  tags     = local.tags
-}
 
-resource "azurerm_storage_account" "storage" {
-  name                     = local.storage
-  resource_group_name      = azurerm_resource_group.group.name
-  location                 = azurerm_resource_group.group.location
-  account_tier             = "Standard"
-  account_kind             = "Storage"
-  account_replication_type = "RAGRS"
-  tags                     = local.tags
-}
+module "app_service" {
+  source                  = "../../shared/modules/azure-app-service"
+  app                     = var.app
+  env                     = var.env
+  certificate_name        = var.certificate_name
+  app_service_kind        = "Windows"
+  sc_branch               = var.sc_branch
+  repo_url                = var.repo_url
+  https_only              = true
+  client_affinity_enabled = true
+  sa_name                 = "${replace(local.name, "-", "")}app"
+  has_storage             = var.has_storage
+  azure_jenkins_sp_oid    = var.azure_jenkins_sp_oid
+  sampling_percentage     = var.sampling_percentage
+  custom_hostname         = var.custom_hostname
+  app_settings = {
+    "AZURE_STORAGE_ACCOUNT_NAME"    = "offlocstageapp"
+    "AZURE_STORAGE_CONTAINER_NAME"  = "cde"
+    "AZURE_STORAGE_RESOURCE_GROUP"  = "offloc-stage"
+    "AZURE_STORAGE_SUBSCRIPTION_ID" = "c27cfedb-f5e9-45e6-9642-0fad1a5c94e7"
+    "KEY_VAULT_URL"                 = "https://offloc-stage-users.vault.azure.net/"
+    "NODE_ENV"                      = "production"
+    "SESSION_SECRET"                = "dxnuH5VFJ7BfX89oxbij69DMj5EmPkVSpFBBf1amEv8cMG7llVxXjw"
+    "WEBSITE_NODE_DEFAULT_VERSION"  = "8.4.0"
+    "WEBSITE_TIME_ZONE"             = "GMT Standard Time"
 
-resource "azurerm_key_vault" "vault" {
-  name                = local.name
-  resource_group_name = azurerm_resource_group.group.name
-  location            = azurerm_resource_group.group.location
-  soft_delete_enabled = true
-  sku_name            = "standard"
-
-  tenant_id = var.azure_tenant_id
-
-  access_policy {
-    tenant_id               = var.azure_tenant_id
-    object_id               = var.azure_webops_group_oid
-    certificate_permissions = var.azure_certificate_permissions_all
-    key_permissions         = []
-    secret_permissions      = var.azure_secret_permissions_all
   }
-
-  access_policy {
-    tenant_id          = var.azure_tenant_id
-    object_id          = var.azure_app_service_oid
-    key_permissions    = []
-    secret_permissions = ["get"]
-  }
-
-  access_policy {
-    tenant_id               = var.azure_tenant_id
-    object_id               = var.azure_jenkins_sp_oid
-    certificate_permissions = ["Get", "List", "Import"]
-    key_permissions         = []
-    secret_permissions      = ["Set", "Get"]
-  }
-
-  access_policy {
-    tenant_id          = var.azure_tenant_id
-    object_id          = local.app_team_oid
-    key_permissions    = []
-    secret_permissions = var.azure_secret_permissions_all
-  }
-
-  enabled_for_deployment          = false
-  enabled_for_disk_encryption     = false
-  enabled_for_template_deployment = true
-  tags                            = local.tags
+  default_documents = [
+    "Default.htm",
+    "Default.html",
+    "Default.asp",
+    "index.htm",
+    "index.html",
+    "iisstart.htm",
+    "default.aspx",
+    "index.php",
+    "hostingstart.html",
+  ]
+  tags = var.tags
 }
 
 resource "random_id" "session" {
   byte_length = 40
 }
 
-resource "azurerm_app_service_plan" "app" {
-  name                = local.name
-  location            = azurerm_resource_group.group.location
-  resource_group_name = azurerm_resource_group.group.name
-
-  sku {
-    tier     = "Standard"
-    size     = local.app_size
-    capacity = local.app_count
-  }
-
-  tags = local.tags
-}
-
-resource "azurerm_application_insights" "insights" {
-  name                = local.name
-  location            = "North Europe"
-  resource_group_name = azurerm_resource_group.group.name
-  application_type    = "web"
-  retention_in_days   = 90
-  sampling_percentage = 0
-}
-
-resource "azurerm_app_service" "app" {
-  name                = local.name
-  location            = azurerm_resource_group.group.location
-  resource_group_name = azurerm_resource_group.group.name
-  app_service_plan_id = azurerm_app_service_plan.app.id
-  https_only          = true
-
-  tags = local.tags
-
-  app_settings = {
-    WEBSITE_NODE_DEFAULT_VERSION   = "8.4.0"
-    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.insights.instrumentation_key
-    NODE_ENV                       = "production"
-    SESSION_SECRET                 = random_id.session.b64_url
-    AZURE_STORAGE_CONTAINER_NAME   = "cde"
-    AZURE_STORAGE_RESOURCE_GROUP   = azurerm_resource_group.group.name
-    AZURE_STORAGE_ACCOUNT_NAME     = azurerm_storage_account.app.name
-    AZURE_STORAGE_SUBSCRIPTION_ID  = var.azure_subscription_id
-    WEBSITE_TIME_ZONE              = "GMT Standard Time"
-
-    # Can't use resource property here otherwise we create a dependency cycle
-    KEY_VAULT_URL = "https://${local.name}-users.vault.azure.net/"
-  }
-
-  identity {
-    type = "SystemAssigned"
-  }
-}
-
-resource "azurerm_storage_account" "app" {
-  name                     = "${replace(local.name, "-", "")}app"
-  resource_group_name      = azurerm_resource_group.group.name
-  location                 = azurerm_resource_group.group.location
-  account_tier             = "Standard"
-  account_kind             = "Storage"
-  account_replication_type = "RAGRS"
-  tags                     = local.tags
-}
-
 resource "azurerm_role_assignment" "jenkins-write-storage" {
-  scope                = azurerm_storage_account.app.id
+  scope                = module.app_service.sa_id
   role_definition_name = "Contributor"
   principal_id         = local.azure_fixngo_jenkins_oid
 }
 
 resource "azurerm_role_assignment" "app-read-storage" {
-  scope                = azurerm_storage_account.app.id
+  scope                = module.app_service.sa_id
   role_definition_name = "Storage Account Key Operator Service Role"
-  principal_id         = azurerm_app_service.app.identity.0.principal_id
+  principal_id         = module.app_service.app_identity
 }
-
 resource "azurerm_key_vault" "app" {
   name                = "${local.name}-users"
-  resource_group_name = azurerm_resource_group.group.name
-  location            = azurerm_resource_group.group.location
-  soft_delete_enabled = true
+  resource_group_name = local.name
+  location            = "ukwest"
   sku_name            = "standard"
 
   tenant_id = var.azure_tenant_id
@@ -155,14 +72,14 @@ resource "azurerm_key_vault" "app" {
 
   access_policy {
     tenant_id          = var.azure_tenant_id
-    object_id          = local.app_team_oid
+    object_id          = local.azure_offloc_group_oid
     key_permissions    = []
     secret_permissions = var.azure_secret_permissions_all
   }
 
   access_policy {
-    tenant_id          = azurerm_app_service.app.identity.0.tenant_id
-    object_id          = azurerm_app_service.app.identity.0.principal_id
+    tenant_id          = var.azure_tenant_id
+    object_id          = module.app_service.app_identity
     key_permissions    = []
     secret_permissions = ["get", "set", "list", "delete"]
   }
@@ -170,90 +87,14 @@ resource "azurerm_key_vault" "app" {
   enabled_for_deployment          = false
   enabled_for_disk_encryption     = false
   enabled_for_template_deployment = false
-  tags                            = local.tags
-}
-
-resource "azurerm_dns_cname_record" "app" {
-  name                = local.cname
-  zone_name           = local.dns_zone_name
-  resource_group_name = local.dns_zone_rg
-  ttl                 = "300"
-  record              = "${local.name}.azurewebsites.net"
-  tags                = local.tags
-}
-
-resource "azurerm_dns_zone" "extra" {
-  count               = local.extra_dns_zone == "" ? 0 : 1
-  name                = local.extra_dns_zone
-  resource_group_name = azurerm_resource_group.group.name
-  tags                = local.tags
-}
-
-resource "azurerm_dns_cname_record" "extra" {
-  count               = local.extra_dns_zone == "" ? 0 : 1
-  name                = "www"
-  zone_name           = azurerm_dns_zone.extra[count.index].name
-  resource_group_name = azurerm_resource_group.group.name
-  ttl                 = "300"
-  record              = "${local.name}.azurewebsites.net"
-  tags                = local.tags
-}
-
-resource "azurerm_template_deployment" "ssl" {
-  name                = "ssl"
-  resource_group_name = azurerm_resource_group.group.name
-  deployment_mode     = "Incremental"
-  template_body       = file("../../shared/appservice-tls10.template.json")
-
-  parameters = {
-    name             = azurerm_app_service.app.name
-    hostname         = "${azurerm_dns_cname_record.app.name}.${azurerm_dns_cname_record.app.zone_name}"
-    keyVaultId       = azurerm_key_vault.vault.id
-    keyVaultCertName = replace("${azurerm_dns_cname_record.app.name}.${azurerm_dns_cname_record.app.zone_name}", ".", "DOT")
-    service          = local.tags["Service"]
-    environment      = local.tags["Environment"]
-  }
-}
-
-resource "azurerm_template_deployment" "ssl-extra" {
-  count               = local.extra_dns_zone == "" ? 0 : 1
-  name                = "ssl-extra"
-  resource_group_name = azurerm_resource_group.group.name
-  deployment_mode     = "Incremental"
-  template_body       = file("../../shared/appservice-tls10.template.json")
-
-  parameters = {
-    name             = azurerm_app_service.app.name
-    hostname         = "${azurerm_dns_cname_record.extra[count.index].name}.${azurerm_dns_cname_record.extra[count.index].zone_name}"
-    keyVaultId       = azurerm_key_vault.vault.id
-    keyVaultCertName = replace("${azurerm_dns_cname_record.extra[count.index].name}.${azurerm_dns_cname_record.extra[count.index].zone_name}", ".", "DOT")
-    service          = local.tags["Service"]
-    environment      = local.tags["Environment"]
-
-    # This forces the app service to have a static public IP address
-    sslState = "IpBasedEnabled"
-  }
-}
-
-resource "azurerm_template_deployment" "github" {
-  count               = local.github_deploy_branch == "" ? 0 : 1
-  name                = "github"
-  resource_group_name = azurerm_resource_group.group.name
-  deployment_mode     = "Incremental"
-  template_body       = file("../../shared/appservice-scm.template.json")
-
-  parameters = {
-    name    = azurerm_app_service.app.name
-    repoURL = "https://github.com/ministryofjustice/offloc-server.git"
-    branch  = local.github_deploy_branch
-  }
+  tags                            = var.tags
 }
 
 resource "github_repository_webhook" "deploy" {
   count      = local.github_deploy_branch == "" ? 0 : 1
   repository = "offloc-server"
   configuration {
-    url          = "${azurerm_template_deployment.github[count.index].outputs["deployTrigger"]}?scmType=GitHub"
+    url          = "https://$offloc-stage:WwMNN8z7EjlE0lonGoKGANri09EJlv07kkdBPgu2etfKf1xyqoRGwreM4Q7w@offloc-stage.scm.azurewebsites.net/deploy?scmType=GitHub"
     content_type = "form"
     insecure_ssl = false
   }
@@ -261,11 +102,4 @@ resource "github_repository_webhook" "deploy" {
   active = true
 
   events = ["push"]
-}
-
-module "slackhook" {
-  source             = "../../shared/modules/slackhook"
-  app_name           = azurerm_app_service.app.name
-  channels           = var.deployment-channels
-  azure_subscription = local.azure_subscription
 }

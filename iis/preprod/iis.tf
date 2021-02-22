@@ -2,18 +2,24 @@ variable "app-name" {
   type    = string
   default = "iis-preprod"
 }
-variable "tags" {
-  type = map
-  default = {
-    Service     = "IIS"
-    Environment = "Preprod"
-  }
+
+locals {
+  ip_addresses      = ["217.33.148.210/32", "62.25.109.197/32", "212.137.36.230/32", "192.0.2.4/32", "192.0.2.5/32", "192.0.2.6/32", "192.0.2.7/32", "192.0.2.8/32", "192.0.2.9/32", "192.0.2.10/32", "192.0.2.11/32", "192.0.2.12/32", "192.0.2.13/32", "192.0.2.14/32", "192.0.2.15/32", "20.49.225.111/32"]
+  key_vault_secrets = ["signon-client-id", "signon-client-secret", "administrators"]
 }
 
-resource "azurerm_resource_group" "group" {
-  name     = var.app-name
-  location = "ukwest"
-  tags     = var.tags
+data "azurerm_key_vault_secret" "kv_secrets" {
+  for_each     = toset(local.key_vault_secrets)
+  name         = each.value
+  key_vault_id = module.app_service.vault_id
+}
+variable "tags" {
+  type = map(any)
+  default = {
+    application      = "HPA"
+    environment_name = "preprod"
+    service          = "Misc"
+  }
 }
 
 resource "random_id" "session-secret" {
@@ -32,70 +38,57 @@ resource "random_id" "sql-sgandalwar-password" {
   byte_length = 16
 }
 
-resource "azurerm_storage_account" "storage" {
-  name                      = "${replace(var.app-name, "-", "")}storage"
-  resource_group_name       = azurerm_resource_group.group.name
-  location                  = azurerm_resource_group.group.location
-  account_tier              = "Standard"
-  account_replication_type  = "RAGRS"
-  account_kind              = "Storage"
-  tags                      = var.tags
-}
-
-variable "log-containers" {
-  type    = list
-  default = ["app-logs", "web-logs", "db-logs"]
-}
-resource "azurerm_storage_container" "logs" {
-  count                 = length(var.log-containers)
-  name                  = var.log-containers[count.index]
-  storage_account_name  = azurerm_storage_account.storage.name
-  container_access_type = "private"
-}
-
-resource "azurerm_key_vault" "vault" {
-  name                = var.app-name
-  resource_group_name = azurerm_resource_group.group.name
-  location            = azurerm_resource_group.group.location
-  sku_name            = "standard"
-  tenant_id           = var.azure_tenant_id
-
-  access_policy {
-    tenant_id               = var.azure_tenant_id
-    object_id               = var.azure_webops_group_oid
-    certificate_permissions = var.azure_certificate_permissions_all
-    key_permissions         = []
-    secret_permissions      = var.azure_secret_permissions_all
+module "app_service" {
+  source                      = "../../shared/modules/azure-app-service"
+  app                         = var.app
+  env                         = var.env
+  sa_name                     = "${replace(local.name, "-", "")}storage"
+  certificate_name            = var.certificate_name
+  https_only                  = true
+  sc_branch                   = var.sc_branch
+  repo_url                    = var.repo_url
+  key_vault_secrets           = ["signon-client-id", "signon-client-secret", "administrators"]
+  log_containers              = var.log_containers
+  azure_jenkins_sp_oid        = var.azure_jenkins_sp_oid
+  ip_restriction_addresses    = var.ip_restriction_addresses
+  signon_hostname             = var.signon_hostname
+  sampling_percentage         = var.sampling_percentage
+  scm_use_main_ip_restriction = var.scm_use_main_ip_restriction
+  custom_hostname             = var.custom_hostname
+  has_storage                 = var.has_storage
+  default_documents = [
+    "Default.htm",
+    "Default.html",
+    "Default.asp",
+    "index.htm",
+    "index.html",
+    "iisstart.htm",
+    "default.aspx",
+    "index.php",
+    "hostingstart.html",
+  ]
+  tags = {
+    "application"      = "HPA"
+    "environment_name" = "preprod"
+    "service"          = "Misc"
   }
-
-  access_policy {
-    tenant_id          = var.azure_tenant_id
-    object_id          = var.azure_app_service_oid
-    key_permissions    = []
-    secret_permissions = ["get"]
-  }
-
-  access_policy {
-    tenant_id               = var.azure_tenant_id
-    object_id               = var.azure_jenkins_sp_oid
-    certificate_permissions = ["get", "list", "import"]
-    key_permissions         = []
-    secret_permissions      = ["set", "get"]
-  }
-
-  enabled_for_deployment          = false
-  enabled_for_disk_encryption     = false
-  enabled_for_template_deployment = true
-  soft_delete_enabled             = true
-
-  tags = var.tags
+  app_settings = {
+    DB_PASS        = random_id.sql-iisuser-password.b64_url
+    SESSION_SECRET = random_id.session-secret.b64_url
+    ADMINISTRATORS = data.azurerm_key_vault_secret.kv_secrets["administrators"].value
+    CLIENT_ID      = data.azurerm_key_vault_secret.kv_secrets["signon-client-id"].value
+    CLIENT_SECRET  = data.azurerm_key_vault_secret.kv_secrets["signon-client-secret"].value
+    DB_SERVER      = "${local.name}.database.windows.net"
+    DB_USER        = "${var.app}user"
+    DB_NAME        = local.name
+  TOKEN_HOST = var.signon_hostname }
 }
 
 module "sql" {
   source              = "../../shared/modules/azure-sql"
-  name                = var.app-name
-  resource_group      = azurerm_resource_group.group.name
-  location            = azurerm_resource_group.group.location
+  name                = local.name
+  resource_group      = local.name
+  location            = module.app_service.rg_location
   administrator_login = "iis"
   firewall_rules = [
     {
@@ -109,7 +102,7 @@ module "sql" {
       end   = var.ips["mojvpn"]
     },
   ]
-  audit_storage_account = azurerm_storage_account.storage.name
+  audit_storage_account = "${replace(local.name, "-", "")}storage"
   edition               = "Standard"
   scale                 = "S3"
   space_gb              = 250
@@ -143,164 +136,23 @@ module "sql" {
   ]
 }
 
+# you may need to do a target apply on the app service first if building from scratch
 resource "azurerm_sql_firewall_rule" "app-access" {
-  count               = length(split(",", azurerm_template_deployment.webapp.outputs["ips"]))
+  count               = length(module.app_service.app_service_outbound_ips)
   name                = "Application IP ${count.index}"
-  resource_group_name = azurerm_resource_group.group.name
-  server_name         = module.sql.server_name
-  start_ip_address    = element(split(",", azurerm_template_deployment.webapp.outputs["ips"]), count.index)
-  end_ip_address      = element(split(",", azurerm_template_deployment.webapp.outputs["ips"]), count.index)
+  resource_group_name = local.name
+  server_name         = local.name
+  start_ip_address    = module.app_service.app_service_outbound_ips[count.index]
+  end_ip_address      = module.app_service.app_service_outbound_ips[count.index]
+  depends_on          = [module.app_service.webapp]
 }
-
-resource "azurerm_template_deployment" "webapp" {
-  name                = "webapp"
-  resource_group_name = azurerm_resource_group.group.name
-  deployment_mode     = "Incremental"
-  template_body       = file("../../shared/appservice.template.json")
-  parameters = {
-    name        = var.app-name
-    service     = var.tags["Service"]
-    environment = var.tags["Environment"]
-    workers     = "2"
-    sku_name    = "S2"
-    sku_tier    = "Standard"
-  }
-}
-
-data "external" "sas-url" {
-  program = ["python3", "../../tools/container-sas-url-cli-auth.py"]
-  query = {
-    subscription_id = var.azure_subscription_id
-    tenant_id       = var.azure_tenant_id
-    resource_group  = azurerm_resource_group.group.name
-    storage_account = azurerm_storage_account.storage.name
-    container       = "web-logs"
-    permissions     = "rwdl"
-    start_date      = "2017-05-15T00:00:00Z"
-    end_date        = "2217-05-15T00:00:00Z"
-  }
-}
-
-resource "azurerm_template_deployment" "webapp-weblogs" {
-  name                = "webapp-weblogs"
-  resource_group_name = azurerm_resource_group.group.name
-  deployment_mode     = "Incremental"
-  template_body       = file("../../shared/appservice-weblogs.template.json")
-
-  parameters = {
-    name       = azurerm_template_deployment.webapp.parameters.name
-    storageSAS = data.external.sas-url.result["url"]
-  }
-
-  depends_on = [azurerm_template_deployment.webapp]
-}
-
-resource "azurerm_template_deployment" "insights" {
-  name                = var.app-name
-  resource_group_name = azurerm_resource_group.group.name
-  deployment_mode     = "Incremental"
-  template_body       = file("../../shared/insights.template.json")
-  parameters = {
-    name         = azurerm_template_deployment.webapp.parameters.name
-    location     = "northeurope" // Not in UK yet
-    service      = var.tags["Service"]
-    environment  = var.tags["Environment"]
-    appServiceId = azurerm_template_deployment.webapp.outputs["resourceId"]
-  }
-}
-
-resource "azurerm_template_deployment" "webapp-whitelist" {
-  name                = "webapp-whitelist"
-  resource_group_name = azurerm_resource_group.group.name
-  deployment_mode     = "Incremental"
-  template_body       = file("../../shared/appservice-whitelist.template.json")
-
-  parameters = {
-    name = azurerm_template_deployment.webapp.parameters.name
-    ip1  = var.ips["office"]
-    ip2  = var.ips["quantum"]
-    ip3  = var.ips["quantum_alt"]
-    ip4  = var.ips["studiohosting-live"]
-    
-  }
-
-  depends_on = [azurerm_template_deployment.webapp]
-}
-
-data "external" "vault" {
-  program = ["python3", "../../tools/keyvault-data-cli-auth.py"]
-  query = {
-    vault = azurerm_key_vault.vault.name
-
-    client_id     = "signon-client-id"
-    client_secret = "signon-client-secret"
-
-    administrators = "administrators"
-  }
-}
-
-resource "azurerm_template_deployment" "webapp-config" {
-  name                = "webapp-config"
-  resource_group_name = azurerm_resource_group.group.name
-  deployment_mode     = "Incremental"
-  template_body       = file("../webapp-config.template.json")
-
-  parameters = {
-    name                           = azurerm_template_deployment.webapp.parameters.name
-    DB_USER                        = "iisuser"
-    DB_PASS                        = random_id.sql-iisuser-password.b64_url
-    DB_SERVER                      = module.sql.db_server
-    DB_NAME                        = module.sql.db_name
-    SESSION_SECRET                 = random_id.session-secret.b64_url
-    CLIENT_ID                      = data.external.vault.result["client_id"]
-    CLIENT_SECRET                  = data.external.vault.result["client_secret"]
-    TOKEN_HOST                     = "https://signon.service.justice.gov.uk"
-    ADMINISTRATORS                 = data.external.vault.result["administrators"]
-    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_template_deployment.insights.outputs["instrumentationKey"]
-  }
-
-  depends_on = [azurerm_template_deployment.webapp]
-}
-
-resource "azurerm_template_deployment" "webapp-ssl" {
-  name                = "webapp-ssl"
-  resource_group_name = azurerm_resource_group.group.name
-  deployment_mode     = "Incremental"
-  template_body       = file("../../shared/appservice-ssl.template.json")
-
-  parameters = {
-    name             = azurerm_template_deployment.webapp.parameters.name
-    hostname         = "${azurerm_dns_cname_record.cname.name}.${azurerm_dns_cname_record.cname.zone_name}"
-    keyVaultId       = azurerm_key_vault.vault.id
-    keyVaultCertName = "hpa-preprodDOTserviceDOThmppsDOTdsdDOTio"
-    service          = var.tags["Service"]
-    environment      = var.tags["Environment"]
-  }
-
-  depends_on = [azurerm_template_deployment.webapp]
-}
-
-resource "azurerm_template_deployment" "webapp-github" {
-  name                = "webapp-github"
-  resource_group_name = azurerm_resource_group.group.name
-  deployment_mode     = "Incremental"
-  template_body       = file("../../shared/appservice-scm.template.json")
-
-  parameters = {
-    name    = var.app-name
-    repoURL = "https://github.com/ministryofjustice/iis.git"
-    branch  = "deploy-to-preprod"
-  }
-
-  depends_on = [azurerm_template_deployment.webapp]
-}
-
-
+#Don't think the deployment works currently, really this should be removed and oauth between the azure sub & github with the github scmtype should be used.
 resource "github_repository_webhook" "webapp-deploy" {
   repository = "iis"
 
   configuration {
-    url          = "${azurerm_template_deployment.webapp-github.outputs["deployTrigger"]}?scmType=GitHub"
+    # url is hardcoded to match live
+    url          = "https://$iis-preprod:KvQb7vusM7WLlsrxZXEKZvJGA74jJrvTyBEWcc5wJbpK1KA0KxSbzqeSgx2z@iis-preprod.scm.azurewebsites.net/deploy?scmType=GitHub"
     content_type = "form"
     insecure_ssl = false
   }
@@ -308,14 +160,6 @@ resource "github_repository_webhook" "webapp-deploy" {
 
   events = ["push"]
 }
-
-module "slackhook" {
-  source             = "../../shared/modules/slackhook"
-  app_name           = azurerm_template_deployment.webapp.parameters.name
-  azure_subscription = "production"
-  channels           = ["hpa"]
-}
-
 resource "azurerm_dns_cname_record" "cname" {
   name                = "hpa-preprod"
   zone_name           = "service.hmpps.dsd.io"

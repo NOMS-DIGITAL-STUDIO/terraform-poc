@@ -3,23 +3,15 @@ resource "azurerm_key_vault" "webops_jenkins" {
   name                = "webops-jenkins-prod"
   resource_group_name = azurerm_resource_group.group.name
   location            = azurerm_resource_group.group.location
-  soft_delete_enabled = true
   sku_name            = "standard"
 
   tenant_id = var.azure_tenant_id
 
   access_policy {
     tenant_id          = var.azure_tenant_id
-    object_id          = "2b59743a-aae5-4961-ae3e-57ebd0d0889c"
+    object_id          = var.github_actions_prod_oid
     key_permissions    = []
-    secret_permissions = ["Get"]
-  }
-
-  access_policy {
-    tenant_id          = var.azure_tenant_id
-    object_id          = "bc67b5d4-0df5-4791-9747-b8f7d1bf16a3"
-    key_permissions    = []
-    secret_permissions = ["Get"]
+    secret_permissions = ["get"]
   }
 
   access_policy {
@@ -41,6 +33,13 @@ resource "azurerm_key_vault" "webops_jenkins" {
     object_id          = var.azure_jenkins_sp_oid
     key_permissions    = []
     secret_permissions = ["Set", "Get"]
+  }
+
+  access_policy {
+    tenant_id          = var.azure_tenant_id
+    object_id          = var.dso_certificates_oid
+    key_permissions    = []
+    secret_permissions = ["get"]
   }
 
   enabled_for_deployment          = false
