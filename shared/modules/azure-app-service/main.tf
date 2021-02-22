@@ -5,13 +5,14 @@ resource "azurerm_resource_group" "group" {
 }
 
 resource "azurerm_storage_account" "storage" {
-  count = var.has_database ? 1 : 0
-  name                     = "${replace(local.name, "-", "")}storage"
+  count = var.has_storage ? 1 : 0
+  name                     = var.sa_name
   resource_group_name      = azurerm_resource_group.group.name
   location                 = azurerm_resource_group.group.location
   account_tier             = "Standard"
   account_kind             = "Storage"
-  account_replication_type = "RAGRS"
+  min_tls_version          = "TLS1_2"
+  account_replication_type = var.storage_replication_type
   tags                     = var.tags
 }
 
@@ -89,13 +90,13 @@ resource "azurerm_app_service" "webapp" {
   tags                = var.tags
   https_only          = var.https_only
   client_cert_enabled = false
-
+  client_affinity_enabled = var.client_affinity_enabled
   site_config {
     http2_enabled               = var.http2_enabled
     scm_use_main_ip_restriction= var.scm_use_main_ip_restriction
     php_version               = "5.6"
-    use_32_bit_worker_process = var.app_service_plan_size == "B1" ? true : false
-    always_on                 = true
+    use_32_bit_worker_process = var.use_32_bit_worker_process
+    always_on                 = var.always_on
     default_documents         = var.default_documents
     dynamic "ip_restriction" {
       for_each = var.ip_restriction_addresses
@@ -103,6 +104,9 @@ resource "azurerm_app_service" "webapp" {
         ip_address = ip_restriction.value
       }
     }
+  }
+  identity {
+    type = "SystemAssigned"
   }
 
   #Couldn't get logs to work as the sas token kept completing the apply, but reverting to file system logs
@@ -124,14 +128,20 @@ resource "azurerm_app_service" "webapp" {
     WEBSITE_NODE_DEFAULT_VERSION   = "6.9.1"
   }, var.app_settings)
 }
+
 resource "azurerm_application_insights" "insights" {
   name                = local.name
-  location            = azurerm_resource_group.group.location
+  location            = var.insights_location
   resource_group_name = azurerm_resource_group.group.name
   application_type    = "web"
   retention_in_days   = 90
   sampling_percentage = var.sampling_percentage
   tags                = var.tags
+  lifecycle {
+  ignore_changes = [
+    application_type
+  ]
+}
 }
 
 resource "azurerm_app_service_certificate" "webapp-ssl" {
@@ -146,7 +156,7 @@ resource "azurerm_app_service_certificate" "webapp-ssl" {
 resource "azurerm_app_service_certificate_binding" "binding" {
   hostname_binding_id = azurerm_app_service_custom_hostname_binding.custom-binding.id
   certificate_id      = azurerm_app_service_certificate.webapp-ssl.id
-  ssl_state           = "SniEnabled"
+  ssl_state           = var.ssl_state
 }
 
 resource "azurerm_resource_group_template_deployment" "site-extension" {
@@ -169,6 +179,17 @@ resource "azurerm_app_service_custom_hostname_binding" "custom-binding" {
 
 output "advice" {
   value = "Don't forget to set up the SQL instance user/schemas manually."
+}
+
+output "vault_id" {
+  value =  azurerm_key_vault.vault.id
+}
+
+output "sa_id" {
+  value = var.has_storage ? azurerm_storage_account.storage[0].id : ""
+}
+output "app_identity" {
+  value = azurerm_app_service.webapp.identity.0.principal_id
 }
 
 

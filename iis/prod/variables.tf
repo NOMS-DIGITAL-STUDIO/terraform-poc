@@ -54,13 +54,6 @@ variable "app_service_plan_size" {
   default = "B1"
 }
 
-variable "sc_branch" {
-  type    = string
-}
-variable "repo_url" {
-  type    = string
-}
-
 variable "sampling_percentage" {
   type        = string
   description = "Fixed rate samping for app insights for reduing volume of telemetry"
@@ -69,7 +62,7 @@ variable "custom_hostname" {
   type        = string
   description = "custom hostname for the app service"
 }
-variable "has_database" {
+variable "has_storage" {
   type        = bool
   description = "If the app service creates a sql server and DB with the app service"
 }

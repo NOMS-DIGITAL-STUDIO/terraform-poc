@@ -9,13 +9,11 @@ module "app_service" {
   https_only               = true
   http2_enabled            = true
   app_service_kind         = "Windows"
-  sc_branch = var.sc_branch
-  repo_url = var.repo_url
-    app_service_plan_size = "S1"
+    scm_type                = "LocalGit"
   azure_jenkins_sp_oid     = var.azure_jenkins_sp_oid
   sampling_percentage      = var.sampling_percentage
   custom_hostname          = var.custom_hostname
-  has_database             = var.has_database
+  sa_name                 = "${replace(local.name, "-", "")}storage"
 default_documents = [
     "Default.htm",
     "Default.html",

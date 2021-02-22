@@ -72,7 +72,7 @@ variable "custom_hostname" {
   type        = string
   description = "custom hostname for the app service"
 }
-variable "has_database" {
+variable "has_storage" {
   type        = bool
   description = "If the app service creates a sql server and DB with the app service"
 }

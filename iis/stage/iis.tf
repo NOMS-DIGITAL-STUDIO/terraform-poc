@@ -4,9 +4,9 @@ locals {
 }
 
 data "azurerm_key_vault_secret" "kv_secrets" {
-  for_each     = toset(var.key_vault_secrets)
+  for_each     = toset(local.key_vault_secrets)
   name         = each.value
-  key_vault_id = azurerm_key_vault.vault.id
+  key_vault_id = module.app_service.vault_id
 }
 module "app_service" {
   source                   = "../../shared/modules/azure-app-service"
@@ -18,12 +18,12 @@ module "app_service" {
   ip_restriction_addresses = var.ip_restriction_addresses
   sc_branch = var.sc_branch
   repo_url = var.repo_url
-  key_vault_secrets = ["signon-client-id", "signon-client-secret", "administrators"]
-
+  log_containers           = var.log_containers
+  sa_name = "${replace(local.name, "-", "")}storage"
   signon_hostname          = var.signon_hostname
   sampling_percentage      = var.sampling_percentage
   custom_hostname          = var.custom_hostname
-  has_database             = var.has_database
+  has_storage         = var.has_storage
   default_documents = [
     "Default.htm",
     "Default.html",

@@ -18,20 +18,22 @@ locals {
 }
 
 data "azurerm_key_vault_secret" "kv_secrets" {
-  for_each     = toset(var.key_vault_secrets)
+  for_each     = toset(local.key_vault_secrets)
   name         = each.value
-  key_vault_id = azurerm_key_vault.vault.id
+  key_vault_id = module.app_service.vault_id
 }
 module "app_service" {
+
   source                   = "../../shared/modules/azure-app-service"
   app                      = var.app
   env                      = var.env
+  sa_name = "${replace(local.name, "-", "")}storage"
   certificate_name         = var.certificate_name
   app_service_plan_size = "S1"
-  sc_branch = var.sc_branch
-  repo_url = var.repo_url
+  scm_type    = "LocalGit"
   key_vault_secrets = ["signon-client-id", "signon-client-secret", "administrators"]
   azure_jenkins_sp_oid     = var.azure_jenkins_sp_oid
+  log_containers       = var.log_containers
   ip_restriction_addresses =       [
         "${var.ips["office"]}/32",
          "${var.ips["quantum"]}/32",
@@ -58,12 +60,13 @@ module "app_service" {
          "51.149.250.0/24", #pttp access
          "${var.ips["studiohosting-live"]}/32"
         ]
+  use_32_bit_worker_process   = false
+  always_on          = true
   signon_hostname          = var.signon_hostname
   sampling_percentage      = var.sampling_percentage
   scm_use_main_ip_restriction = var.scm_use_main_ip_restriction
   custom_hostname          = var.custom_hostname
-  has_database             = var.has_database
-  webhook_url              = "https://$iis-preprod:KvQb7vusM7WLlsrxZXEKZvJGA74jJrvTyBEWcc5wJbpK1KA0KxSbzqeSgx2z@iis-preprod.scm.azurewebsites.net/deploy?scmType=GitHub"
+  has_storage             = var.has_storage
   default_documents = [
     "Default.htm",
     "Default.html",
@@ -77,8 +80,8 @@ module "app_service" {
   ]
   tags = var.tags
   app_settings = {
-    DB_PASS = var.has_database == true ? random_id.sql-iisuser-password.b64_url : null
-  SESSION_SECRET = var.has_database == true ? random_id.session-secret.b64_url : null
+    DB_PASS = random_id.sql-iisuser-password.b64_url
+  SESSION_SECRET = random_id.session-secret.b64_url
   ADMINISTRATORS                 = data.azurerm_key_vault_secret.kv_secrets["administrators"].value
   CLIENT_ID                      = data.azurerm_key_vault_secret.kv_secrets["signon-client-id"].value
   CLIENT_SECRET                  = data.azurerm_key_vault_secret.kv_secrets["signon-client-secret"].value

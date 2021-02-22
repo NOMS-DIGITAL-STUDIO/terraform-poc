@@ -25,6 +25,12 @@ variable "key_vault_secrets" {
 variable "certificate_name" {
   type = string
 }
+
+variable "ssl_state" {
+  type = string
+  default = "SniEnabled"
+}
+
 variable "scm_type" {
   type = string
   default = null
@@ -32,11 +38,23 @@ variable "scm_type" {
 variable "tags" {
   type = map
 }
-
+variable "insights_location" {
+  type = string
+  default = "ukwest"
+}
+variable "storage_replication_type" {
+  type = string
+  default = "LRS"
+}
 variable "app_service_kind" {
   type = string
   default = "app"
 }
+variable "client_affinity_enabled" {
+  type    = bool
+  default = null
+}
+
 
 variable "https_only" {
   type    = bool
@@ -64,9 +82,22 @@ variable "app_service_plan_size" {
   type    = string
   default = "B1"
 }
+variable "always_on" {
+  type    = bool
+  default = false
+}
+variable "use_32_bit_worker_process" {
+  type    = bool
+  default = true
+}
 variable "ip_restriction_addresses" {
   type = list(string)
   default = []
+}
+
+variable "sa_name" {
+  type        = string
+  description = "Storage account name for the app service"
 }
 
 variable "sampling_percentage" {
@@ -77,8 +108,9 @@ variable "custom_hostname" {
   type        = string
   description = "custom hostname for the app service"
 }
-variable "has_database" {
+variable "has_storage" {
   type        = bool
+  default     = false
   description = "If the app service creates a sql server and DB with the app service"
 }
 
@@ -90,7 +122,7 @@ variable "signon_hostname" {
 
 variable "app_settings" {
   type = map
-  default = null
+  default = {}
 }
 variable "dso_certificates_oid" {
   #app id: 11efc5bf-0012-4a0f-ae6b-d21f1c43f251 display name: dso-certificates
