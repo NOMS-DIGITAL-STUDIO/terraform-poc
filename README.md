@@ -18,6 +18,8 @@ Please see the relevant README for the project for any extra dependencies if nee
  * [Azure CLI 2.0] (https://docs.microsoft.com/en-us/cli/azure/overview?view=azure-cli-latest)
  * [AWS CLI]
 
+ *note: monitoring is still on 12 and waiting to hear if we are still using this infra.
+
 ### Azure provider initialization
 
 You may need to be logged into the az cli with `az login`.
