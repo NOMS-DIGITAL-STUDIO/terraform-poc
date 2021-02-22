@@ -10,6 +10,6 @@ repo_url = "https://github.com/ministryofjustice/iis.git"
 signon_hostname     = "https://signon.service.justice.gov.uk"
 sampling_percentage = "100"
 custom_hostname     = "hpa-preprod.service.hmpps.dsd.io"
-has_database        = true
+has_storage       = true
 scm_use_main_ip_restriction = true
 webhook_url              = "https://$iis-preprod:KvQb7vusM7WLlsrxZXEKZvJGA74jJrvTyBEWcc5wJbpK1KA0KxSbzqeSgx2z@iis-preprod.scm.azurewebsites.net/deploy?scmType=GitHub"

@@ -8,7 +8,7 @@ terraform {
       source = "integrations/github"
     }
   }
-  required_version = ">= 0.13"
+  required_version = ">= 0.14"
 }
 provider "azurerm" {
   tenant_id       = "747381f4-e81f-4a43-bf68-ced6a1e14edf"

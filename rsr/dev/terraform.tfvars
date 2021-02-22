@@ -11,5 +11,3 @@ https_only               = true
 sampling_percentage = "100"
 custom_hostname     = "rsr-dev.hmpps.dsd.io"
 has_database        = false
-sc_branch             = "master"
-repo_url           = "https://rsr-dev.scm.azurewebsites.net"

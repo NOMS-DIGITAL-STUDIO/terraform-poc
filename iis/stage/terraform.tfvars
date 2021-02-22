@@ -8,6 +8,6 @@ ip_restriction_addresses = ["0.0.0.0/0", "192.0.2.2/32", "192.0.2.3/32", "192.0.
 signon_hostname     = "https://www.signon.dsd.io"
 sampling_percentage = "100"
 custom_hostname     = "hpa-stage.hmpps.dsd.io"
-has_database        = true
+has_storage        = true
 sc_branch             = "azure"
 repo_url           = "https://github.com/ministryofjustice/iis"

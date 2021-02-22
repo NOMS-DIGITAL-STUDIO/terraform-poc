@@ -9,9 +9,9 @@ locals {
 }
 
 data "azurerm_key_vault_secret" "kv_secrets" {
-  for_each     = toset(var.key_vault_secrets)
+  for_each     = toset(local.key_vault_secrets)
   name         = each.value
-  key_vault_id = azurerm_key_vault.vault.id
+  key_vault_id = module.app_service.vault_id
 }
 variable "tags" {
   type = map
@@ -42,21 +42,20 @@ module "app_service" {
   source                   = "../../shared/modules/azure-app-service"
   app                      = var.app
   env                      = var.env
+  sa_name = "${replace(local.name, "-", "")}storage"
   certificate_name         = var.certificate_name
   https_only               = true
   sc_branch = var.sc_branch
   repo_url = var.repo_url
   key_vault_secrets = ["signon-client-id", "signon-client-secret", "administrators"]
   log_containers = var.log_containers
-
   azure_jenkins_sp_oid     = var.azure_jenkins_sp_oid
   ip_restriction_addresses = var.ip_restriction_addresses
   signon_hostname          = var.signon_hostname
   sampling_percentage      = var.sampling_percentage
   scm_use_main_ip_restriction = var.scm_use_main_ip_restriction
   custom_hostname          = var.custom_hostname
-  has_database             = var.has_database
-  webhook_url              = "https://$iis-preprod:KvQb7vusM7WLlsrxZXEKZvJGA74jJrvTyBEWcc5wJbpK1KA0KxSbzqeSgx2z@iis-preprod.scm.azurewebsites.net/deploy?scmType=GitHub"
+  has_storage             = var.has_storage
   default_documents = [
     "Default.htm",
     "Default.html",
@@ -74,8 +73,8 @@ module "app_service" {
     "service"          = "Misc"
   }
   app_settings = {
-    DB_PASS = var.has_database == true ? random_id.sql-iisuser-password.b64_url : null
-  SESSION_SECRET = var.has_database == true ? random_id.session-secret.b64_url : null
+    DB_PASS = random_id.sql-iisuser-password.b64_url
+  SESSION_SECRET = random_id.session-secret.b64_url
   ADMINISTRATORS                 = data.azurerm_key_vault_secret.kv_secrets["administrators"].value
   CLIENT_ID                      = data.azurerm_key_vault_secret.kv_secrets["signon-client-id"].value
   CLIENT_SECRET                  = data.azurerm_key_vault_secret.kv_secrets["signon-client-secret"].value
@@ -103,7 +102,7 @@ module "sql" {
       end   = var.ips["mojvpn"]
     },
   ]
-  audit_storage_account = module.app_service.sa_name
+  audit_storage_account = "${replace(local.name, "-", "")}storage"
   edition               = "Standard"
   scale                 = "S3"
   space_gb              = 250
@@ -142,7 +141,7 @@ resource "azurerm_sql_firewall_rule" "app-access" {
   count               = length(module.app_service.app_service_outbound_ips)
   name                = "Application IP ${count.index}"
   resource_group_name = local.name
-  server_name         = "${replace(local.name, "-", "")}storage"
+  server_name         = local.name
   start_ip_address    = module.app_service.app_service_outbound_ips[count.index]
   end_ip_address      = module.app_service.app_service_outbound_ips[count.index]
   depends_on          = [module.app_service.webapp]
@@ -153,7 +152,7 @@ resource "github_repository_webhook" "webapp-deploy" {
 
   configuration {
     # url is hardcoded to match live
-    url          = var.webhook_url
+    url          = "https://$iis-preprod:KvQb7vusM7WLlsrxZXEKZvJGA74jJrvTyBEWcc5wJbpK1KA0KxSbzqeSgx2z@iis-preprod.scm.azurewebsites.net/deploy?scmType=GitHub"
     content_type = "form"
     insecure_ssl = false
   }
