@@ -23,11 +23,11 @@ locals {
   }
 }
 variable "log_containers" {
-  type    = list
+  type    = list(any)
   default = ["app-logs", "web-logs", "db-logs"]
 }
 variable "webhook_url" {
-  type    = string
+  type = string
 }
 #When you need to re-create add the key vault secret key id in, comment after so it doesn't get in the way of the plan or you'll need to main after every cert refresh
 variable "certificate_kv_secret_id" {
@@ -58,10 +58,10 @@ variable "ip_restriction_addresses" {
 }
 
 variable "sc_branch" {
-  type    = string
+  type = string
 }
 variable "repo_url" {
-  type    = string
+  type = string
 }
 
 variable "sampling_percentage" {

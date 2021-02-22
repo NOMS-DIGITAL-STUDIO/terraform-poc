@@ -14,7 +14,7 @@ data "azurerm_key_vault_secret" "kv_secrets" {
   key_vault_id = module.app_service.vault_id
 }
 variable "tags" {
-  type = map
+  type = map(any)
   default = {
     application      = "HPA"
     environment_name = "preprod"
@@ -39,23 +39,23 @@ resource "random_id" "sql-sgandalwar-password" {
 }
 
 module "app_service" {
-  source                   = "../../shared/modules/azure-app-service"
-  app                      = var.app
-  env                      = var.env
-  sa_name = "${replace(local.name, "-", "")}storage"
-  certificate_name         = var.certificate_name
-  https_only               = true
-  sc_branch = var.sc_branch
-  repo_url = var.repo_url
-  key_vault_secrets = ["signon-client-id", "signon-client-secret", "administrators"]
-  log_containers = var.log_containers
-  azure_jenkins_sp_oid     = var.azure_jenkins_sp_oid
-  ip_restriction_addresses = var.ip_restriction_addresses
-  signon_hostname          = var.signon_hostname
-  sampling_percentage      = var.sampling_percentage
+  source                      = "../../shared/modules/azure-app-service"
+  app                         = var.app
+  env                         = var.env
+  sa_name                     = "${replace(local.name, "-", "")}storage"
+  certificate_name            = var.certificate_name
+  https_only                  = true
+  sc_branch                   = var.sc_branch
+  repo_url                    = var.repo_url
+  key_vault_secrets           = ["signon-client-id", "signon-client-secret", "administrators"]
+  log_containers              = var.log_containers
+  azure_jenkins_sp_oid        = var.azure_jenkins_sp_oid
+  ip_restriction_addresses    = var.ip_restriction_addresses
+  signon_hostname             = var.signon_hostname
+  sampling_percentage         = var.sampling_percentage
   scm_use_main_ip_restriction = var.scm_use_main_ip_restriction
-  custom_hostname          = var.custom_hostname
-  has_storage             = var.has_storage
+  custom_hostname             = var.custom_hostname
+  has_storage                 = var.has_storage
   default_documents = [
     "Default.htm",
     "Default.html",
@@ -73,14 +73,14 @@ module "app_service" {
     "service"          = "Misc"
   }
   app_settings = {
-    DB_PASS = random_id.sql-iisuser-password.b64_url
-  SESSION_SECRET = random_id.session-secret.b64_url
-  ADMINISTRATORS                 = data.azurerm_key_vault_secret.kv_secrets["administrators"].value
-  CLIENT_ID                      = data.azurerm_key_vault_secret.kv_secrets["signon-client-id"].value
-  CLIENT_SECRET                  = data.azurerm_key_vault_secret.kv_secrets["signon-client-secret"].value
-  DB_SERVER  = "${local.name}.database.windows.net"
-  DB_USER    = "${var.app}user"
-  DB_NAME    = local.name
+    DB_PASS        = random_id.sql-iisuser-password.b64_url
+    SESSION_SECRET = random_id.session-secret.b64_url
+    ADMINISTRATORS = data.azurerm_key_vault_secret.kv_secrets["administrators"].value
+    CLIENT_ID      = data.azurerm_key_vault_secret.kv_secrets["signon-client-id"].value
+    CLIENT_SECRET  = data.azurerm_key_vault_secret.kv_secrets["signon-client-secret"].value
+    DB_SERVER      = "${local.name}.database.windows.net"
+    DB_USER        = "${var.app}user"
+    DB_NAME        = local.name
   TOKEN_HOST = var.signon_hostname }
 }
 

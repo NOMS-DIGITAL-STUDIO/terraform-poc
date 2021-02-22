@@ -64,7 +64,7 @@ locals {
 }
 
 variable "azure_certificate_permissions_all" {
-  type = list
+  type = list(any)
 
   default = [
     "Get",
@@ -87,7 +87,7 @@ variable "azure_certificate_permissions_all" {
 }
 
 variable "azure_secret_permissions_all" {
-  type = list
+  type = list(any)
 
   default = [
     "backup",

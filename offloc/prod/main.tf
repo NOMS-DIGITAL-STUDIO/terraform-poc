@@ -1,21 +1,21 @@
 module "app_service" {
-  source                  = "../../shared/modules/azure-app-service"
-  app                     = var.app
-  env                     = var.env
-  certificate_name        = var.certificate_name
-  app_service_kind        = "Windows"
-  https_only              = true
-  client_affinity_enabled = true
+  source                   = "../../shared/modules/azure-app-service"
+  app                      = var.app
+  env                      = var.env
+  certificate_name         = var.certificate_name
+  app_service_kind         = "Windows"
+  https_only               = true
+  client_affinity_enabled  = true
   storage_replication_type = "GRS"
-  insights_location       = "northeurope"
-  sa_name                 = "${replace(local.name, "-", "")}app"
-  has_storage             = var.has_storage
-  azure_jenkins_sp_oid    = var.azure_jenkins_sp_oid
-  sampling_percentage     = var.sampling_percentage
-  custom_hostname         = var.custom_hostname
-  ssl_state               = "IpBasedEnabled"
-  app_service_plan_size   = var.app_service_plan_size
-  scm_type                = "LocalGit"
+  insights_location        = "northeurope"
+  sa_name                  = "${replace(local.name, "-", "")}app"
+  has_storage              = var.has_storage
+  azure_jenkins_sp_oid     = var.azure_jenkins_sp_oid
+  sampling_percentage      = var.sampling_percentage
+  custom_hostname          = var.custom_hostname
+  ssl_state                = "IpBasedEnabled"
+  app_service_plan_size    = var.app_service_plan_size
+  scm_type                 = "LocalGit"
   app_settings = {
     "AZURE_STORAGE_ACCOUNT_NAME"    = "offlocprodapp"
     "AZURE_STORAGE_CONTAINER_NAME"  = "cde"
@@ -25,7 +25,7 @@ module "app_service" {
     "NODE_ENV"                      = "production"
     "SESSION_SECRET"                = random_id.session.b64_url
     "WEBSITE_TIME_ZONE"             = "GMT Standard Time"
-    "WEBSITE_NODE_DEFAULT_VERSION"   = "8.4.0"
+    "WEBSITE_NODE_DEFAULT_VERSION"  = "8.4.0"
 
   }
   default_documents = [
@@ -60,8 +60,8 @@ resource "azurerm_role_assignment" "app-read-storage" {
 }
 
 resource "azurerm_key_vault" "app" {
-name                = "${local.name}-users"
-resource_group_name = local.name
+  name                = "${local.name}-users"
+  resource_group_name = local.name
   location            = "ukwest"
   sku_name            = "standard"
 

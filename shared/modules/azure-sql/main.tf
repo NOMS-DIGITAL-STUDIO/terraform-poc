@@ -11,7 +11,7 @@ variable "administrator_login" {
   type = string
 }
 variable "firewall_rules" {
-  type = list
+  type = list(any)
   default = [
     # for example
     # {
@@ -42,14 +42,14 @@ variable "collation" {
   default = "SQL_Latin1_General_CP1_CI_AS"
 }
 variable "tags" {
-  type = map
+  type = map(any)
   # default {
   #    Service = "xxx"
   #    Environment = "xxx"
   # }
 }
 variable "db_users" {
-  type    = map
+  type    = map(any)
   default = {}
   # {
   #     username = "password"
@@ -58,7 +58,7 @@ variable "db_users" {
   # }
 }
 variable "setup_queries" {
-  type = list
+  type = list(any)
   default = [
     # list of string SQL commands to run
   ]

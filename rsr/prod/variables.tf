@@ -23,7 +23,7 @@ locals {
   }
 }
 variable "tags" {
-  type = map
+  type = map(any)
 }
 #When you need to re-create add the key vault secret key id in, comment after so it doesn't get in the way of the plan or you'll need to main after every cert refresh
 variable "certificate_kv_secret_id" {
@@ -57,10 +57,10 @@ variable "custom_hostname" {
 }
 
 variable "sc_branch" {
-  type    = string
+  type = string
 }
 variable "repo_url" {
-  type    = string
+  type = string
 }
 
 #variable "default_documents" {

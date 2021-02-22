@@ -24,49 +24,49 @@ data "azurerm_key_vault_secret" "kv_secrets" {
 }
 module "app_service" {
 
-  source                   = "../../shared/modules/azure-app-service"
-  app                      = var.app
-  env                      = var.env
-  sa_name = "${replace(local.name, "-", "")}storage"
-  certificate_name         = var.certificate_name
+  source                = "../../shared/modules/azure-app-service"
+  app                   = var.app
+  env                   = var.env
+  sa_name               = "${replace(local.name, "-", "")}storage"
+  certificate_name      = var.certificate_name
   app_service_plan_size = "S1"
-  scm_type    = "LocalGit"
-  key_vault_secrets = ["signon-client-id", "signon-client-secret", "administrators"]
-  azure_jenkins_sp_oid     = var.azure_jenkins_sp_oid
-  log_containers       = var.log_containers
-  ip_restriction_addresses =       [
-        "${var.ips["office"]}/32",
-         "${var.ips["quantum"]}/32",
-         "${var.ips["quantum_alt"]}/32",
-         "35.177.252.195/32",
-         "${var.ips["mojvpn"]}/32",
-         "157.203.176.138/31",
-         "157.203.176.140/32",
-         "157.203.177.190/31",
-         "157.203.177.192/32",
-         "62.25.109.201/32",
-         "62.25.109.203/32",
-         "212.137.36.233/32",
-         "212.137.36.234/32",
-         "195.59.75.0/24",
-         "194.33.192.0/25",
-         "194.33.193.0/25",
-         "194.33.196.0/25",
-         "194.33.197.0/25",
-         "195.92.38.20/32", #dxc_webproxy1
-         "195.92.38.21/32", #dxc_webproxy2
-         "195.92.38.22/32", #dxc_webproxy3
-         "195.92.38.23/32", #dxc_webproxy4
-         "51.149.250.0/24", #pttp access
-         "${var.ips["studiohosting-live"]}/32"
-        ]
+  scm_type              = "LocalGit"
+  key_vault_secrets     = ["signon-client-id", "signon-client-secret", "administrators"]
+  azure_jenkins_sp_oid  = var.azure_jenkins_sp_oid
+  log_containers        = var.log_containers
+  ip_restriction_addresses = [
+    "${var.ips["office"]}/32",
+    "${var.ips["quantum"]}/32",
+    "${var.ips["quantum_alt"]}/32",
+    "35.177.252.195/32",
+    "${var.ips["mojvpn"]}/32",
+    "157.203.176.138/31",
+    "157.203.176.140/32",
+    "157.203.177.190/31",
+    "157.203.177.192/32",
+    "62.25.109.201/32",
+    "62.25.109.203/32",
+    "212.137.36.233/32",
+    "212.137.36.234/32",
+    "195.59.75.0/24",
+    "194.33.192.0/25",
+    "194.33.193.0/25",
+    "194.33.196.0/25",
+    "194.33.197.0/25",
+    "195.92.38.20/32", #dxc_webproxy1
+    "195.92.38.21/32", #dxc_webproxy2
+    "195.92.38.22/32", #dxc_webproxy3
+    "195.92.38.23/32", #dxc_webproxy4
+    "51.149.250.0/24", #pttp access
+    "${var.ips["studiohosting-live"]}/32"
+  ]
   use_32_bit_worker_process   = false
-  always_on          = true
-  signon_hostname          = var.signon_hostname
-  sampling_percentage      = var.sampling_percentage
+  always_on                   = true
+  signon_hostname             = var.signon_hostname
+  sampling_percentage         = var.sampling_percentage
   scm_use_main_ip_restriction = var.scm_use_main_ip_restriction
-  custom_hostname          = var.custom_hostname
-  has_storage             = var.has_storage
+  custom_hostname             = var.custom_hostname
+  has_storage                 = var.has_storage
   default_documents = [
     "Default.htm",
     "Default.html",
@@ -80,15 +80,15 @@ module "app_service" {
   ]
   tags = var.tags
   app_settings = {
-    DB_PASS = random_id.sql-iisuser-password.b64_url
-  SESSION_SECRET = random_id.session-secret.b64_url
-  ADMINISTRATORS                 = data.azurerm_key_vault_secret.kv_secrets["administrators"].value
-  CLIENT_ID                      = data.azurerm_key_vault_secret.kv_secrets["signon-client-id"].value
-  CLIENT_SECRET                  = data.azurerm_key_vault_secret.kv_secrets["signon-client-secret"].value
-  DB_SERVER  = "${local.name}.database.windows.net"
-  DB_USER    = "${var.app}user"
-  DB_NAME    = local.name
-  TOKEN_HOST = var.signon_hostname}
+    DB_PASS        = random_id.sql-iisuser-password.b64_url
+    SESSION_SECRET = random_id.session-secret.b64_url
+    ADMINISTRATORS = data.azurerm_key_vault_secret.kv_secrets["administrators"].value
+    CLIENT_ID      = data.azurerm_key_vault_secret.kv_secrets["signon-client-id"].value
+    CLIENT_SECRET  = data.azurerm_key_vault_secret.kv_secrets["signon-client-secret"].value
+    DB_SERVER      = "${local.name}.database.windows.net"
+    DB_USER        = "${var.app}user"
+    DB_NAME        = local.name
+  TOKEN_HOST = var.signon_hostname }
 }
 
 module "sql" {

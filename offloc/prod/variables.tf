@@ -3,7 +3,7 @@ variable "app" {
 }
 
 variable "deployment-channels" {
-  type    = list
+  type    = list(any)
   default = ["offloc-replacement"]
 }
 
@@ -21,7 +21,7 @@ locals {
 
 }
 variable "tags" {
-  type = map
+  type = map(any)
 }
 #When you need to re-create add the key vault secret key id in, comment after so it doesn't get in the way of the plan or you'll need to main after every cert refresh
 variable "certificate_kv_secret_id" {

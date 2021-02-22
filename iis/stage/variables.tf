@@ -17,10 +17,10 @@ locals {
   app_size  = "S1"
   app_count = 1
   tags = {
-      "application"      = "HPA"
-      "environment_name" = "prod"
-      "service"          = "Misc"
-    }
+    "application"      = "HPA"
+    "environment_name" = "prod"
+    "service"          = "Misc"
+  }
 
 }
 #When you need to re-create add the key vault secret key id in, comment after so it doesn't get in the way of the plan or you'll need to main after every cert refresh
@@ -60,14 +60,14 @@ variable "has_storage" {
   description = "If the app service creates a sql server and DB with the app service"
 }
 variable "log_containers" {
-  type    = list
+  type    = list(any)
   default = ["app-logs", "web-logs", "db-logs"]
 }
 variable "sc_branch" {
-  type    = string
+  type = string
 }
 variable "repo_url" {
-  type    = string
+  type = string
 }
 variable "signon_hostname" {
   type        = string
