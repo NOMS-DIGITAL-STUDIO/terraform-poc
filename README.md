@@ -15,8 +15,7 @@ Please see the relevant README for the project for any extra dependencies if nee
 ### Required Software
 
  * [terraform 0.14+](http://terraform.io/)
- * [Azure CLI 2.0] (https://docs.microsoft.com/en-us/cli/azure/overview?view=azure-cli-latest)
- * [AWS CLI]
+ * [Azure CLI 2] (https://docs.microsoft.com/en-us/cli/azure/overview?view=azure-cli-latest)
 
  *note: monitoring is still on 12 and waiting to hear if we are still using this infra.
 
@@ -29,54 +28,6 @@ If there are any issues where you can't find the state file or resource you may 
 ```
 $ az login
 ```
-
-### AWS provider initialization
-
-Due to a design decision terraform doesn't support dynamic prompting from providers as they expect terraform to be non-interactive.
-see https://github.com/hashicorp/terraform-provider-aws/issues/2420
-
-This affects the following projects which use the AWS provider:
-
-```
-monitoring
-```
-
--In order to authenticate with AWS CLI, there are 2 methods that you will to be able achieve this, see instruction below:
-
-
-Scripted
---------
-Checkout https://github.com/ministryofjustice/digital-studio-infra
-
-For AWS provider and AWS resources you will need to auth against the mgmt account. See https://github.com/ministryofjustice/dso-infra-aws-mgmt for more details.  Run this to authenticate against mgmt:
-
-```
-source ./aws-users/get-access-token.sh mgmt
-```
-
-This script will ask for your MFA code and setup the required AWS environment variables containing the session token.  See manual steps, or look inside the script.
-
-If this returns an error 'Invalid
-
-The provider config in `aws-devtest.tf` and `aws-prod.tf` now contains the role which will be assumed in either dev or prod AWS accounts.
-
-
-Manual Steps
-------------
-retreive the ARN for your MFA device from the IAM service above: "arn:aws:iam::409876543212:mfa/BobSmith"
-run following with aws cli, using token code from your device:
-"aws sts get-session-token --serial-number 'arn:aws:iam::409876543212:mfa/BobSmith' --token-code 123456 --duration-seconds 129600"
-aws will return temporary credentials (expire after "duration-seconds" above):
-AccessKeyId
-SecretAccessKey
-SessionToken
-Re-export the temp credentials respecively as:
-AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY
-AWS_SESSION_TOKEN
-Test your access with something like aws s3 ls or aws describe-instances
-These credentials will be used and indeed required going forward - note that they expire after a max of 36 hours (129600 seconds from above).
-
 
 ### Github provider initialization
 
