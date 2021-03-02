@@ -56,13 +56,6 @@ variable "custom_hostname" {
   description = "custom hostname for the app service"
 }
 
-variable "sc_branch" {
-  type = string
-}
-variable "repo_url" {
-  type = string
-}
-
 #variable "default_documents" {
 #  type = list(string)
 #  description = "default documents for the app site config"

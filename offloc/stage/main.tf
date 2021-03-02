@@ -21,7 +21,7 @@ module "app_service" {
     "AZURE_STORAGE_SUBSCRIPTION_ID" = "c27cfedb-f5e9-45e6-9642-0fad1a5c94e7"
     "KEY_VAULT_URL"                 = "https://offloc-stage-users.vault.azure.net/"
     "NODE_ENV"                      = "production"
-    "SESSION_SECRET"                = "dxnuH5VFJ7BfX89oxbij69DMj5EmPkVSpFBBf1amEv8cMG7llVxXjw"
+    "SESSION_SECRET"                = random_id.session.id
     "WEBSITE_NODE_DEFAULT_VERSION"  = "8.4.0"
     "WEBSITE_TIME_ZONE"             = "GMT Standard Time"
 
@@ -90,16 +90,3 @@ resource "azurerm_key_vault" "app" {
   tags                            = var.tags
 }
 
-resource "github_repository_webhook" "deploy" {
-  count      = local.github_deploy_branch == "" ? 0 : 1
-  repository = "offloc-server"
-  configuration {
-    url          = "https://$offloc-stage:WwMNN8z7EjlE0lonGoKGANri09EJlv07kkdBPgu2etfKf1xyqoRGwreM4Q7w@offloc-stage.scm.azurewebsites.net/deploy?scmType=GitHub"
-    content_type = "form"
-    insecure_ssl = false
-  }
-
-  active = true
-
-  events = ["push"]
-}
