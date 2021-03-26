@@ -171,3 +171,20 @@ resource "azurerm_dns_ns_record" "probation" {
   records = ["ns-1247.awsdns-27.org.", "ns-1910.awsdns-46.co.uk.", "ns-244.awsdns-30.com.", "ns-972.awsdns-57.net."]
 
 }
+
+resource "azurerm_dns_ns_record" "mgmt-devtest" {
+  name                = "mgmt-devtest"
+  zone_name           = azurerm_dns_zone.hmpps.name
+  resource_group_name = azurerm_resource_group.group.name
+  ttl                 = "300"
+
+  records = ["ns1-08.azure-dns.com.", "ns2-08.azure-dns.net.", "ns3-08.azure-dns.org.", "ns4-08.azure-dns.info."]
+
+  tags = {
+    application      = "Management"
+    component        = "web"
+    environment_name = "devtest"
+    service          = "FixNGo"
+  }
+
+}
