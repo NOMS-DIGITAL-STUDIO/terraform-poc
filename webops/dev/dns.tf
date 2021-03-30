@@ -213,3 +213,11 @@ resource "azurerm_dns_cname_record" "test-ndelius-interface" {
   record              = "ndelius-dev.ukwest.cloudapp.azure.com"
   ttl                 = "3600"
 }
+
+resource "azurerm_dns_cname_record" "rsr-dev" {
+  name                = "rsr-dev"
+  zone_name           = azurerm_dns_zone.hmpps.name
+  resource_group_name = azurerm_resource_group.group.name
+  record              = "rsr-dev.azurewebsites.net"
+  ttl                 = "300"
+}
