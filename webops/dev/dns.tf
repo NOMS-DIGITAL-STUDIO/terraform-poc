@@ -221,3 +221,11 @@ resource "azurerm_dns_cname_record" "rsr-dev" {
   record              = "rsr-dev.azurewebsites.net"
   ttl                 = "300"
 }
+
+resource "azurerm_dns_cname_record" "search" {
+  name                = "search"
+  zone_name           = azurerm_dns_zone.noms.name
+  resource_group_name = azurerm_resource_group.group.name
+  record              = "search-noms-api.dsd.io"
+  ttl                 = "300"
+}
