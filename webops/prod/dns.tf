@@ -117,3 +117,63 @@ resource "azurerm_dns_cname_record" "training_oasys" {
   record              = "oasys-prod.uksouth.cloudapp.azure.com"
   ttl                 = 300
 }
+
+resource "azurerm_dns_a_record" "aap" {
+  name                = "aap"
+  zone_name           = azurerm_dns_zone.service-hmpps.name
+  resource_group_name = azurerm_resource_group.group.name
+  records             = ["51.141.40.143"]
+  ttl                 = 300
+  tags = {
+    Environment = "Prod"
+    Service     = "AAP"
+  }
+}
+
+resource "azurerm_dns_cname_record" "cafm" {
+  name                = "cafm"
+  zone_name           = azurerm_dns_zone.service-hmpps.name
+  resource_group_name = azurerm_resource_group.group.name
+  record              = "cafm-prod.ukwest.cloudapp.azure.com"
+  ttl                 = 300
+}
+
+resource "azurerm_dns_cname_record" "cafm_preprod" {
+  name                = "cafm-preprod"
+  zone_name           = azurerm_dns_zone.service-hmpps.name
+  resource_group_name = azurerm_resource_group.group.name
+  record              = "cafm-preprod.ukwest.cloudapp.azure.com"
+  ttl                 = 300
+}
+
+resource "azurerm_dns_cname_record" "cafmpmg" {
+  name                = "cafmpmg"
+  zone_name           = azurerm_dns_zone.service-hmpps.name
+  resource_group_name = azurerm_resource_group.group.name
+  record              = "cafm-prod.ukwest.cloudapp.azure.com"
+  ttl                 = 300
+}
+
+resource "azurerm_dns_cname_record" "cafmpmg_preprod" {
+  name                = "cafmpmg-preprod"
+  zone_name           = azurerm_dns_zone.service-hmpps.name
+  resource_group_name = azurerm_resource_group.group.name
+  record              = "cafm-preprod.ukwest.cloudapp.azure.com"
+  ttl                 = 300
+}
+
+resource "azurerm_dns_cname_record" "dso_monitoring_prod" {
+  name                = "dso-monitoring-prod"
+  zone_name           = azurerm_dns_zone.service-hmpps.name
+  resource_group_name = azurerm_resource_group.group.name
+  record              = "ec2-35-176-103-8.eu-west-2.compute.amazonaws.com"
+  ttl                 = 300
+}
+
+resource "azurerm_dns_a_record" "dev_admin_hub" {
+  name                = "dev.admin.hub"
+  zone_name           = azurerm_dns_zone.service-hmpps.name
+  resource_group_name = azurerm_resource_group.group.name
+  records             = ["51.141.40.186"]
+  ttl                 = 300
+}
