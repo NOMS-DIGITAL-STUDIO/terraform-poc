@@ -177,3 +177,75 @@ resource "azurerm_dns_a_record" "dev_admin_hub" {
   records             = ["51.141.40.186"]
   ttl                 = 300
 }
+
+resource "azurerm_dns_a_record" "dev_hub" {
+  name                = "dev.hub"
+  zone_name           = azurerm_dns_zone.service-hmpps.name
+  resource_group_name = azurerm_resource_group.group.name
+  records             = ["51.141.40.45"]
+  ttl                 = 500
+}
+
+resource "azurerm_dns_a_record" "dev_jenkins_hub" {
+  name                = "dev.jenkins.hub"
+  zone_name           = azurerm_dns_zone.service-hmpps.name
+  resource_group_name = azurerm_resource_group.group.name
+  records             = ["51.141.28.61"]
+  ttl                 = 300
+}
+
+resource "azurerm_dns_a_record" "testing_hub" {
+  name                = "testing.hub"
+  zone_name           = azurerm_dns_zone.service-hmpps.name
+  resource_group_name = azurerm_resource_group.group.name
+  records             = ["51.141.47.59"]
+  ttl                 = 500
+}
+
+resource "azurerm_dns_ns_record" "licences" {
+  name                = "licences"
+  zone_name           = azurerm_dns_zone.service-hmpps.name
+  resource_group_name = azurerm_resource_group.group.name
+  records             = ["ns-1037.awsdns-01.org", "ns-2027.awsdns-61.co.uk", "ns-362.awsdns-45.com", "ns-673.awsdns-20.net"]
+  ttl                 = 60
+}
+
+resource "azurerm_dns_cname_record" "mgmt" {
+  name                = "mgmt"
+  zone_name           = azurerm_dns_zone.service-hmpps.name
+  resource_group_name = azurerm_resource_group.group.name
+  record              = "mgmt-prod.ukwest.cloudapp.azure.com"
+  ttl                 = 300
+}
+
+resource "azurerm_dns_cname_record" "ndelius_interface" {
+  name                = "ndelius-interface"
+  zone_name           = azurerm_dns_zone.service-hmpps.name
+  resource_group_name = azurerm_resource_group.group.name
+  record              = "ndelius-prod.ukwest.cloudapp.azure.com"
+  ttl                 = 300
+}
+
+resource "azurerm_dns_cname_record" "offloc" {
+  name                = "offloc"
+  zone_name           = azurerm_dns_zone.service-hmpps.name
+  resource_group_name = azurerm_resource_group.group.name
+  record              = "offloc-prod.azurewebsites.net"
+  ttl                 = 300
+  tags = {
+    Environment = "prod"
+    Service     = "offloc"
+  }
+}
+
+resource "azurerm_dns_cname_record" "rsr" {
+  name                = "rsr"
+  zone_name           = azurerm_dns_zone.service-hmpps.name
+  resource_group_name = azurerm_resource_group.group.name
+  record              = "rsr-prod.azurewebsites.net"
+  ttl                 = 300
+  tags = {
+    Environment = "Prod"
+    Service     = "RSR"
+  }
+}
