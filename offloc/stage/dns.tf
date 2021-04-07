@@ -26,7 +26,7 @@ resource "azurerm_dns_ns_record" "zone_nameserver_record" {
   records             = ["ns1-03.azure-dns.com.", "ns2-03.azure-dns.net.", "ns3-03.azure-dns.org.", "ns4-03.azure-dns.info."]
   resource_group_name = local.name
   ttl                 = "172800"
-  zone_name           = azurerm_dns_zone.offloc_stage_zone
+  zone_name           = azurerm_dns_zone.offloc_stage_zone.name
 }
 
 resource "azurerm_dns_cname_record" "offloc_stage_www" {
@@ -40,5 +40,5 @@ resource "azurerm_dns_cname_record" "offloc_stage_www" {
   }
 
   ttl       = "300"
-  zone_name = azurerm_dns_zone.offloc_stage_zone
+  zone_name = azurerm_dns_zone.offloc_stage_zone.name
 }
