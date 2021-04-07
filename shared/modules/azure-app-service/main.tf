@@ -150,7 +150,6 @@ resource "azurerm_app_service_certificate" "webapp-ssl" {
   resource_group_name = azurerm_resource_group.group.name
   location            = azurerm_resource_group.group.location
   tags                = var.tags
-  #When you need to re-create add the key vault secret key id in, comment after so it doesn't get in the way of the plan or you'll need to main after every cert refresh
   key_vault_secret_id = var.certificate_kv_secret_id
 }
 

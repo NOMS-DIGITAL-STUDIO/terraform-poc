@@ -11,12 +11,13 @@ locals {
 
   github_deploy_branch = "deploy-to-${var.env}"
 }
-#When you need to re-create add the key vault secret key id in, comment after so it doesn't get in the way of the plan or you'll need to main after every cert refresh
+
 variable "certificate_kv_secret_id" {
   type        = string
   default     = null
   description = "Used to bind a certificate to the app"
 }
+
 variable "key_vault_secrets" {
   type    = list(string)
   default = []
