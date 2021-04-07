@@ -91,5 +91,5 @@ resource "azurerm_key_vault" "app" {
 
 data "azurerm_key_vault_secret" "webapp_ssl_secret_id" {
   name         = "CERTwwwDOTofflocDOTserviceDOTjusticeDOTgovDOTuk"
-  key_vault_id = azurerm_key_vault.app.id
+  key_vault_id = "https://offloc-prod.vault.azure.net/"
 }
