@@ -16,7 +16,7 @@ module "app_service" {
   ssl_state                = "IpBasedEnabled"
   app_service_plan_size    = var.app_service_plan_size
   scm_type                 = "LocalGit"
-  certificate_kv_secret_id = data.azurerm_key_vault_secret.webapp_ssl_secret_id
+  certificate_kv_secret_id = data.azurerm_key_vault_secret.webapp_ssl_secret_id.id
   app_settings = {
     "AZURE_STORAGE_ACCOUNT_NAME"    = "offlocprodapp"
     "AZURE_STORAGE_CONTAINER_NAME"  = "cde"
@@ -91,5 +91,5 @@ resource "azurerm_key_vault" "app" {
 
 data "azurerm_key_vault_secret" "webapp_ssl_secret_id" {
   name         = "CERTwwwDOTofflocDOTserviceDOTjusticeDOTgovDOTuk"
-  key_vault_id = "https://offloc-prod.vault.azure.net/"
+  key_vault_id = module.app_service.vault_id
 }
