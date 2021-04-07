@@ -151,6 +151,13 @@ resource "azurerm_app_service_certificate" "webapp-ssl" {
   location            = azurerm_resource_group.group.location
   tags                = var.tags
   key_vault_secret_id = var.certificate_kv_secret_id
+
+  lifecycle {
+    ignore_changes = [
+      key_vault_secret_id,
+    ]
+  }
+
 }
 
 resource "azurerm_app_service_certificate_binding" "binding" {
