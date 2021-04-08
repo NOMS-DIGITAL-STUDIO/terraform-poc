@@ -149,7 +149,7 @@ resource "azurerm_app_service_certificate" "webapp-ssl" {
   name                = var.certificate_name
   resource_group_name = azurerm_resource_group.group.name
   location            = azurerm_resource_group.group.location
-  tags                = var.tags
+  tags                = var.env == "prod" && var.app == "offloc" ? null : var.tags
   key_vault_secret_id = var.certificate_kv_secret_id
 
   lifecycle {
