@@ -40,7 +40,7 @@ module "app_service" {
     "index.php",
     "hostingstart.html",
   ]
-  tags = var.tags
+  # tags = var.tags
 }
 
 

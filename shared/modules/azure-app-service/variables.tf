@@ -37,7 +37,8 @@ variable "scm_type" {
   default = null
 }
 variable "tags" {
-  type = map(any)
+  type    = map(any)
+  default = null
 }
 variable "insights_location" {
   type    = string
