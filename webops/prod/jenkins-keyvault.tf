@@ -37,14 +37,14 @@ resource "azurerm_key_vault" "webops_jenkins" {
 
   access_policy {
     tenant_id          = var.azure_tenant_id
-    object_id          = "11efc5bf-0012-4a0f-ae6b-d21f1c43f251" # dso-certificates
+    object_id          = "a3415938-d0a1-4cfe-b312-edf87c251a69" # dso-certificates
     key_permissions    = []
     secret_permissions = ["get"]
   }
 
   access_policy {
     tenant_id          = var.azure_tenant_id
-    object_id          = "c666e4d6-6452-42b9-ab84-0df839c4aa65" # ansible-monorepo-prod
+    object_id          = "4a65e4b7-189c-4d87-980a-050b9969009d" # ansible-monorepo-prod
     key_permissions    = []
     secret_permissions = ["get"]
   }
