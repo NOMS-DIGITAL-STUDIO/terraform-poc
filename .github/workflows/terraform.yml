@@ -1,4 +1,4 @@
-name: terraform plan
+name: terraform
 
 on:
   repository_dispatch:
@@ -24,8 +24,7 @@ jobs:
 
     steps:
       - name: testing
-        run: |
-          echo "${{ github }}"
+        run: echo "${{ github }}"
       
       - name: set prod vars
         if: ${{ github.event.client_payload.client_is_prod }}
