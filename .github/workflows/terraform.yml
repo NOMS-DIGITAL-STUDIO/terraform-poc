@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ env.ENVIRONMENT }}
 
-    steps:      
+    steps:
       - name: set prod vars
         if: ${{ github.event.client_payload.client_is_prod }}
         run: |
