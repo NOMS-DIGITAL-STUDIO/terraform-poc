@@ -31,7 +31,7 @@ jobs:
           token:          ${{ secrets.DSO_GITHUB_AUTOMATION_PAT }}
           repository:     ministryofjustice/digital-studio-infra
           event-type:     "plan"
-          client-payload: "{'environment':'iis/preprod','client_is_prod':false}"
+          client-payload: '{"environment":"iis/preprod","client_is_prod":false}'
       
       - name: terraform apply
         if: ${{ github.event.pull_request.merged }}
