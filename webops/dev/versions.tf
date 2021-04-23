@@ -7,8 +7,16 @@ terraform {
   }
   required_version = ">= 0.14"
 }
+
 provider "azurerm" {
   tenant_id       = "747381f4-e81f-4a43-bf68-ced6a1e14edf"
-  subscription_id = "c27cfedb-f5e9-45e6-9642-0fad1a5c94e7"
+  subscription_id = "c27cfedb-f5e9-45e6-9642-0fad1a5c94e7" # Digital Studio Dev & Test Environments
+  features {}
+}
+
+provider "azurerm" {
+  alias           = "apvs"
+  tenant_id       = "747381f4-e81f-4a43-bf68-ced6a1e14edf"
+  subscription_id = "19c0e044-6167-4048-a817-7ac7b4323f06" # APVS Production
   features {}
 }
