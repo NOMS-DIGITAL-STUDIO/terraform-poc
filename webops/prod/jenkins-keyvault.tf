@@ -1,11 +1,3 @@
-data "azuread_service_principal" "ansible_monorepo_prod" {
-  display_name = "ansible-monorepo-prod"
-}
-
-
-data "azuread_service_principal" "dso_certificates" {
-  display_name = "dso-certificates"
-}
 
 resource "azurerm_key_vault" "webops_jenkins" {
   name                     = "webops-jenkins-prod"
@@ -45,14 +37,14 @@ resource "azurerm_key_vault" "webops_jenkins" {
 
   access_policy {
     tenant_id          = var.azure_tenant_id
-    object_id          = data.azuread_service_principal.dso_certificates.object_id
+    object_id          = "a3415938-d0a1-4cfe-b312-edf87c251a69" # dso-certificates
     key_permissions    = []
     secret_permissions = ["get"]
   }
 
   access_policy {
     tenant_id          = var.azure_tenant_id
-    object_id          = data.azuread_service_principal.ansible_monorepo_prod.object_id
+    object_id          = "4a65e4b7-189c-4d87-980a-050b9969009d" # ansible-monorepo-prod
     key_permissions    = []
     secret_permissions = ["get"]
   }
