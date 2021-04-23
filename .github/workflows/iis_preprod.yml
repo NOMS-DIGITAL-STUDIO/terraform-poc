@@ -1,22 +1,13 @@
 name: iis preprod
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - iis/preprod/*
-      - iis/iis.tf
-      - azure-prod.tf
-      - ips.tf
-      - .github/workflows/plan_iis_preprod.yml
-      - shared/*
   pull_request:
     types: 
       - opened
       - edited
       - synchronize
       - reopened
+      - merged
     branches:
       - master
     paths:
@@ -24,95 +15,30 @@ on:
       - iis/iis.tf
       - azure-prod.tf
       - ips.tf
-      - .github/workflows/plan_iis_preprod.yml
+      - .github/workflows/iis_preprod.yml
+      - .github/workflows/terraform.yml
       - shared/*
-
-env:
-  GITHUB_ORGANIZATION: ministryofjustice
-  ENVIRONMENT: iis/preprod
-  GITHUB_USERNAME: hmpps-dso-automation
-  GITHUB_TOKEN: ${{ secrets.DSO_GITHUB_AUTOMATION_PAT }}
-  WORKING_DIRECTORY: iis/preprod
-  ARM_CLIENT_ID: d91544c4-212d-4da5-b6a4-ddf65fe188a5
-  ARM_CLIENT_SECRET: ${{ secrets.DIGITAL_STUDIO_INFRA_PROD_CLIENT_SECRET }}
-  ARM_SUBSCRIPTION_ID: a5ddf257-3b21-4ba9-a28c-ab30f751b383
-  ARM_TENANT_ID: 747381f4-e81f-4a43-bf68-ced6a1e14edf
 
 jobs:
   verify-terraform-config:
     runs-on: ubuntu-latest
-    environment: iis/preprod
 
     steps:
-      - name: Checkout the code
-        uses: actions/checkout@v2
-
-      - name: Setup GitHub credential.helper for terraform
-        uses: fusion-engineering/setup-git-credentials@v2
-        with:
-          credentials: https://${{ env.GITHUB_USERNAME }}:${{ env.GITHUB_TOKEN }}@github.com
-          
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 0.14.9
-        
-      - name: terraform code formatter
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: ministryofjustice/github-actions/code-formatter@main
-      
-      - name: Terraform Init
-        working-directory: ${{ env.WORKING_DIRECTORY }}
-        run: terraform init
-
-      - name: terraform validate
-        working-directory: ${{ env.WORKING_DIRECTORY }}
-        run: terraform validate
-
-      - name: terraform refresh
-        working-directory: ${{ env.WORKING_DIRECTORY }}         
-        run: |
-          terraform refresh
-
       - name: terraform plan
-        working-directory: ${{ env.WORKING_DIRECTORY }}
-        run: |
-          terraform plan -out=tf.plan -refresh=false -no-color > tf_out.txt
-          tail -c 65476 tf_out.txt > tf_plan.txt
-          cat tf_plan.txt
-          echo 'TF_PLAN_OUT<<EOF' >> $GITHUB_ENV
-          cat tf_plan.txt >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
-
-      - name: Post a PR comment with the terraform plan output
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: allthatjazzleo/actions-pull-request-add-comment@master
+        if: ${{ ! github.event.pull_request.merged }}
+        uses: peter-evans/repository-dispatch@v1
         with:
-          GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
-          message: "Terraform plan output in ${{ env.ENVIRONMENT }}: \n```\n${{ env.TF_PLAN_OUT }}\n```"
-
-
-      - name: Post a post merge PR comment with the terraform plan output
-        if: ${{ github.event.pull_request.merged || github.event_name == 'push' }}
-        uses: guchaocharlie/comment-pr@v1
-        with:
-          github-token: ${{ env.GITHUB_TOKEN }}
-          comment: "Terraform plan output in ${{ env.ENVIRONMENT }}: \n```\n${{ env.TF_PLAN_OUT }}\n```"
-
-      - name: terraform apply
-        if: ${{ github.event.pull_request.merged || github.event_name == 'push' }}
-        working-directory: ${{ env.WORKING_DIRECTORY }}
-        run: |
-          terraform apply -auto-approve -no-color tf.plan > tf_out.txt
-          tail -c 65476 tf_out.txt > tf_apply.txt
-          cat tf_apply.txt
-          echo 'TF_APPLY_OUT<<EOF' >> $GITHUB_ENV
-          cat tf_apply.txt >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
+          token:          ${{ secrets.DSO_GITHUB_AUTOMATION_PAT }}
+          repository:     ministryofjustice/digital-studio-infra
+          event-type:     "plan"
+          client-payload: "{'environment':'iis/preprod','client_is_prod':false}"
       
-      - name: Post a post merge PR comment with the terraform apply output
-        if: ${{ github.event.pull_request.merged || github.event_name == 'push' }}
-        uses: guchaocharlie/comment-pr@v1
+      - name: terraform apply
+        if: ${{ github.event.pull_request.merged }}
+        uses: peter-evans/repository-dispatch@v1
         with:
-          github-token: ${{ env.GITHUB_TOKEN }}
-          comment: "Terraform apply output in ${{ env.ENVIRONMENT }}: \n```\n${{ env.TF_APPLY_OUT }}\n```"
+          token:          ${{ secrets.DSO_GITHUB_AUTOMATION_PAT }}
+          repository:     ministryofjustice/digital-studio-infra
+          event-type:     "apply"
+          client-payload: '{"environment":"iis/preprod","client_is_prod":false}'
+          

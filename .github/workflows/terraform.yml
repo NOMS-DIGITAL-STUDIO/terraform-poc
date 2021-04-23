@@ -1,0 +1,107 @@
+name: terraform plan
+
+on:
+  repository_dispatch:
+    types: 
+      - plan
+      - apply
+
+env:
+  ENVIRONMENT:              ${{ github.event.client_payload.environment }}
+  GITHUB_TOKEN:             ${{ secrets.DSO_GITHUB_AUTOMATION_PAT }}
+  ARM_CLIENT_ID_DEV:        b11478e9-3ca6-40b8-bbcd-9cb46c02957c
+  ARM_CLIENT_ID_PROD:       d91544c4-212d-4da5-b6a4-ddf65fe188a5
+  ARM_CLIENT_SECRET_DEV:    ${{ secrets.DIGITAL_STUDIO_INFRA_DEVTEST_CLIENT_SECRET }}
+  ARM_CLIENT_SECRET_PROD:   ${{ secrets.DIGITAL_STUDIO_INFRA_PROD_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID_DEV:  c27cfedb-f5e9-45e6-9642-0fad1a5c94e7
+  ARM_SUBSCRIPTION_ID_PROD: a5ddf257-3b21-4ba9-a28c-ab30f751b383
+  ARM_TENANT_ID:            747381f4-e81f-4a43-bf68-ced6a1e14edf
+
+jobs:
+  verify-terraform-config:
+    runs-on: ubuntu-latest
+    environment: ${{ env.ENVIRONMENT }}
+
+    steps:
+      - name: testing
+        run: |
+          echo "${{ github }}"
+      
+      - name: set prod vars
+        if: ${{ github.event.client_payload.client_is_prod }}
+        run: |
+          echo "ARM_CLIENT_ID=${{ env.ARM_CLIENT_ID_PROD }}"             >> $GITHUB_ENV
+          echo "ARM_CLIENT_SECRET=${{ env.ARM_CLIENT_SECRET_PROD }}"     >> $GITHUB_ENV
+          echo "ARM_SUBSCRIPTION_ID=${{ env.ARM_SUBSCRIPTION_ID_PROD }}" >> $GITHUB_ENV
+
+      - name: set dev vars
+        if: ${{ ! github.event.client_payload.client_is_prod }}
+        run: |
+          echo "ARM_CLIENT_ID=${{ env.ARM_CLIENT_ID_DEV }}"             >> $GITHUB_ENV
+          echo "ARM_CLIENT_SECRET=${{ env.ARM_CLIENT_SECRET_DEV }}"     >> $GITHUB_ENV
+          echo "ARM_SUBSCRIPTION_ID=${{ env.ARM_SUBSCRIPTION_ID_DEV }}" >> $GITHUB_ENV
+      
+      - name: Checkout the code
+        uses: actions/checkout@v2
+          
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.14.9
+        
+      - name: terraform code formatter
+        uses: ministryofjustice/github-actions/code-formatter@main
+      
+      - name: Terraform Init
+        working-directory: ${{ env.ENVIRONMENT }}
+        run: terraform init
+
+      - name: terraform validate
+        working-directory: ${{ env.ENVIRONMENT }}
+        run: terraform validate
+
+      - name: terraform refresh
+        working-directory: ${{ env.ENVIRONMENT }}         
+        run: terraform refresh
+
+      - name: terraform plan
+        working-directory: ${{ env.ENVIRONMENT }}
+        run: |
+          terraform plan -out=tf.plan -refresh=false -no-color > tf_out.txt
+          tail -c 65476 tf_out.txt > tf_plan.txt
+          cat tf_plan.txt
+          echo 'TF_PLAN_OUT<<EOF' >> $GITHUB_ENV
+          cat tf_plan.txt >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+      - name: Post a PR comment with the terraform plan output
+        uses: allthatjazzleo/actions-pull-request-add-comment@master
+        with:
+          GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
+          message: "Terraform plan output in ${{ env.ENVIRONMENT }}: \n```\n${{ env.TF_PLAN_OUT }}\n```"
+
+
+      - name: Post a post merge PR comment with the terraform plan output
+        if: ${{ github.event.type == 'apply' }}
+        uses: guchaocharlie/comment-pr@v1
+        with:
+          github-token: ${{ env.GITHUB_TOKEN }}
+          comment: "Terraform plan output in ${{ env.ENVIRONMENT }}: \n```\n${{ env.TF_PLAN_OUT }}\n```"
+
+      - name: terraform apply
+        if: ${{ github.event.type == 'apply' }}
+        working-directory: ${{ env.ENVIRONMENT }}
+        run: |
+          terraform apply -auto-approve -no-color tf.plan > tf_out.txt
+          tail -c 65476 tf_out.txt > tf_apply.txt
+          cat tf_apply.txt
+          echo 'TF_APPLY_OUT<<EOF' >> $GITHUB_ENV
+          cat tf_apply.txt >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+      
+      - name: Post a post merge PR comment with the terraform apply output
+        if: ${{ github.event.type == 'apply' }}
+        uses: guchaocharlie/comment-pr@v1
+        with:
+          github-token: ${{ env.GITHUB_TOKEN }}
+          comment: "Terraform apply output in ${{ env.ENVIRONMENT }}: \n```\n${{ env.TF_APPLY_OUT }}\n```"
