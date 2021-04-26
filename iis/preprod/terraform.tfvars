@@ -60,6 +60,6 @@ tags          = {
   owner            = "Malcolm Casimir:malcolm.casimir@digital.justice.gov.uk" # Mandatory
   environment_name = "preprod"
   service          = "Misc"
-  source_code      = "https://github.com/ministryofjustice/digital-studio-infra/tree/master/iis/preprod"
+  source_code      = "infra=https://github.com/ministryofjustice/digital-studio-infra/tree/master/iis/preprod"
 }
 use_32_bit_worker_process = true
