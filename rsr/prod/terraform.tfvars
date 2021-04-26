@@ -1,6 +1,11 @@
-tags = { "application" = "RSR"
-  "environment_name" = "prod"
-  "service"          = "Misc"
+tags = {
+  application      = "RSR"                                                       # Mandatory
+  business_unit    = "HMPPS"                                                     # Mandatory
+  is_production    = "true"                                                      # Mandatory
+  owner            = "DSO:digital-studio-operations-team@digital.justice.gov.uk" # Mandatory
+  environment_name = "prod"
+  service          = "Misc"
+  source_code      = "infra=https://github.com/ministryofjustice/digital-studio-infra/tree/master/rsr/prod"
 }
 app              = "rsr"
 env              = "prod"

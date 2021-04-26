@@ -54,8 +54,12 @@ sql_users = [
   "sgandalwar"
 ]
 tags = {
-  "application"      = "HPA"
-  "environment_name" = "prod"
-  "service"          = "Misc"
+  application      = "HPA"                                                    # Mandatory
+  business_unit    = "HMPPS"                                                  # Mandatory
+  is_production    = "true"                                                   # Mandatory
+  owner            = "Malcolm Casimir:malcolm.casimir@digital.justice.gov.uk" # Mandatory
+  environment_name = "prod"
+  service          = "Misc"
+  source_code      = "infra=https://github.com/ministryofjustice/digital-studio-infra/tree/master/iis/prod"
 }
 use_32_bit_worker_process = false

@@ -46,6 +46,6 @@ tags = {
   owner            = "Malcolm Casimir:malcolm.casimir@digital.justice.gov.uk" # Mandatory
   environment_name = "devtest"
   service          = "Misc"
-  source_code      = "https://github.com/ministryofjustice/digital-studio-infra/tree/master/iis/stage"
+  source_code      = "infra=https://github.com/ministryofjustice/digital-studio-infra/tree/master/iis/stage"
 }
 use_32_bit_worker_process = true
