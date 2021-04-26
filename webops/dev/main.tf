@@ -4,12 +4,6 @@ locals {
 
 variable "tags" {
   type = map(any)
-
-  default = {
-    application      = "Management"
-    service          = "FixNGo"
-    environment_name = "devtest"
-  }
 }
 
 resource "azurerm_resource_group" "group" {
