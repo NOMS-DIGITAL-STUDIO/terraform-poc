@@ -1,6 +1,11 @@
-tags = { "application" = "NonCore"
-  "environment_name" = "prod"
-  "service"          = "NonCore"
+tags = {
+  application      = "NonCore"                                                # Mandatory
+  business_unit    = "HMPPS"                                                  # Mandatory
+  is_production    = "true"                                                   # Mandatory
+  owner            = "Malcolm Casimir:malcolm.casimir@digital.justice.gov.uk" # Mandatory
+  environment_name = "prod"
+  service          = "NonCore"
+  source_code      = "infra=https://github.com/ministryofjustice/digital-studio-infra/tree/master/offloc/prod"
 }
 app = "offloc"
 env = "prod"
