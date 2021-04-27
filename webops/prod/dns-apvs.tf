@@ -41,3 +41,12 @@ resource "azurerm_dns_cname_record" "apvs_caseworker" {
   ttl                 = "3600"
   zone_name           = azurerm_dns_zone.help_with_prison_visits.name
 }
+
+resource "azurerm_dns_ns_record" "apvs_zone_ns_record" {
+  provider            = azurerm.apvs
+  name                = "@"
+  records             = ["ns1-01.azure-dns.com.", "ns2-01.azure-dns.net.", "ns3-01.azure-dns.org.", "ns4-01.azure-dns.info."]
+  resource_group_name = "apvs-prd"
+  ttl                 = "172800"
+  zone_name           = azurerm_dns_zone.help_with_prison_visits.name
+}
