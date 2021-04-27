@@ -14,3 +14,12 @@ resource "azurerm_dns_zone" "help_with_prison_visits" {
     ttl           = "3600"
   }
 }
+
+resource "azurerm_dns_a_record" "hwpv_zone_a_record" {
+  provider            = azurerm.apvs
+  name                = "@"
+  records             = ["51.140.33.178"]
+  resource_group_name = "apvs-prd"
+  ttl                 = "3600"
+  zone_name           = azurerm_dns_zone.help_with_prison_visits.name
+}
