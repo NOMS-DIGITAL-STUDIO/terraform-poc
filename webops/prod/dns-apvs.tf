@@ -23,3 +23,21 @@ resource "azurerm_dns_a_record" "hwpv_zone_a_record" {
   ttl                 = "3600"
   zone_name           = azurerm_dns_zone.help_with_prison_visits.name
 }
+
+resource "azurerm_dns_cname_record" "apvs_hash_like_cname" {
+  provider            = azurerm.apvs
+  name                = "_2a3b27e3fa8e6bd6d4ef293959a61090"
+  record              = "F736B151242EB8C7157E075B583488FC.92432E487F3EE5E8F539715731ED6B6D.b856bd4b563970cc9920.comodoca.com."
+  resource_group_name = "apvs-prd"
+  ttl                 = "3600"
+  zone_name           = azurerm_dns_zone.help_with_prison_visits.name
+}
+
+resource "azurerm_dns_cname_record" "apvs_caseworker" {
+  provider            = azurerm.apvs
+  name                = "caseworker"
+  record              = "e0e8c2cb-80cc-4087-a192-3b8fb4b49b2a.cloudapp.net"
+  resource_group_name = "apvs-prd"
+  ttl                 = "3600"
+  zone_name           = azurerm_dns_zone.help_with_prison_visits.name
+}
