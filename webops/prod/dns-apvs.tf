@@ -50,3 +50,16 @@ resource "azurerm_dns_ns_record" "apvs_zone_ns_record" {
   ttl                 = "172800"
   zone_name           = azurerm_dns_zone.help_with_prison_visits.name
 }
+
+resource "azurerm_dns_txt_record" "apvs_acme_challenge" {
+  provider = azurerm.apvs
+  name     = "_acme-challenge"
+
+  record {
+    value = "IB3suKjtigmB8tOSQNMJlDRnLm3eR9xJfNHA-NogkrE"
+  }
+
+  resource_group_name = "apvs-prd"
+  ttl                 = "10"
+  zone_name           = azurerm_dns_zone.help_with_prison_visits.name
+}
