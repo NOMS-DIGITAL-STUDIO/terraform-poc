@@ -28,6 +28,9 @@ resource "azurerm_dns_zone" "az_justice_gov_uk" {
   tags                = var.tags
 }
 
+# The two resources below can be removed after 05/05/2021. I'm leaving them both
+# there for now just in case anyone screams.
+
 # resource "azurerm_dns_zone" "studio-hosting" {
 #   name                = "studio-hosting.service.hmpps.dsd.io"
 #   resource_group_name = azurerm_resource_group.group.name
