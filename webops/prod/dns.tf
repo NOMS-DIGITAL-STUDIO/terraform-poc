@@ -73,7 +73,7 @@ resource "azurerm_dns_zone" "studio_hosting" {
 
 resource "azurerm_dns_ns_record" "studio_hosting_ns_record" {
   name                = "@"
-  records             = ["ns1-07.azure-dns.com.", "ns2-07.azure-dns.com.", "ns3-07.azure-dns.com.", "ns4-07.azure-dns.com."]
+  records             = ["ns1-07.azure-dns.com.", "ns2-07.azure-dns.net.", "ns3-07.azure-dns.org.", "ns4-07.azure-dns.info."]
   resource_group_name = azurerm_resource_group.group.name
   ttl                 = "172800"
   zone_name           = azurerm_dns_zone.studio_hosting.name
