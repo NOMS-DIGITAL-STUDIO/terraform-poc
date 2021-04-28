@@ -49,6 +49,44 @@ resource "azurerm_dns_zone" "az_justice_gov_uk" {
 #   }
 # }
 
+resource "azurerm_dns_zone" "studio_hosting" {
+  name                = "studio-hosting.service.justice.gov.uk"
+  resource_group_name = azurerm_resource_group.group.name
+
+  soa_record {
+    email         = "azuredns-hostmaster.microsoft.com"
+    expire_time   = "2419200"
+    host_name     = "ns1-07.azure-dns.com."
+    minimum_ttl   = "300"
+    refresh_time  = "3600"
+    retry_time    = "300"
+    serial_number = "1"
+    ttl           = "3600"
+  }
+
+  tags = {
+    application      = "Management"
+    environment_name = "prod"
+    service          = "FixNGo"
+  }
+}
+
+resource "azurerm_dns_ns_record" "studio_hosting_ns_record" {
+  name                = "@"
+  records             = ["ns1-07.azure-dns.com.", "ns2-07.azure-dns.net.", "ns3-07.azure-dns.org.", "ns4-07.azure-dns.info."]
+  resource_group_name = azurerm_resource_group.group.name
+  ttl                 = "172800"
+  zone_name           = azurerm_dns_zone.studio_hosting.name
+}
+
+resource "azurerm_dns_cname_record" "user_guide" {
+  name                = "user-guide"
+  record              = "ministryofjustice.github.io"
+  resource_group_name = azurerm_resource_group.group.name
+  ttl                 = "3600"
+  zone_name           = azurerm_dns_zone.studio_hosting.name
+}
+
 resource "azurerm_dns_a_record" "reporting_lsast_nomis" {
   name                = "reporting.lsast-nomis"
   zone_name           = azurerm_dns_zone.az_justice_gov_uk.name
