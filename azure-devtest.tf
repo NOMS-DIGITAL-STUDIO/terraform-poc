@@ -64,7 +64,7 @@ variable "azure_licences_group_oid" {
 
 
 locals {
-  azure_offloc_group_oid   = "f7185b7d-392e-43a0-9fc7-06b8639766ed"
+  azure_offloc_group_oid   = "c529b9fc-0b4c-49c0-ae1d-bc291cc99e76"
   azure_fixngo_jenkins_oid = "23d9e503-7bb8-4f5a-8080-72329bd434cf"
 }
 
