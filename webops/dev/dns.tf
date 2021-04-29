@@ -13,11 +13,7 @@ resource "azurerm_dns_zone" "hmpps" {
 resource "azurerm_dns_zone" "hwpv" {
   name                = "hwpv.hmpps.dsd.io"
   resource_group_name = azurerm_resource_group.group.name
-  tags = {
-    application      = "HWPV"
-    service          = "HWPV"
-    environment_name = "devtest"
-  }
+  tags                = var.tags
 }
 
 #hwpv
@@ -42,11 +38,6 @@ resource "azurerm_dns_cname_record" "cname" {
   resource_group_name = azurerm_resource_group.group.name
   ttl                 = "300"
   record              = element(values(var.hwpv-cnames[count.index]), 0)
-  tags = {
-    application      = "HWPV"
-    service          = "HWPV"
-    environment_name = "devtest"
-  }
 }
 
 #note - need to remove the record from https://github.com/ministryofjustice/dps-infra-assessment-api/blob/master/aks_infra/dns.tf
@@ -56,11 +47,6 @@ resource "azurerm_dns_ns_record" "protoassessment-api" {
   resource_group_name = azurerm_resource_group.group.name
   ttl                 = "300"
   records             = ["ns1-04.azure-dns.com.", "ns3-04.azure-dns.org.", "ns2-04.azure-dns.net.", "ns4-04.azure-dns.info."]
-  tags = {
-    "business_unit" = "dps"
-    "environment"   = "t0"
-    "service"       = "assessment-api-gw-t0"
-  }
 }
 
 resource "azurerm_dns_ns_record" "check-my-diary-dev" {
@@ -103,10 +89,6 @@ resource "azurerm_dns_cname_record" "hpa-stage" {
   resource_group_name = azurerm_resource_group.group.name
   ttl                 = "300"
   record              = "iis-stage.azurewebsites.net"
-  tags = {
-    "Environment" = "Stage"
-    "Service"     = "IIS"
-  }
 }
 
 resource "azurerm_dns_ns_record" "hwpv" {
@@ -147,9 +129,7 @@ resource "azurerm_dns_ns_record" "service-hmpps" {
   zone_name           = azurerm_dns_zone.hmpps.name
   resource_group_name = azurerm_resource_group.group.name
   ttl                 = "300"
-
-  records = ["ns1-06.azure-dns.com.", "ns2-06.azure-dns.net.", "ns3-06.azure-dns.org.", "ns4-06.azure-dns.info."]
-
+  records             = ["ns1-06.azure-dns.com.", "ns2-06.azure-dns.net.", "ns3-06.azure-dns.org.", "ns4-06.azure-dns.info."]
 }
 
 resource "azurerm_dns_ns_record" "wmt" {
@@ -157,9 +137,7 @@ resource "azurerm_dns_ns_record" "wmt" {
   zone_name           = azurerm_dns_zone.hmpps.name
   resource_group_name = azurerm_resource_group.group.name
   ttl                 = "300"
-
-  records = ["ns1-01.azure-dns.com.", "ns2-01.azure-dns.net.", "ns3-01.azure-dns.org.", "ns4-01.azure-dns.info."]
-
+  records             = ["ns1-01.azure-dns.com.", "ns2-01.azure-dns.net.", "ns3-01.azure-dns.org.", "ns4-01.azure-dns.info."]
 }
 
 resource "azurerm_dns_ns_record" "probation" {
@@ -167,9 +145,7 @@ resource "azurerm_dns_ns_record" "probation" {
   zone_name           = azurerm_dns_zone.hmpps.name
   resource_group_name = azurerm_resource_group.group.name
   ttl                 = "300"
-
-  records = ["ns-1247.awsdns-27.org.", "ns-1910.awsdns-46.co.uk.", "ns-244.awsdns-30.com.", "ns-972.awsdns-57.net."]
-
+  records             = ["ns-1247.awsdns-27.org.", "ns-1910.awsdns-46.co.uk.", "ns-244.awsdns-30.com.", "ns-972.awsdns-57.net."]
 }
 
 resource "azurerm_dns_ns_record" "mgmt-devtest" {
@@ -177,16 +153,7 @@ resource "azurerm_dns_ns_record" "mgmt-devtest" {
   zone_name           = azurerm_dns_zone.hmpps.name
   resource_group_name = azurerm_resource_group.group.name
   ttl                 = "300"
-
-  records = ["ns1-08.azure-dns.com.", "ns2-08.azure-dns.net.", "ns3-08.azure-dns.org.", "ns4-08.azure-dns.info."]
-
-  tags = {
-    application      = "Management"
-    component        = "web"
-    environment_name = "devtest"
-    service          = "FixNGo"
-  }
-
+  records             = ["ns1-08.azure-dns.com.", "ns2-08.azure-dns.net.", "ns3-08.azure-dns.org.", "ns4-08.azure-dns.info."]
 }
 
 resource "azurerm_dns_ns_record" "mgmt-prod" {
@@ -194,16 +161,7 @@ resource "azurerm_dns_ns_record" "mgmt-prod" {
   zone_name           = azurerm_dns_zone.hmpps.name
   resource_group_name = azurerm_resource_group.group.name
   ttl                 = "300"
-
-  records = ["ns1-03.azure-dns.com.", "ns2-03.azure-dns.net.", "ns3-03.azure-dns.org.", "ns4-03.azure-dns.info."]
-
-  tags = {
-    application      = "Management"
-    component        = "web"
-    environment_name = "devtest"
-    service          = "FixNGo"
-  }
-
+  records             = ["ns1-03.azure-dns.com.", "ns2-03.azure-dns.net.", "ns3-03.azure-dns.org.", "ns4-03.azure-dns.info."]
 }
 
 resource "azurerm_dns_cname_record" "test-ndelius-interface" {

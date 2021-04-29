@@ -9,13 +9,7 @@ resource "azurerm_dns_ns_record" "nomis-api" {
   zone_name           = azurerm_dns_zone.service-hmpps.name
   resource_group_name = azurerm_resource_group.group.name
   ttl                 = 300
-
-  records = ["ns2-07.azure-dns.net.", "ns3-07.azure-dns.org.", "ns1-07.azure-dns.com.", "ns4-07.azure-dns.info."]
-
-  tags = {
-    Service     = "WebOps"
-    Environment = "Management"
-  }
+  records             = ["ns2-07.azure-dns.net.", "ns3-07.azure-dns.org.", "ns1-07.azure-dns.com.", "ns4-07.azure-dns.info."]
 }
 
 output "service_hmpps_dsd_io_namesevers" {
@@ -52,6 +46,7 @@ resource "azurerm_dns_zone" "az_justice_gov_uk" {
 resource "azurerm_dns_zone" "studio_hosting" {
   name                = "studio-hosting.service.justice.gov.uk"
   resource_group_name = azurerm_resource_group.group.name
+  tags                = var.tags
 
   soa_record {
     email         = "azuredns-hostmaster.microsoft.com"
@@ -64,11 +59,6 @@ resource "azurerm_dns_zone" "studio_hosting" {
     ttl           = "3600"
   }
 
-  tags = {
-    application      = "Management"
-    environment_name = "prod"
-    service          = "FixNGo"
-  }
 }
 
 resource "azurerm_dns_ns_record" "studio_hosting_ns_record" {
@@ -165,10 +155,6 @@ resource "azurerm_dns_a_record" "aap" {
   resource_group_name = azurerm_resource_group.group.name
   records             = ["51.141.40.143"]
   ttl                 = 300
-  tags = {
-    Environment = "Prod"
-    Service     = "AAP"
-  }
 }
 
 resource "azurerm_dns_cname_record" "cafm" {
@@ -273,10 +259,6 @@ resource "azurerm_dns_cname_record" "offloc" {
   resource_group_name = azurerm_resource_group.group.name
   record              = "offloc-prod.azurewebsites.net"
   ttl                 = 300
-  tags = {
-    Environment = "prod"
-    Service     = "offloc"
-  }
 }
 
 resource "azurerm_dns_cname_record" "rsr" {
@@ -285,8 +267,4 @@ resource "azurerm_dns_cname_record" "rsr" {
   resource_group_name = azurerm_resource_group.group.name
   record              = "rsr-prod.azurewebsites.net"
   ttl                 = 300
-  tags = {
-    Environment = "Prod"
-    Service     = "RSR"
-  }
 }
