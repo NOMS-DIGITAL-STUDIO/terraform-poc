@@ -23,7 +23,7 @@ module "app_service" {
     "KEY_VAULT_URL"                 = "https://offloc-stage-users.vault.azure.net/"
     "NODE_ENV"                      = "production"
     "SESSION_SECRET"                = random_id.session.id
-    "WEBSITE_NODE_DEFAULT_VERSION"  = "8.4.0"
+    "WEBSITE_NODE_DEFAULT_VERSION"  = "14.15.1"
     "WEBSITE_TIME_ZONE"             = "GMT Standard Time"
 
   }
