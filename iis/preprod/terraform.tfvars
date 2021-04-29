@@ -15,7 +15,7 @@ custom_hostname       = "hpa-preprod.service.hmpps.dsd.io"
 default_documents     = ["Default.htm", "Default.html", "Default.asp", "index.htm", "index.html", "iisstart.htm", "default.aspx", "index.php", "hostingstart.html"]
 has_storage           = true
 https_only            = true
-key_vault_secrets     = [
+key_vault_secrets = [
   "signon-client-id",
   "signon-client-secret",
   "administrators"
@@ -47,13 +47,13 @@ sql_collation = "Latin1_General_CS_AS"
 sql_edition   = "Standard"
 sql_scale     = "S3"
 sql_space_gb  = 250
-sql_users     = [
+sql_users = [
   "iisuser",
   "mwhitfield",
   "sgandalwar",
   "atodd"
 ]
-tags          = {
+tags = {
   application      = "HPA"                                                    # Mandatory
   business_unit    = "HMPPS"                                                  # Mandatory
   is_production    = "true"                                                   # Mandatory

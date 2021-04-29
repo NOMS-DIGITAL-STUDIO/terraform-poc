@@ -94,7 +94,6 @@ resource "azurerm_dns_cname_record" "cname" {
   resource_group_name = "webops-prod"
   ttl                 = "300"
   record              = "${local.name}.azurewebsites.net"
-  tags                = var.tags
 }
 
 output "advice" {
