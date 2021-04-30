@@ -49,31 +49,6 @@ resource "azurerm_dns_ns_record" "protoassessment-api" {
   records             = ["ns1-04.azure-dns.com.", "ns3-04.azure-dns.org.", "ns2-04.azure-dns.net.", "ns4-04.azure-dns.info."]
 }
 
-resource "azurerm_dns_ns_record" "check-my-diary-dev" {
-  name                = "check-my-diary-dev"
-  zone_name           = azurerm_dns_zone.hmpps.name
-  resource_group_name = azurerm_resource_group.group.name
-  ttl                 = "300"
-  records             = ["ns1-03.azure-dns.com.", "ns2-03.azure-dns.net.", "ns3-03.azure-dns.org.", "ns4-03.azure-dns.info."]
-}
-
-resource "azurerm_dns_ns_record" "check-my-diary-preprod" {
-  name                = "check-my-diary-preprod"
-  zone_name           = azurerm_dns_zone.hmpps.name
-  resource_group_name = azurerm_resource_group.group.name
-  ttl                 = "300"
-  records             = ["ns1-07.azure-dns.com.", "ns2-07.azure-dns.net.", "ns3-07.azure-dns.org.", "ns4-07.azure-dns.info."]
-}
-
-resource "azurerm_dns_ns_record" "check-my-diary-prod" {
-  name                = "check-my-diary-prod"
-  zone_name           = azurerm_dns_zone.hmpps.name
-  resource_group_name = azurerm_resource_group.group.name
-  ttl                 = "300"
-  records             = ["ns1-04.azure-dns.com.", "ns2-04.azure-dns.net.", "ns3-04.azure-dns.org.", "ns4-04.azure-dns.info."]
-}
-
-
 resource "azurerm_dns_ns_record" "digital-prisons" {
   name                = "dp"
   zone_name           = azurerm_dns_zone.hmpps.name
