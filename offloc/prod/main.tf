@@ -26,7 +26,7 @@ module "app_service" {
     "NODE_ENV"                      = "production"
     "SESSION_SECRET"                = random_id.session.b64_url
     "WEBSITE_TIME_ZONE"             = "GMT Standard Time"
-    "WEBSITE_NODE_DEFAULT_VERSION"  = "8.4.0"
+    "WEBSITE_NODE_DEFAULT_VERSION"  = "14.15.1"
 
   }
   default_documents = [
