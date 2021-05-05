@@ -101,22 +101,6 @@ resource "azurerm_dns_cname_record" "bridge_onr" {
   ttl                 = 300
 }
 
-resource "azurerm_dns_cname_record" "bridge_pp_oasys" {
-  name                = "bridge-pp-oasys"
-  zone_name           = azurerm_dns_zone.az_justice_gov_uk.name
-  resource_group_name = azurerm_resource_group.group.name
-  record              = "oasys-preprod.uksouth.cloudapp.azure.com"
-  ttl                 = 300
-}
-
-resource "azurerm_dns_cname_record" "bridge_pp_onr" {
-  name                = "bridge-pp-onr"
-  zone_name           = azurerm_dns_zone.az_justice_gov_uk.name
-  resource_group_name = azurerm_resource_group.group.name
-  record              = "onr-preprod.uksouth.cloudapp.azure.com"
-  ttl                 = 300
-}
-
 resource "azurerm_dns_cname_record" "bridge_practice_oasys" {
   name                = "bridge-practice.oasys"
   zone_name           = azurerm_dns_zone.az_justice_gov_uk.name
