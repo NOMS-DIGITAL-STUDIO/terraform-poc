@@ -22,27 +22,6 @@ resource "azurerm_dns_zone" "az_justice_gov_uk" {
   tags                = var.tags
 }
 
-# The two resources below can be removed after 05/05/2021. I'm leaving them both
-# there for now just in case anyone screams.
-
-# resource "azurerm_dns_zone" "studio-hosting" {
-#   name                = "studio-hosting.service.hmpps.dsd.io"
-#   resource_group_name = azurerm_resource_group.group.name
-#   tags                = var.tags
-# }
-
-# resource "azurerm_dns_ns_record" "studio-hosting" {
-#   name                = "studio-hosting"
-#   zone_name           = azurerm_dns_zone.service-hmpps.name
-#   resource_group_name = azurerm_resource_group.group.name
-#   ttl                 = 300
-#   records             = ["ns4-07.azure-dns.info.", "ns3-07.azure-dns.org.", "ns2-07.azure-dns.net.", "ns1-07.azure-dns.com."]
-#   tags = {
-#     Service     = "WebOps"
-#     Environment = "Management"
-#   }
-# }
-
 resource "azurerm_dns_zone" "studio_hosting" {
   name                = "studio-hosting.service.justice.gov.uk"
   resource_group_name = azurerm_resource_group.group.name
