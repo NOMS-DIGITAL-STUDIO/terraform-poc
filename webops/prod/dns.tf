@@ -132,7 +132,7 @@ resource "azurerm_dns_cname_record" "cafm_preprod" {
   name                = "cafm-preprod"
   zone_name           = azurerm_dns_zone.service-hmpps.name
   resource_group_name = azurerm_resource_group.group.name
-  record              = "hmpps-preprod-ukwest-appgw1-moj.ukwest.cloudapp.azure.com"
+  record              = "hmpps-preprod-ukwest-appgw2-moj.ukwest.cloudapp.azure.com"
   ttl                 = 300
 }
 
@@ -148,7 +148,7 @@ resource "azurerm_dns_cname_record" "cafmpmg_preprod" {
   name                = "cafmpmg-preprod"
   zone_name           = azurerm_dns_zone.service-hmpps.name
   resource_group_name = azurerm_resource_group.group.name
-  record              = "hmpps-preprod-ukwest-appgw1-moj.ukwest.cloudapp.azure.com"
+  record              = "hmpps-preprod-ukwest-appgw2-moj.ukwest.cloudapp.azure.com"
   ttl                 = 300
 }
 
