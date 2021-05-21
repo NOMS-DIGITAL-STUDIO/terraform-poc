@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - webops/prod/*
+      - webops/prod/**
       - azure-prod.tf
       - .github/workflows/webops_prod.yml
   pull_request:
@@ -17,7 +17,7 @@ on:
     branches:
       - master
     paths:
-      - webops/prod/*
+      - webops/prod/**
       - azure-prod.tf
       - .github/workflows/webops_prod.yml
 

@@ -5,12 +5,12 @@ on:
     branches:
       - master
     paths:
-      - iis/prod/*
+      - iis/prod/**
       - iis/iis.tf
       - azure-prod.tf
       - ips.tf
       - .github/workflows/plan_iis_prod.yml
-      - shared/*
+      - shared/**
   pull_request:
     types: 
       - opened
@@ -20,12 +20,12 @@ on:
     branches:
       - master
     paths:
-      - iis/prod/*
+      - iis/prod/**
       - iis/iis.tf
       - azure-prod.tf
       - ips.tf
       - .github/workflows/plan_iis_prod.yml
-      - shared/*
+      - shared/**
 
 env:
   GITHUB_ORGANIZATION: ministryofjustice

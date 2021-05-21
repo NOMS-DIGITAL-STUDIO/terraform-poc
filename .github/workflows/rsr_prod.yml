@@ -5,10 +5,10 @@ on:
     branches:
       - master
     paths:
-      - rsr/prod/*
+      - rsr/prod/**
       - azure-prod.tf
       - .github/workflows/rsr_prod.yml
-      - shared/modules/azure-app-service/*
+      - shared/modules/azure-app-service/**
   pull_request:
     types: 
       - opened
@@ -18,10 +18,10 @@ on:
     branches:
       - master
     paths:
-      - rsr/prod/*
+      - rsr/prod/**
       - azure-prod.tf
       - .github/workflows/rsr_prod.yml
-      - shared/modules/azure-app-service/*
+      - shared/modules/azure-app-service/**
 
 env:
   GITHUB_ORGANIZATION: ministryofjustice
