@@ -146,6 +146,7 @@ resource "azurerm_application_insights" "insights" {
   retention_in_days   = 90
   sampling_percentage = var.sampling_percentage
   tags                = var.tags
+  disable_ip_masking  = true
   lifecycle {
     ignore_changes = [
       application_type
