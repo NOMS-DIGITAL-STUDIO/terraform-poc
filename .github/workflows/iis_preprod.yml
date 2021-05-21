@@ -5,12 +5,12 @@ on:
     branches:
       - master
     paths:
-      - iis/preprod/*
+      - iis/preprod/**
       - iis/iis.tf
       - azure-prod.tf
       - ips.tf
       - .github/workflows/plan_iis_preprod.yml
-      - shared/*
+      - shared/**
   pull_request:
     types: 
       - opened
@@ -20,12 +20,12 @@ on:
     branches:
       - master
     paths:
-      - iis/preprod/*
+      - iis/preprod/**
       - iis/iis.tf
       - azure-prod.tf
       - ips.tf
       - .github/workflows/plan_iis_preprod.yml
-      - shared/*
+      - shared/**
 
 env:
   GITHUB_ORGANIZATION: ministryofjustice

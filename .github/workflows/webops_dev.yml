@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - webops/dev/*
+      - webops/dev/**
       - azure-devtest.tf
       - .github/workflows/webops_dev.yml
   pull_request:
@@ -17,7 +17,7 @@ on:
     branches:
       - master
     paths:
-      - webops/dev/*
+      - webops/dev/**
       - azure-devtest.tf
       - .github/workflows/webops_dev.yml
 

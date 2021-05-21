@@ -5,10 +5,10 @@ on:
     branches:
       - master
     paths:
-      - offloc/stage/*
+      - offloc/stage/**
       - azure-devtest.tf
       - .github/workflows/offloc_stage.yml
-      - shared/modules/azure-app-service/*
+      - shared/modules/azure-app-service/**
   pull_request:
     types: 
       - opened
@@ -18,10 +18,10 @@ on:
     branches:
       - master
     paths:
-      - offloc/stage/*
+      - offloc/stage/**
       - azure-devtest.tf
       - .github/workflows/offloc_stage.yml
-      - shared/modules/azure-app-service/*
+      - shared/modules/azure-app-service/**
 
 env:
   GITHUB_ORGANIZATION: ministryofjustice
