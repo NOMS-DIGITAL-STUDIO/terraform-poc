@@ -64,5 +64,6 @@ variable "custom_hostname" {
   type        = string
   description = "custom hostname for the app service"
 }
-
-
+variable "workspace_id" {
+  type = string
+}

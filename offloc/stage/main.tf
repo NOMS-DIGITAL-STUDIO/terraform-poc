@@ -38,6 +38,7 @@ module "app_service" {
     "index.php",
     "hostingstart.html",
   ]
+  workspace_id = var.workspace_id
   tags = var.tags
 }
 
@@ -90,4 +91,30 @@ resource "azurerm_key_vault" "app" {
   enabled_for_disk_encryption     = false
   enabled_for_template_deployment = false
   tags                            = var.tags
+}
+
+resource "azurerm_monitor_diagnostic_setting" "app-vault-diagnostics" {
+  name               = "${local.name}-users-logging"
+  target_resource_id = azurerm_key_vault.app.id
+  log_analytics_workspace_id = var.workspace_id
+
+  log {
+    category = "AuditEvent"
+    enabled = true
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+
+  metric {
+    category = "AllMetrics"
+    enabled = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
 }

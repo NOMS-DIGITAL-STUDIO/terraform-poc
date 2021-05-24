@@ -22,5 +22,6 @@ module "app_service" {
     "index.php",
     "hostingstart.html",
   ]
+  workspace_id = var.workspace_id
   tags = var.tags
 }

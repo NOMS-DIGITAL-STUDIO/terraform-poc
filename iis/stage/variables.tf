@@ -43,6 +43,9 @@ variable "signon_hostname" {
   description = "If the app uses a token host in the app config which redirects to a signon page"
 }
 
+variable "workspace_id" {
+  type = string
+}
 
 ##
 # Have defaults

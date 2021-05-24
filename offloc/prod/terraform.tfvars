@@ -28,3 +28,4 @@ sampling_percentage   = "0"
 custom_hostname       = "www.offloc.service.justice.gov.uk"
 has_storage           = true
 app_service_plan_size = "S2"
+workspace_id = "/subscriptions/1d95dcda-65b2-4273-81df-eb979c6b547b/resourceGroups/noms-prod-loganalytics/providers/Microsoft.OperationalInsights/workspaces/noms-prod1"
