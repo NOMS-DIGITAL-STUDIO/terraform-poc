@@ -85,14 +85,6 @@ resource "azurerm_dns_ns_record" "cafm_ns_record" {
   ttl                 = "3600"
 }
 
-resource "azurerm_dns_a_record" "reporting_lsast_nomis" {
-  name                = "reporting.lsast-nomis"
-  zone_name           = azurerm_dns_zone.az_justice_gov_uk.name
-  resource_group_name = azurerm_resource_group.group.name
-  records             = ["10.40.44.198"]
-  ttl                 = 300
-}
-
 resource "azurerm_dns_cname_record" "bridge_oasys" {
   name                = "bridge-oasys"
   zone_name           = azurerm_dns_zone.az_justice_gov_uk.name
