@@ -95,13 +95,13 @@ resource "azurerm_key_vault" "ssl_az_justice_gov_uk" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "ssl_az_justice_gov_uk_vault_diagnostics" {
-  name               = "certs-az-justice-gov-uk-logging"
-  target_resource_id = azurerm_key_vault.ssl_az_justice_gov_uk.id
+  name                       = "certs-az-justice-gov-uk-logging"
+  target_resource_id         = azurerm_key_vault.ssl_az_justice_gov_uk.id
   log_analytics_workspace_id = "/subscriptions/1d95dcda-65b2-4273-81df-eb979c6b547b/resourceGroups/noms-prod-loganalytics/providers/Microsoft.OperationalInsights/workspaces/noms-prod1"
 
   log {
     category = "AuditEvent"
-    enabled = true
+    enabled  = true
 
     retention_policy {
       days    = 0
@@ -111,7 +111,7 @@ resource "azurerm_monitor_diagnostic_setting" "ssl_az_justice_gov_uk_vault_diagn
 
   metric {
     category = "AllMetrics"
-    enabled = false
+    enabled  = false
 
     retention_policy {
       days    = 0

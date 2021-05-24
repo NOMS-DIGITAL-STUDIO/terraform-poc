@@ -79,8 +79,8 @@ resource "azurerm_key_vault" "vault" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "vault-diagnostics" {
-  name               = "${azurerm_key_vault.vault.name}-logging"
-  target_resource_id = azurerm_key_vault.vault.id
+  name                       = "${azurerm_key_vault.vault.name}-logging"
+  target_resource_id         = azurerm_key_vault.vault.id
   log_analytics_workspace_id = var.workspace_id
 
   log {
