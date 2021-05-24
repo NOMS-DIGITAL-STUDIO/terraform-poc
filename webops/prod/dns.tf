@@ -56,6 +56,35 @@ resource "azurerm_dns_cname_record" "user_guide" {
   zone_name           = azurerm_dns_zone.studio_hosting.name
 }
 
+resource "azurerm_dns_ns_record" "nomis_ns_record" {
+  name                = "nomis"
+  records             = ["ns1-08.azure-dns.com.", "ns2-08.azure-dns.net.", "ns3-08.azure-dns.org.", "ns4-08.azure-dns.info."]
+  zone_name           = azurerm_dns_zone.az_justice_gov_uk.name
+  resource_group_name = azurerm_resource_group.group.name
+  ttl                 = "3600"
+}
+resource "azurerm_dns_ns_record" "oasys_ns_record" {
+  name                = "oasys"
+  records             = ["ns1-08.azure-dns.com.", "ns2-08.azure-dns.net.", "ns3-08.azure-dns.org.", "ns4-08.azure-dns.info."]
+  zone_name           = azurerm_dns_zone.az_justice_gov_uk.name
+  resource_group_name = azurerm_resource_group.group.name
+  ttl                 = "3600"
+}
+resource "azurerm_dns_ns_record" "csr_ns_record" {
+  name                = "csr"
+  records             = ["ns1-08.azure-dns.com.", "ns2-08.azure-dns.net.", "ns3-08.azure-dns.org.", "ns4-08.azure-dns.info."]
+  zone_name           = azurerm_dns_zone.az_justice_gov_uk.name
+  resource_group_name = azurerm_resource_group.group.name
+  ttl                 = "3600"
+}
+resource "azurerm_dns_ns_record" "cafm_ns_record" {
+  name                = "cafm"
+  records             = ["ns1-08.azure-dns.com.", "ns2-08.azure-dns.net.", "ns3-08.azure-dns.org.", "ns4-08.azure-dns.info."]
+  zone_name           = azurerm_dns_zone.az_justice_gov_uk.name
+  resource_group_name = azurerm_resource_group.group.name
+  ttl                 = "3600"
+}
+
 resource "azurerm_dns_a_record" "reporting_lsast_nomis" {
   name                = "reporting.lsast-nomis"
   zone_name           = azurerm_dns_zone.az_justice_gov_uk.name
