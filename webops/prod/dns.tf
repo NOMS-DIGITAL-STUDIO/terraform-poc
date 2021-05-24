@@ -65,21 +65,21 @@ resource "azurerm_dns_ns_record" "nomis_ns_record" {
 }
 resource "azurerm_dns_ns_record" "oasys_ns_record" {
   name                = "oasys"
-  records             = ["ns1-08.azure-dns.com.", "ns2-08.azure-dns.net.", "ns3-08.azure-dns.org.", "ns4-08.azure-dns.info."]
+  records             = ["ns1-07.azure-dns.com.", "ns2-07.azure-dns.net.", "ns3-07.azure-dns.org.", "ns4-07.azure-dns.info."]
   zone_name           = azurerm_dns_zone.az_justice_gov_uk.name
   resource_group_name = azurerm_resource_group.group.name
   ttl                 = "3600"
 }
 resource "azurerm_dns_ns_record" "csr_ns_record" {
   name                = "csr"
-  records             = ["ns1-08.azure-dns.com.", "ns2-08.azure-dns.net.", "ns3-08.azure-dns.org.", "ns4-08.azure-dns.info."]
+  records             = ["ns1-06.azure-dns.com.", "ns2-06.azure-dns.net.", "ns3-06.azure-dns.org.", "ns4-06.azure-dns.info."]
   zone_name           = azurerm_dns_zone.az_justice_gov_uk.name
   resource_group_name = azurerm_resource_group.group.name
   ttl                 = "3600"
 }
 resource "azurerm_dns_ns_record" "cafm_ns_record" {
   name                = "cafm"
-  records             = ["ns1-08.azure-dns.com.", "ns2-08.azure-dns.net.", "ns3-08.azure-dns.org.", "ns4-08.azure-dns.info."]
+  records             = ["ns1-05.azure-dns.com.", "ns2-05.azure-dns.net.", "ns3-05.azure-dns.org.", "ns4-05.azure-dns.info."]
   zone_name           = azurerm_dns_zone.az_justice_gov_uk.name
   resource_group_name = azurerm_resource_group.group.name
   ttl                 = "3600"
