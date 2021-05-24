@@ -39,7 +39,7 @@ module "app_service" {
     "hostingstart.html",
   ]
   workspace_id = var.workspace_id
-  tags = var.tags
+  tags         = var.tags
 }
 
 resource "random_id" "session" {
@@ -94,13 +94,13 @@ resource "azurerm_key_vault" "app" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "app-vault-diagnostics" {
-  name               = "${local.name}-users-logging"
-  target_resource_id = azurerm_key_vault.app.id
+  name                       = "${local.name}-users-logging"
+  target_resource_id         = azurerm_key_vault.app.id
   log_analytics_workspace_id = var.workspace_id
 
   log {
     category = "AuditEvent"
-    enabled = true
+    enabled  = true
 
     retention_policy {
       days    = 0
@@ -110,7 +110,7 @@ resource "azurerm_monitor_diagnostic_setting" "app-vault-diagnostics" {
 
   metric {
     category = "AllMetrics"
-    enabled = false
+    enabled  = false
 
     retention_policy {
       days    = 0

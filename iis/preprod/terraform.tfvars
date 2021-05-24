@@ -63,4 +63,4 @@ tags = {
   source_code      = "infra=https://github.com/ministryofjustice/digital-studio-infra/tree/master/iis/preprod"
 }
 use_32_bit_worker_process = true
-workspace_id = "/subscriptions/1d95dcda-65b2-4273-81df-eb979c6b547b/resourceGroups/noms-prod-loganalytics/providers/Microsoft.OperationalInsights/workspaces/noms-prod1"
+workspace_id              = "/subscriptions/1d95dcda-65b2-4273-81df-eb979c6b547b/resourceGroups/noms-prod-loganalytics/providers/Microsoft.OperationalInsights/workspaces/noms-prod1"
