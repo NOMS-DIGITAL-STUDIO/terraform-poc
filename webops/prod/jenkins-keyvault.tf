@@ -55,3 +55,29 @@ resource "azurerm_key_vault" "webops_jenkins" {
 
   tags = var.tags
 }
+
+resource "azurerm_monitor_diagnostic_setting" "webops_jenkins_vault_diagnostics" {
+  name                       = "webops-jenkins-prod-logging"
+  target_resource_id         = azurerm_key_vault.webops_jenkins.id
+  log_analytics_workspace_id = "/subscriptions/1d95dcda-65b2-4273-81df-eb979c6b547b/resourceGroups/noms-prod-loganalytics/providers/Microsoft.OperationalInsights/workspaces/noms-prod1"
+
+  log {
+    category = "AuditEvent"
+    enabled  = true
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+
+  metric {
+    category = "AllMetrics"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+}

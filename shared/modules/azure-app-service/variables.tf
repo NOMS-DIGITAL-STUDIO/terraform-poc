@@ -52,6 +52,9 @@ variable "client_affinity_enabled" {
   default = null
 }
 
+variable "workspace_id" {
+  type = string
+}
 
 variable "https_only" {
   type    = bool

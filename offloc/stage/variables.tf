@@ -61,7 +61,9 @@ variable "sc_branch" {
 variable "repo_url" {
   type = string
 }
-
+variable "workspace_id" {
+  type = string
+}
 #variable "default_documents" {
 #  type = list(string)
 #  description = "default documents for the app site config"

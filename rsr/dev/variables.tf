@@ -54,7 +54,9 @@ variable "custom_hostname" {
   type        = string
   description = "custom hostname for the app service"
 }
-
+variable "workspace_id" {
+  type = string
+}
 #variable "default_documents" {
 #  type = list(string)
 #  description = "default documents for the app site config"

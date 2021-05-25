@@ -44,6 +44,7 @@ module "app_service" {
   signon_hostname              = var.signon_hostname
   tags                         = var.tags
   use_32_bit_worker_process    = var.use_32_bit_worker_process
+  workspace_id                 = var.workspace_id
 }
 
 # locals {
