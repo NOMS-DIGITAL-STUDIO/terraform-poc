@@ -141,38 +141,6 @@ resource "azurerm_dns_a_record" "aap" {
   ttl                 = 300
 }
 
-resource "azurerm_dns_cname_record" "cafm" {
-  name                = "cafm"
-  zone_name           = azurerm_dns_zone.service-hmpps.name
-  resource_group_name = azurerm_resource_group.group.name
-  record              = "hmpps-prod-ukwest-appgw2-moj.ukwest.cloudapp.azure.com"
-  ttl                 = 300
-}
-
-resource "azurerm_dns_cname_record" "cafm_preprod" {
-  name                = "cafm-preprod"
-  zone_name           = azurerm_dns_zone.service-hmpps.name
-  resource_group_name = azurerm_resource_group.group.name
-  record              = "hmpps-preprod-ukwest-appgw2-moj.ukwest.cloudapp.azure.com"
-  ttl                 = 300
-}
-
-resource "azurerm_dns_cname_record" "cafmpmg" {
-  name                = "cafmpmg"
-  zone_name           = azurerm_dns_zone.service-hmpps.name
-  resource_group_name = azurerm_resource_group.group.name
-  record              = "hmpps-prod-ukwest-appgw2-moj.ukwest.cloudapp.azure.com"
-  ttl                 = 300
-}
-
-resource "azurerm_dns_cname_record" "cafmpmg_preprod" {
-  name                = "cafmpmg-preprod"
-  zone_name           = azurerm_dns_zone.service-hmpps.name
-  resource_group_name = azurerm_resource_group.group.name
-  record              = "hmpps-preprod-ukwest-appgw2-moj.ukwest.cloudapp.azure.com"
-  ttl                 = 300
-}
-
 resource "azurerm_dns_cname_record" "dso_monitoring_prod" {
   name                = "dso-monitoring-prod"
   zone_name           = azurerm_dns_zone.service-hmpps.name
