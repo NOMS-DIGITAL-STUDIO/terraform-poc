@@ -145,7 +145,7 @@ resource "azurerm_dns_cname_record" "cafm" {
   name                = "cafm"
   zone_name           = azurerm_dns_zone.service-hmpps.name
   resource_group_name = azurerm_resource_group.group.name
-  record              = "cafm-prod.ukwest.cloudapp.azure.com"
+  record              = "hmpps-prod-ukwest-appgw2-moj.ukwest.cloudapp.azure.com"
   ttl                 = 300
 }
 
@@ -161,7 +161,7 @@ resource "azurerm_dns_cname_record" "cafmpmg" {
   name                = "cafmpmg"
   zone_name           = azurerm_dns_zone.service-hmpps.name
   resource_group_name = azurerm_resource_group.group.name
-  record              = "cafm-prod.ukwest.cloudapp.azure.com"
+  record              = "hmpps-prod-ukwest-appgw2-moj.ukwest.cloudapp.azure.com"
   ttl                 = 300
 }
 
