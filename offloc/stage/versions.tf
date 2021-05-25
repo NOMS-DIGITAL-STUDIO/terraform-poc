@@ -11,7 +11,7 @@ terraform {
       source = "hashicorp/random"
     }
   }
-  required_version = ">= 0.14"
+  required_version = "= 0.14.11"
 }
 provider "azurerm" {
   tenant_id       = "747381f4-e81f-4a43-bf68-ced6a1e14edf"
