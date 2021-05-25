@@ -12,7 +12,7 @@ on:
       - .github/workflows/plan_iis_preprod.yml
       - shared/**
   pull_request:
-    types: 
+    types:
       - opened
       - edited
       - synchronize
@@ -51,16 +51,16 @@ jobs:
         uses: fusion-engineering/setup-git-credentials@v2
         with:
           credentials: https://${{ env.GITHUB_USERNAME }}:${{ env.GITHUB_TOKEN }}@github.com
-          
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.14.9
-        
+          terraform_version: 0.14.11
+
       - name: terraform code formatter
         if: ${{ github.event_name == 'pull_request' }}
         uses: ministryofjustice/github-actions/code-formatter@main
-      
+
       - name: Terraform Init
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: terraform init
@@ -70,7 +70,7 @@ jobs:
         run: terraform validate
 
       - name: terraform refresh
-        working-directory: ${{ env.WORKING_DIRECTORY }}         
+        working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
           terraform refresh
 
@@ -109,7 +109,7 @@ jobs:
           echo 'TF_APPLY_OUT<<EOF' >> $GITHUB_ENV
           cat tf_apply.txt >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
-      
+
       - name: Post a post merge PR comment with the terraform apply output
         if: ${{ github.event.pull_request.merged || github.event_name == 'push' }}
         uses: guchaocharlie/comment-pr@v1
