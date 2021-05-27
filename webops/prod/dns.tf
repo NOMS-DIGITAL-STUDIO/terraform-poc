@@ -70,20 +70,6 @@ resource "azurerm_dns_ns_record" "oasys_ns_record" {
   resource_group_name = azurerm_resource_group.group.name
   ttl                 = "3600"
 }
-resource "azurerm_dns_ns_record" "csr_ns_record" {
-  name                = "csr"
-  records             = ["ns1-06.azure-dns.com.", "ns2-06.azure-dns.net.", "ns3-06.azure-dns.org.", "ns4-06.azure-dns.info."]
-  zone_name           = azurerm_dns_zone.az_justice_gov_uk.name
-  resource_group_name = azurerm_resource_group.group.name
-  ttl                 = "3600"
-}
-resource "azurerm_dns_ns_record" "cafm_ns_record" {
-  name                = "cafm"
-  records             = ["ns1-05.azure-dns.com.", "ns2-05.azure-dns.net.", "ns3-05.azure-dns.org.", "ns4-05.azure-dns.info."]
-  zone_name           = azurerm_dns_zone.az_justice_gov_uk.name
-  resource_group_name = azurerm_resource_group.group.name
-  ttl                 = "3600"
-}
 
 resource "azurerm_dns_cname_record" "bridge_oasys" {
   name                = "bridge-oasys"
@@ -138,38 +124,6 @@ resource "azurerm_dns_a_record" "aap" {
   zone_name           = azurerm_dns_zone.service-hmpps.name
   resource_group_name = azurerm_resource_group.group.name
   records             = ["51.141.40.143"]
-  ttl                 = 300
-}
-
-resource "azurerm_dns_cname_record" "cafm" {
-  name                = "cafm"
-  zone_name           = azurerm_dns_zone.service-hmpps.name
-  resource_group_name = azurerm_resource_group.group.name
-  record              = "cafm-prod.ukwest.cloudapp.azure.com"
-  ttl                 = 300
-}
-
-resource "azurerm_dns_cname_record" "cafm_preprod" {
-  name                = "cafm-preprod"
-  zone_name           = azurerm_dns_zone.service-hmpps.name
-  resource_group_name = azurerm_resource_group.group.name
-  record              = "hmpps-preprod-ukwest-appgw2-moj.ukwest.cloudapp.azure.com"
-  ttl                 = 300
-}
-
-resource "azurerm_dns_cname_record" "cafmpmg" {
-  name                = "cafmpmg"
-  zone_name           = azurerm_dns_zone.service-hmpps.name
-  resource_group_name = azurerm_resource_group.group.name
-  record              = "cafm-prod.ukwest.cloudapp.azure.com"
-  ttl                 = 300
-}
-
-resource "azurerm_dns_cname_record" "cafmpmg_preprod" {
-  name                = "cafmpmg-preprod"
-  zone_name           = azurerm_dns_zone.service-hmpps.name
-  resource_group_name = azurerm_resource_group.group.name
-  record              = "hmpps-preprod-ukwest-appgw2-moj.ukwest.cloudapp.azure.com"
   ttl                 = 300
 }
 
