@@ -132,6 +132,7 @@ resource "azurerm_app_service" "webapp" {
     use_32_bit_worker_process   = var.use_32_bit_worker_process
     always_on                   = var.always_on
     default_documents           = var.default_documents
+    ftps_state                  = "FtpsOnly"
     dynamic "ip_restriction" {
       for_each = var.ip_restriction_addresses
       content {
