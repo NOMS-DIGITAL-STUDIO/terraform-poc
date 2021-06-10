@@ -23,7 +23,7 @@ default_documents = [
   "hostingstart.html"
 ]
 has_storage = true
-https_only  = false
+https_only  = true
 key_vault_secrets = [
   "signon-client-id",
   "signon-client-secret",
