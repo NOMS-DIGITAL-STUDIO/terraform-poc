@@ -44,7 +44,7 @@ jobs:
     environment: iis/stage
 
     steps:
-      - name: Checkout the code
+      - name: Checkout
         uses: actions/checkout@v2
 
       - name: Setup GitHub credential.helper for terraform
@@ -55,64 +55,10 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.14.11
+          terraform_version: 0.15.5
 
-      - name: terraform code formatter
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: ministryofjustice/github-actions/code-formatter@main
-
-      - name: Terraform Init
-        working-directory: ${{ env.WORKING_DIRECTORY }}
-        run: terraform init
-
-      - name: terraform validate
-        working-directory: ${{ env.WORKING_DIRECTORY }}
-        run: terraform validate
-
-      - name: terraform refresh
-        working-directory: ${{ env.WORKING_DIRECTORY }}
-        run: |
-          terraform refresh
-
-      - name: terraform plan
-        working-directory: ${{ env.WORKING_DIRECTORY }}
-        run: |
-          terraform plan -out=tf.plan -refresh=false -no-color > tf_out.txt
-          tail -c 65476 tf_out.txt > tf_plan.txt
-          cat tf_plan.txt
-          echo 'TF_PLAN_OUT<<EOF' >> $GITHUB_ENV
-          cat tf_plan.txt >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
-
-      - name: Post a PR comment with the terraform plan output
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: allthatjazzleo/actions-pull-request-add-comment@master
+      - name: Terraform Action
+        uses: ministryofjustice/terraform-action@v1.0.8
         with:
-          GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
-          message: "Terraform plan output in ${{ env.ENVIRONMENT }}: \n```\n${{ env.TF_PLAN_OUT }}\n```"
-
-
-      - name: Post a post merge PR comment with the terraform plan output
-        if: ${{ github.event.pull_request.merged || github.event_name == 'push' }}
-        uses: guchaocharlie/comment-pr@v1
-        with:
-          github-token: ${{ env.GITHUB_TOKEN }}
-          comment: "Terraform plan output in ${{ env.ENVIRONMENT }}: \n```\n${{ env.TF_PLAN_OUT }}\n```"
-
-      - name: terraform apply
-        if: ${{ github.event.pull_request.merged || github.event_name == 'push' }}
-        working-directory: ${{ env.WORKING_DIRECTORY }}
-        run: |
-          terraform apply -auto-approve -no-color tf.plan > tf_out.txt
-          tail -c 65476 tf_out.txt > tf_apply.txt
-          cat tf_apply.txt
-          echo 'TF_APPLY_OUT<<EOF' >> $GITHUB_ENV
-          cat tf_apply.txt >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
-
-      - name: Post a post merge PR comment with the terraform apply output
-        if: ${{ github.event.pull_request.merged || github.event_name == 'push' }}
-        uses: guchaocharlie/comment-pr@v1
-        with:
-          github-token: ${{ env.GITHUB_TOKEN }}
-          comment: "Terraform apply output in ${{ env.ENVIRONMENT }}: \n```\n${{ env.TF_APPLY_OUT }}\n```"
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          working-directory: ${{env.WORKING_DIRECTORY}}
