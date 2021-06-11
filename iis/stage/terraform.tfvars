@@ -26,7 +26,7 @@ key_vault_secrets = [
   "signon-client-secret",
   "administrators"
 ]
-repo_url                    = "https://github.com/ministryofjustice/iis"
+repo_url                    = "https://github.com/ministryofjustice/iis.git"
 sampling_percentage         = "100"
 sc_branch                   = "azure"
 scm_use_main_ip_restriction = false
