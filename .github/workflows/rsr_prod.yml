@@ -3,7 +3,7 @@ name: rsr prod
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - rsr/prod/**
       - azure-prod.tf
@@ -16,7 +16,7 @@ on:
       - synchronize
       - reopened
     branches:
-      - master
+      - main
     paths:
       - rsr/prod/**
       - azure-prod.tf

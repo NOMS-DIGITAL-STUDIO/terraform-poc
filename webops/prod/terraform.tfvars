@@ -5,5 +5,5 @@ tags = {
   owner            = "DSO:digital-studio-operations-team@digital.justice.gov.uk" # Mandatory
   environment_name = "prod"
   service          = "FixNGo"
-  source_code      = "infra=https://github.com/ministryofjustice/digital-studio-infra/tree/master/webops/prod"
+  source_code      = "infra=https://github.com/ministryofjustice/digital-studio-infra/tree/main/webops/prod"
 }

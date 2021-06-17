@@ -3,7 +3,7 @@ name: rsr dev
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - rsr/dev/**
       - azure-devtest.tf
@@ -16,7 +16,7 @@ on:
       - synchronize
       - reopened
     branches:
-      - master
+      - main
     paths:
       - rsr/dev/**
       - azure-devtest.tf

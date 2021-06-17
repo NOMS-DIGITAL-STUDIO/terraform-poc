@@ -3,7 +3,7 @@ name: offloc prod
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - offloc/prod/**
       - azure-prod.tf
@@ -16,7 +16,7 @@ on:
       - synchronize
       - reopened
     branches:
-      - master
+      - main
     paths:
       - offloc/prod/**
       - azure-prod.tf

@@ -3,7 +3,7 @@ name: iis prod
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - iis/prod/**
       - iis/iis.tf
@@ -18,7 +18,7 @@ on:
       - synchronize
       - reopened
     branches:
-      - master
+      - main
     paths:
       - iis/prod/**
       - iis/iis.tf
