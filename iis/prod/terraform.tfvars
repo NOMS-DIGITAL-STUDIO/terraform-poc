@@ -60,7 +60,7 @@ tags = {
   owner            = "Malcolm Casimir:malcolm.casimir@digital.justice.gov.uk" # Mandatory
   environment_name = "prod"
   service          = "Misc"
-  source_code      = "infra=https://github.com/ministryofjustice/digital-studio-infra/tree/master/iis/prod"
+  source_code      = "infra=https://github.com/ministryofjustice/digital-studio-infra/tree/main/iis/prod"
 }
 use_32_bit_worker_process = false
 workspace_id              = "/subscriptions/1d95dcda-65b2-4273-81df-eb979c6b547b/resourceGroups/noms-prod-loganalytics/providers/Microsoft.OperationalInsights/workspaces/noms-prod1"

@@ -3,7 +3,7 @@ name: webops dev
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - webops/dev/**
       - azure-devtest.tf
@@ -15,7 +15,7 @@ on:
       - synchronize
       - reopened
     branches:
-      - master
+      - main
     paths:
       - webops/dev/**
       - azure-devtest.tf

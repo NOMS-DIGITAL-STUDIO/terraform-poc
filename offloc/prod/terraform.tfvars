@@ -5,7 +5,7 @@ tags = {
   owner            = "Malcolm Casimir:malcolm.casimir@digital.justice.gov.uk" # Mandatory
   environment_name = "prod"
   service          = "NonCore"
-  source_code      = "infra=https://github.com/ministryofjustice/digital-studio-infra/tree/master/offloc/prod"
+  source_code      = "infra=https://github.com/ministryofjustice/digital-studio-infra/tree/main/offloc/prod"
 }
 app = "offloc"
 env = "prod"

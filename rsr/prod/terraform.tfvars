@@ -5,7 +5,7 @@ tags = {
   owner            = "DSO:digital-studio-operations-team@digital.justice.gov.uk" # Mandatory
   environment_name = "prod"
   service          = "Misc"
-  source_code      = "infra=https://github.com/ministryofjustice/digital-studio-infra/tree/master/rsr/prod"
+  source_code      = "infra=https://github.com/ministryofjustice/digital-studio-infra/tree/main/rsr/prod"
 }
 app              = "rsr"
 env              = "prod"

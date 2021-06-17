@@ -3,7 +3,7 @@ name: iis preprod
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - iis/preprod/**
       - iis/iis.tf
@@ -18,7 +18,7 @@ on:
       - synchronize
       - reopened
     branches:
-      - master
+      - main
     paths:
       - iis/preprod/**
       - iis/iis.tf

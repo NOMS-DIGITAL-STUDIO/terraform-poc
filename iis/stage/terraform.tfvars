@@ -46,7 +46,7 @@ tags = {
   owner            = "Malcolm Casimir:malcolm.casimir@digital.justice.gov.uk" # Mandatory
   environment_name = "devtest"
   service          = "Misc"
-  source_code      = "infra=https://github.com/ministryofjustice/digital-studio-infra/tree/master/iis/stage"
+  source_code      = "infra=https://github.com/ministryofjustice/digital-studio-infra/tree/main/iis/stage"
 }
 use_32_bit_worker_process = true
 workspace_id              = "/subscriptions/b1f3cebb-4988-4ff9-9259-f02ad7744fcb/resourceGroups/noms-test-loganalytics/providers/Microsoft.OperationalInsights/workspaces/noms-test"
