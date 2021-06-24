@@ -70,6 +70,27 @@ resource "azurerm_dns_ns_record" "oasys_ns_record" {
   resource_group_name = azurerm_resource_group.group.name
   ttl                 = "3600"
 }
+resource "azurerm_dns_ns_record" "pp-nomis_ns_record" {
+  name                = "pp-nomis"
+  records             = ["ns1-03.azure-dns.com.", "ns2-03.azure-dns.net.", "ns3-03.azure-dns.org.", "ns4-03.azure-dns.info."]
+  zone_name           = azurerm_dns_zone.az_justice_gov_uk.name
+  resource_group_name = azurerm_resource_group.group.name
+  ttl                 = "3600"
+}
+resource "azurerm_dns_ns_record" "pp-oasys_ns_record" {
+  name                = "pp-oasys"
+  records             = ["ns1-04.azure-dns.com.", "ns2-04.azure-dns.net.", "ns3-04.azure-dns.org.", "ns4-04.azure-dns.info."]
+  zone_name           = azurerm_dns_zone.az_justice_gov_uk.name
+  resource_group_name = azurerm_resource_group.group.name
+  ttl                 = "3600"
+}
+resource "azurerm_dns_ns_record" "lsast-nomis_ns_record" {
+  name                = "lsast-nomis"
+  records             = ["ns1-04.azure-dns.com.", "ns2-04.azure-dns.net.", "ns3-04.azure-dns.org.", "ns4-04.azure-dns.info."]
+  zone_name           = azurerm_dns_zone.az_justice_gov_uk.name
+  resource_group_name = azurerm_resource_group.group.name
+  ttl                 = "3600"
+}
 
 resource "azurerm_dns_cname_record" "bridge_oasys" {
   name                = "bridge-oasys"
