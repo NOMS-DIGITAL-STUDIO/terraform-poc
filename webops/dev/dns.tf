@@ -74,15 +74,6 @@ resource "azurerm_dns_ns_record" "hwpv" {
   records             = ["ns1-04.azure-dns.com.", "ns2-04.azure-dns.net.", "ns3-04.azure-dns.org.", "ns4-04.azure-dns.info."]
 }
 
-resource "azurerm_dns_cname_record" "ndelius-interface" {
-  name                = "ndelius-interface"
-  zone_name           = azurerm_dns_zone.hmpps.name
-  resource_group_name = azurerm_resource_group.group.name
-  ttl                 = "300"
-  record              = "ndelius-dev.ukwest.cloudapp.azure.com"
-}
-
-
 resource "azurerm_dns_cname_record" "offloc-stage" {
   name                = "offloc-stage"
   zone_name           = azurerm_dns_zone.hmpps.name
@@ -137,14 +128,6 @@ resource "azurerm_dns_ns_record" "mgmt-prod" {
   resource_group_name = azurerm_resource_group.group.name
   ttl                 = "300"
   records             = ["ns1-03.azure-dns.com.", "ns2-03.azure-dns.net.", "ns3-03.azure-dns.org.", "ns4-03.azure-dns.info."]
-}
-
-resource "azurerm_dns_cname_record" "test-ndelius-interface" {
-  name                = "test-ndelius-interface"
-  zone_name           = azurerm_dns_zone.hmpps.name
-  resource_group_name = azurerm_resource_group.group.name
-  record              = "ndelius-dev.ukwest.cloudapp.azure.com"
-  ttl                 = "3600"
 }
 
 resource "azurerm_dns_cname_record" "rsr-dev" {

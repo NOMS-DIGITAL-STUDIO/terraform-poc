@@ -204,14 +204,6 @@ resource "azurerm_dns_cname_record" "mgmt" {
   ttl                 = 300
 }
 
-resource "azurerm_dns_cname_record" "ndelius_interface" {
-  name                = "ndelius-interface"
-  zone_name           = azurerm_dns_zone.service-hmpps.name
-  resource_group_name = azurerm_resource_group.group.name
-  record              = "ndelius-prod.ukwest.cloudapp.azure.com"
-  ttl                 = 300
-}
-
 resource "azurerm_dns_cname_record" "offloc" {
   name                = "offloc"
   zone_name           = azurerm_dns_zone.service-hmpps.name
