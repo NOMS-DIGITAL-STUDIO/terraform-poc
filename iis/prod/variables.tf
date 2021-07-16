@@ -115,6 +115,10 @@ locals {
     "195.92.38.22/32", # dxc_webproxy3
     "195.92.38.23/32", # dxc_webproxy4
     "51.149.250.0/24", # pttp access
+    "51.149.249.0/27", # MoJ_ArkC_Expo-e
+    "194.33.249.0/24", # MoJ_ArkC_VF
+    "51.149.249.32/27", # MoJ_ArkF_Expo-e
+    "194.33.248.0/24", # MoJ_ArkF_VF
     "${var.ips["studiohosting-live"]}/32"
   ]
 
